@@ -5,6 +5,7 @@ import (
 	"mall-admin-server/ums/model"
 	"mall-admin-server/ums/query"
 	"mall-admin-server/util"
+	"time"
 )
 
 type UmsResourceService struct {
@@ -13,6 +14,7 @@ type UmsResourceService struct {
 
 // 创建资源
 func (UmsResourceService) Create(umsResource model.UmsResource) error {
+	umsResource.CreateTime = time.Now()
 	return query.UmsResource.Create(&umsResource)
 }
 
@@ -55,9 +57,8 @@ func (UmsResourceService) List(categoryIdStr, nameKeyword, urlKeyword, pageStr, 
 	size := util.ParseInt(sizeStr, 10)
 	offset := (page - 1) * size
 	umsResource := query.UmsResource
-	categoryId, err := util.ParseInt64WithErr(categoryIdStr)
 	conds := make([]gen.Condition, 0)
-	if err == nil {
+	if categoryId, err := util.ParseInt64WithErr(categoryIdStr); err == nil {
 		conds = append(conds, umsResource.CategoryID.Eq(categoryId))
 	}
 	if nameKeyword != "" {

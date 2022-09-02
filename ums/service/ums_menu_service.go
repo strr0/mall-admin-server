@@ -5,6 +5,7 @@ import (
 	"mall-admin-server/ums/query"
 	"mall-admin-server/ums/service/dto"
 	"mall-admin-server/util"
+	"time"
 )
 
 type UmsMenuService struct {
@@ -13,6 +14,7 @@ type UmsMenuService struct {
 
 // 创建菜单
 func (UmsMenuService) Create(umsMenu model.UmsMenu) error {
+	umsMenu.CreateTime = time.Now()
 	return query.UmsMenu.Create(&umsMenu)
 }
 

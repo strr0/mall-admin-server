@@ -5,6 +5,7 @@ import (
 	"mall-admin-server/ums/model"
 	"mall-admin-server/ums/query"
 	"mall-admin-server/util"
+	"time"
 )
 
 type UmsAdminService struct {
@@ -22,6 +23,7 @@ func (UmsAdminService) GetAdminByUsername(username string) *model.UmsAdmin {
 
 // 注册用户
 func (UmsAdminService) Register(umsAdmin model.UmsAdmin) error {
+	umsAdmin.CreateTime = time.Now()
 	return query.UmsAdmin.Create(&umsAdmin)
 }
 

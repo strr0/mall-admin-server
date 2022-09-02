@@ -5,6 +5,7 @@ import (
 	"mall-admin-server/ums/model"
 	"mall-admin-server/ums/query"
 	"mall-admin-server/util"
+	"time"
 )
 
 type UmsRoleService struct {
@@ -12,6 +13,7 @@ type UmsRoleService struct {
 }
 
 func (UmsRoleService) Create(umsRole model.UmsRole) error {
+	umsRole.CreateTime = time.Now()
 	return query.UmsRole.Create(&umsRole)
 }
 

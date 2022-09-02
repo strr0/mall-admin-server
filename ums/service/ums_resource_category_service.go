@@ -4,6 +4,7 @@ import (
 	"mall-admin-server/ums/model"
 	"mall-admin-server/ums/query"
 	"mall-admin-server/util"
+	"time"
 )
 
 type UmsResourceCategoryService struct {
@@ -21,6 +22,7 @@ func (UmsResourceCategoryService) ListAll() []*model.UmsResourceCategory {
 
 // 创建分类
 func (UmsResourceCategoryService) Create(umsResourceCategory model.UmsResourceCategory) error {
+	umsResourceCategory.CreateTime = time.Now()
 	return query.UmsResourceCategory.Create(&umsResourceCategory)
 }
 
