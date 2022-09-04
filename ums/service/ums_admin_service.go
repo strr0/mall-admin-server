@@ -57,14 +57,14 @@ func (UmsAdminService) List(keyword string, pageStr, sizeStr string) ([]*model.U
 	umsAdmin := query.UmsAdmin
 	conds := make([]gen.Condition, 0)
 	if keyword != "" {
-		conds = append(conds, umsAdmin.NickName.Like(keyword))
+		conds = append(conds, umsAdmin.NickName.Like("%"+keyword+"%"))
 	}
-	umsAdmin.Where(conds...)
-	total, err := umsAdmin.Count()
+	umsAdminDo := umsAdmin.Where(conds...)
+	total, err := umsAdminDo.Count()
 	if err != nil || total == 0 {
 		return nil, 0
 	}
-	find, err := umsAdmin.Offset(offset).Limit(size).Find()
+	find, err := umsAdminDo.Offset(offset).Limit(size).Find()
 	if err != nil {
 		return nil, total
 	}

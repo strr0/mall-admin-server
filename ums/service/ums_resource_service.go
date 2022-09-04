@@ -62,17 +62,17 @@ func (UmsResourceService) List(categoryIdStr, nameKeyword, urlKeyword, pageStr, 
 		conds = append(conds, umsResource.CategoryID.Eq(categoryId))
 	}
 	if nameKeyword != "" {
-		conds = append(conds, umsResource.Name.Like(nameKeyword))
+		conds = append(conds, umsResource.Name.Like("%"+nameKeyword+"%"))
 	}
 	if urlKeyword != "" {
-		conds = append(conds, umsResource.URL.Like(urlKeyword))
+		conds = append(conds, umsResource.URL.Like("%"+urlKeyword+"%"))
 	}
-	umsResource.Where(conds...)
-	total, err := umsResource.Count()
+	umsResourceDo := umsResource.Where(conds...)
+	total, err := umsResourceDo.Count()
 	if err != nil || total == 0 {
 		return nil, 0
 	}
-	find, err := umsResource.Offset(offset).Limit(size).Find()
+	find, err := umsResourceDo.Offset(offset).Limit(size).Find()
 	if err != nil {
 		return nil, total
 	}

@@ -50,14 +50,14 @@ func (UmsRoleService) List(keyword, pageStr, sizeStr string) ([]*model.UmsRole, 
 	umsRole := query.UmsRole
 	conds := make([]gen.Condition, 0)
 	if keyword != "" {
-		conds = append(conds, umsRole.Name.Like(keyword))
+		conds = append(conds, umsRole.Name.Like("%"+keyword+"%"))
 	}
-	umsRole.Where(conds...)
-	total, err := umsRole.Count()
+	umsRoleDo := umsRole.Where(conds...)
+	total, err := umsRoleDo.Count()
 	if err != nil || total == 0 {
 		return nil, 0
 	}
-	find, err := umsRole.Offset(offset).Limit(size).Find()
+	find, err := umsRoleDo.Offset(offset).Limit(size).Find()
 	if err != nil {
 		return nil, total
 	}
