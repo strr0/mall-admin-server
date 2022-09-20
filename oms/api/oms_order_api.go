@@ -13,6 +13,7 @@ type OmsOrderApi struct {
 	Service service.OmsOrderService
 }
 
+// 查询订单
 func (iApi OmsOrderApi) List(ctx *gin.Context) {
 	var queryDto dto.OmsOrderQueryDto
 	_ = ctx.Bind(&queryDto)

@@ -12,6 +12,7 @@ type OmsCompanyAddressApi struct {
 	Service service.OmsCompanyAddressService
 }
 
+// 获取所有收货地址
 func (iApi OmsCompanyAddressApi) List(ctx *gin.Context) {
 	list := iApi.Service.List()
 	ctx.JSON(http.StatusOK, util.Data(list))

@@ -13,6 +13,7 @@ type SmsHomeRecommendProductApi struct {
 	Service service.SmsHomeRecommendProductService
 }
 
+// 添加首页推荐
 func (iApi SmsHomeRecommendProductApi) Create(ctx *gin.Context) {
 	var smsHomeRecommendProduct model.SmsHomeRecommendProduct
 	_ = ctx.Bind(&smsHomeRecommendProduct)
@@ -24,6 +25,7 @@ func (iApi SmsHomeRecommendProductApi) Create(ctx *gin.Context) {
 	ctx.JSON(http.StatusOK, util.Success("保存成功"))
 }
 
+// 修改推荐排序
 func (iApi SmsHomeRecommendProductApi) UpdateSort(ctx *gin.Context) {
 	id := ctx.Param("id")
 	sort := ctx.PostForm("sort")
@@ -35,6 +37,7 @@ func (iApi SmsHomeRecommendProductApi) UpdateSort(ctx *gin.Context) {
 	ctx.JSON(http.StatusOK, util.Success("修改成功"))
 }
 
+// 批量删除推荐
 func (iApi SmsHomeRecommendProductApi) Delete(ctx *gin.Context) {
 	ids := ctx.PostFormArray("ids")
 	err := iApi.Service.Delete(ids)
@@ -45,6 +48,7 @@ func (iApi SmsHomeRecommendProductApi) Delete(ctx *gin.Context) {
 	ctx.JSON(http.StatusOK, util.Success("删除成功"))
 }
 
+// 批量修改推荐状态
 func (iApi SmsHomeRecommendProductApi) UpdateRecommendStatus(ctx *gin.Context) {
 	ids := ctx.PostFormArray("ids")
 	recommendStatus := ctx.PostForm("recommendStatus")
@@ -56,6 +60,7 @@ func (iApi SmsHomeRecommendProductApi) UpdateRecommendStatus(ctx *gin.Context) {
 	ctx.JSON(http.StatusOK, util.Success("修改成功"))
 }
 
+// 分页查询推荐
 func (iApi SmsHomeRecommendProductApi) List(ctx *gin.Context) {
 	productName := ctx.Query("productName")
 	recommendStatus := ctx.Query("recommendStatus")

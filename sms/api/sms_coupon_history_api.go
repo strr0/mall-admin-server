@@ -12,6 +12,7 @@ type SmsCouponHistoryApi struct {
 	Service service.SmsCouponHistoryService
 }
 
+// 根据优惠券id，使用状态，订单编号分页获取领取记录
 func (iApi SmsCouponHistoryApi) List(ctx *gin.Context) {
 	couponId := ctx.Query("couponId")
 	useStatus := ctx.Query("useStatus")

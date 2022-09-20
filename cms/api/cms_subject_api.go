@@ -12,11 +12,13 @@ type CmsSubjectApi struct {
 	Service service.CmsSubjectService
 }
 
+// 获取全部商品专题
 func (iApi CmsSubjectApi) ListAll(ctx *gin.Context) {
 	all := iApi.Service.ListAll()
 	ctx.JSON(http.StatusOK, util.Data(all))
 }
 
+// 根据专题名称分页获取商品专题
 func (iApi CmsSubjectApi) List(ctx *gin.Context) {
 	keyword := ctx.Query("keyword")
 	pageNum := ctx.Query("pageNum")

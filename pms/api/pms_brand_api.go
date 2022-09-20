@@ -8,15 +8,18 @@ import (
 	"net/http"
 )
 
+// 商品品牌管理
 type PmsBrandApi struct {
 	Service service.PmsBrandService
 }
 
+// 获取全部品牌列表
 func (iApi PmsBrandApi) ListAll(ctx *gin.Context) {
 	all := iApi.Service.ListAll()
 	ctx.JSON(http.StatusOK, util.Data(all))
 }
 
+// 添加品牌
 func (iApi PmsBrandApi) Create(ctx *gin.Context) {
 	var pmsBrand model.PmsBrand
 	_ = ctx.Bind(&pmsBrand)
@@ -28,6 +31,7 @@ func (iApi PmsBrandApi) Create(ctx *gin.Context) {
 	ctx.JSON(http.StatusOK, util.Success("保存成功"))
 }
 
+// 更新品牌
 func (iApi PmsBrandApi) Update(ctx *gin.Context) {
 	id := ctx.Param("id")
 	var pmsBrand model.PmsBrand
@@ -40,6 +44,7 @@ func (iApi PmsBrandApi) Update(ctx *gin.Context) {
 	ctx.JSON(http.StatusOK, util.Success("修改成功"))
 }
 
+// 删除品牌
 func (iApi PmsBrandApi) Delete(ctx *gin.Context) {
 	id := ctx.Param("id")
 	err := iApi.Service.Delete(id)
@@ -50,6 +55,7 @@ func (iApi PmsBrandApi) Delete(ctx *gin.Context) {
 	ctx.JSON(http.StatusOK, util.Success("删除成功"))
 }
 
+// 根据品牌名称分页获取品牌列表
 func (iApi PmsBrandApi) List(ctx *gin.Context) {
 	keyword := ctx.Query("keyword")
 	pageNum := ctx.Query("pageNum")
@@ -58,12 +64,14 @@ func (iApi PmsBrandApi) List(ctx *gin.Context) {
 	ctx.JSON(http.StatusOK, util.Page(list, total))
 }
 
+// 根据编号查询品牌信息
 func (iApi PmsBrandApi) GetItem(ctx *gin.Context) {
 	id := ctx.Param("id")
 	item := iApi.Service.GetItem(id)
 	ctx.JSON(http.StatusOK, util.Data(item))
 }
 
+// 批量删除品牌
 func (iApi PmsBrandApi) DeleteBrand(ctx *gin.Context) {
 	ids := ctx.PostFormArray("ids")
 	err := iApi.Service.DeleteBrand(ids)
@@ -74,6 +82,7 @@ func (iApi PmsBrandApi) DeleteBrand(ctx *gin.Context) {
 	ctx.JSON(http.StatusOK, util.Success("删除成功"))
 }
 
+// 批量更新显示状态
 func (iApi PmsBrandApi) UpdateShowStatus(ctx *gin.Context) {
 	ids := ctx.PostFormArray("ids")
 	showStatus := ctx.PostForm("showStatus")
@@ -85,6 +94,7 @@ func (iApi PmsBrandApi) UpdateShowStatus(ctx *gin.Context) {
 	ctx.JSON(http.StatusOK, util.Success("修改成功"))
 }
 
+// 批量更新厂家制造商状态
 func (iApi PmsBrandApi) UpdateFactoryStatus(ctx *gin.Context) {
 	ids := ctx.PostFormArray("ids")
 	factoryStatus := ctx.PostForm("factoryStatus")

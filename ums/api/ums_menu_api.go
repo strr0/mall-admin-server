@@ -8,6 +8,7 @@ import (
 	"net/http"
 )
 
+// 后台菜单管理
 type UmsMenuApi struct {
 	Service service.UmsMenuService
 }

@@ -9,6 +9,7 @@ import (
 	"net/http"
 )
 
+// 后台用户管理
 type UmsAdminApi struct {
 	UmsAdminService service.UmsAdminService
 	UmsMenuService  service.UmsMenuService

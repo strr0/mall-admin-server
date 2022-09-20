@@ -8,6 +8,7 @@ import (
 	"net/http"
 )
 
+// 后台资源分类管理
 type UmsResourceCategoryApi struct {
 	Service service.UmsResourceCategoryService
 }

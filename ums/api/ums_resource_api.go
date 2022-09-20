@@ -8,6 +8,7 @@ import (
 	"net/http"
 )
 
+// 后台资源管理
 type UmsResourceApi struct {
 	Service service.UmsResourceService
 }

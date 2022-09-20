@@ -13,6 +13,7 @@ type SmsFlashPromotionProductRelationApi struct {
 	Service service.SmsFlashPromotionProductRelationService
 }
 
+// 批量选择商品添加关联
 func (iApi SmsFlashPromotionProductRelationApi) Create(ctx *gin.Context) {
 	var smsFlashPromotionProductRelation model.SmsFlashPromotionProductRelation
 	_ = ctx.Bind(&smsFlashPromotionProductRelation)
@@ -24,6 +25,7 @@ func (iApi SmsFlashPromotionProductRelationApi) Create(ctx *gin.Context) {
 	ctx.JSON(http.StatusOK, util.Success("保存成功"))
 }
 
+// 修改关联信息
 func (iApi SmsFlashPromotionProductRelationApi) Update(ctx *gin.Context) {
 	id := ctx.Param("id")
 	var smsFlashPromotionProductRelation model.SmsFlashPromotionProductRelation
@@ -36,6 +38,7 @@ func (iApi SmsFlashPromotionProductRelationApi) Update(ctx *gin.Context) {
 	ctx.JSON(http.StatusOK, util.Success("修改成功"))
 }
 
+// 删除关联
 func (iApi SmsFlashPromotionProductRelationApi) Delete(ctx *gin.Context) {
 	id := ctx.Param("id")
 	err := iApi.Service.Delete(id)
@@ -46,12 +49,14 @@ func (iApi SmsFlashPromotionProductRelationApi) Delete(ctx *gin.Context) {
 	ctx.JSON(http.StatusOK, util.Success("删除成功"))
 }
 
+// 获取管理商品促销信息
 func (iApi SmsFlashPromotionProductRelationApi) GetItem(ctx *gin.Context) {
 	id := ctx.Param("id")
 	item := iApi.Service.GetItem(id)
 	ctx.JSON(http.StatusOK, util.Data(item))
 }
 
+// 分页查询不同场次关联及商品信息
 func (iApi SmsFlashPromotionProductRelationApi) List(ctx *gin.Context) {
 	flashPromotionId := ctx.Query("flashPromotionId")
 	flashPromotionSessionId := ctx.Query("flashPromotionSessionId")

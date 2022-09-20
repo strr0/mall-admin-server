@@ -7,6 +7,7 @@ import (
 	"net/http"
 )
 
+// 会员等级管理
 type UmsMemberLevelApi struct {
 	Service service.UmsMemberLevelService
 }

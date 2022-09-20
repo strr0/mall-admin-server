@@ -13,6 +13,7 @@ type SmsHomeAdvertiseApi struct {
 	Service service.SmsHomeAdvertiseService
 }
 
+// 添加广告
 func (iApi SmsHomeAdvertiseApi) Create(ctx *gin.Context) {
 	var smsHomeAdvertise model.SmsHomeAdvertise
 	_ = ctx.Bind(&smsHomeAdvertise)
@@ -24,6 +25,7 @@ func (iApi SmsHomeAdvertiseApi) Create(ctx *gin.Context) {
 	ctx.JSON(http.StatusOK, util.Success("保存成功"))
 }
 
+// 删除广告
 func (iApi SmsHomeAdvertiseApi) Delete(ctx *gin.Context) {
 	ids := ctx.PostFormArray("ids")
 	err := iApi.Service.Delete(ids)
@@ -34,6 +36,7 @@ func (iApi SmsHomeAdvertiseApi) Delete(ctx *gin.Context) {
 	ctx.JSON(http.StatusOK, util.Success("删除成功"))
 }
 
+// 修改上下线状态
 func (iApi SmsHomeAdvertiseApi) UpdateStatus(ctx *gin.Context) {
 	id := ctx.Param("id")
 	status := ctx.PostForm("status")
@@ -45,12 +48,14 @@ func (iApi SmsHomeAdvertiseApi) UpdateStatus(ctx *gin.Context) {
 	ctx.JSON(http.StatusOK, util.Success("修改成功"))
 }
 
+// 获取广告详情
 func (iApi SmsHomeAdvertiseApi) GetItem(ctx *gin.Context) {
 	id := ctx.Param("id")
 	item := iApi.Service.GetItem(id)
 	ctx.JSON(http.StatusOK, util.Data(item))
 }
 
+// 修改广告
 func (iApi SmsHomeAdvertiseApi) Update(ctx *gin.Context) {
 	id := ctx.Param("id")
 	var smsHomeAdvertise model.SmsHomeAdvertise
@@ -63,6 +68,7 @@ func (iApi SmsHomeAdvertiseApi) Update(ctx *gin.Context) {
 	ctx.JSON(http.StatusOK, util.Success("修改成功"))
 }
 
+// 分页查询广告
 func (iApi SmsHomeAdvertiseApi) List(ctx *gin.Context) {
 	name := ctx.Query("name")
 	type_ := ctx.Query("type")

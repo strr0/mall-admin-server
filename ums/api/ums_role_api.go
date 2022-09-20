@@ -8,6 +8,7 @@ import (
 	"net/http"
 )
 
+// 后台用户角色管理
 type UmsRoleApi struct {
 	Service service.UmsRoleService
 }

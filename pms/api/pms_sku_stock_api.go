@@ -8,10 +8,12 @@ import (
 	"net/http"
 )
 
+// 商品SKU库存管理
 type PmsSkuStockApi struct {
 	Service service.PmsSkuStockService
 }
 
+// 根据商品ID及sku编码模糊搜索sku库存
 func (iApi PmsSkuStockApi) GetList(ctx *gin.Context) {
 	pid := ctx.Param("pid")
 	keyword := ctx.Query("keyword")
@@ -19,6 +21,7 @@ func (iApi PmsSkuStockApi) GetList(ctx *gin.Context) {
 	ctx.JSON(http.StatusOK, util.Data(list))
 }
 
+// 批量更新sku库存信息
 func (iApi PmsSkuStockApi) Update(ctx *gin.Context) {
 	skuStockList := make([]model.PmsSkuStock, 0)
 	_ = ctx.Bind(&skuStockList)

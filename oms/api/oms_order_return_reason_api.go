@@ -13,6 +13,7 @@ type OmsOrderReturnReasonApi struct {
 	Service service.OmsOrderReturnReasonService
 }
 
+// 添加退货原因
 func (iApi OmsOrderReturnReasonApi) Create(ctx *gin.Context) {
 	var omsOrderReturnReason model.OmsOrderReturnReason
 	_ = ctx.Bind(&omsOrderReturnReason)
@@ -24,6 +25,7 @@ func (iApi OmsOrderReturnReasonApi) Create(ctx *gin.Context) {
 	ctx.JSON(http.StatusOK, util.Success("保存成功"))
 }
 
+// 修改退货原因
 func (iApi OmsOrderReturnReasonApi) Update(ctx *gin.Context) {
 	id := ctx.Param("id")
 	var omsOrderReturnReason model.OmsOrderReturnReason
@@ -36,6 +38,7 @@ func (iApi OmsOrderReturnReasonApi) Update(ctx *gin.Context) {
 	ctx.JSON(http.StatusOK, util.Success("修改成功"))
 }
 
+// 批量删除退货原因
 func (iApi OmsOrderReturnReasonApi) Delete(ctx *gin.Context) {
 	ids := ctx.PostFormArray("ids")
 	err := iApi.Service.Delete(ids)
@@ -46,6 +49,7 @@ func (iApi OmsOrderReturnReasonApi) Delete(ctx *gin.Context) {
 	ctx.JSON(http.StatusOK, util.Success("删除成功"))
 }
 
+// 分页查询退货原因
 func (iApi OmsOrderReturnReasonApi) List(ctx *gin.Context) {
 	pageNum := ctx.Query("pageNum")
 	pageSize := ctx.Query("pageSize")
@@ -53,12 +57,14 @@ func (iApi OmsOrderReturnReasonApi) List(ctx *gin.Context) {
 	ctx.JSON(http.StatusOK, util.Page(list, count))
 }
 
+// 获取单个退货原因详情信息
 func (iApi OmsOrderReturnReasonApi) GetItem(ctx *gin.Context) {
 	id := ctx.Param("id")
 	item := iApi.Service.GetItem(id)
 	ctx.JSON(http.StatusOK, util.Data(item))
 }
 
+// 修改退货原因启用状态
 func (iApi OmsOrderReturnReasonApi) UpdateStatus(ctx *gin.Context) {
 	ids := ctx.PostFormArray("ids")
 	status := ctx.PostForm("status")

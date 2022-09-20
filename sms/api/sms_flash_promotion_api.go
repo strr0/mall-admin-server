@@ -13,6 +13,7 @@ type SmsFlashPromotionApi struct {
 	Service service.SmsFlashPromotionService
 }
 
+// 添加活动
 func (iApi SmsFlashPromotionApi) Create(ctx *gin.Context) {
 	var smsFlashPromotion model.SmsFlashPromotion
 	_ = ctx.Bind(&smsFlashPromotion)
@@ -24,6 +25,7 @@ func (iApi SmsFlashPromotionApi) Create(ctx *gin.Context) {
 	ctx.JSON(http.StatusOK, util.Success("保存成功"))
 }
 
+// 编辑活动
 func (iApi SmsFlashPromotionApi) Update(ctx *gin.Context) {
 	id := ctx.Param("id")
 	var smsFlashPromotion model.SmsFlashPromotion
@@ -36,6 +38,7 @@ func (iApi SmsFlashPromotionApi) Update(ctx *gin.Context) {
 	ctx.JSON(http.StatusOK, util.Success("修改成功"))
 }
 
+// 删除活动
 func (iApi SmsFlashPromotionApi) Delete(ctx *gin.Context) {
 	id := ctx.Param("id")
 	err := iApi.Service.Delete(id)
@@ -46,6 +49,7 @@ func (iApi SmsFlashPromotionApi) Delete(ctx *gin.Context) {
 	ctx.JSON(http.StatusOK, util.Success("删除成功"))
 }
 
+// 修改上下线状态
 func (iApi SmsFlashPromotionApi) UpdateStatus(ctx *gin.Context) {
 	id := ctx.Param("id")
 	status := ctx.PostForm("status")
@@ -57,12 +61,14 @@ func (iApi SmsFlashPromotionApi) UpdateStatus(ctx *gin.Context) {
 	ctx.JSON(http.StatusOK, util.Success("修改成功"))
 }
 
+// 获取活动详情
 func (iApi SmsFlashPromotionApi) GetItem(ctx *gin.Context) {
 	id := ctx.Param("id")
 	item := iApi.Service.GetItem(id)
 	ctx.JSON(http.StatusOK, util.Data(item))
 }
 
+// 根据活动名称分页查询
 func (iApi SmsFlashPromotionApi) List(ctx *gin.Context) {
 	keyword := ctx.Query("keyword")
 	pageNum := ctx.Query("pageNum")

@@ -13,6 +13,7 @@ type SmsHomeBrandApi struct {
 	Service service.SmsHomeBrandService
 }
 
+// 添加首页推荐品牌
 func (iApi SmsHomeBrandApi) Create(ctx *gin.Context) {
 	var smsHomeBrand model.SmsHomeBrand
 	_ = ctx.Bind(&smsHomeBrand)
@@ -24,6 +25,7 @@ func (iApi SmsHomeBrandApi) Create(ctx *gin.Context) {
 	ctx.JSON(http.StatusOK, util.Success("保存成功"))
 }
 
+// 修改推荐品牌排序
 func (iApi SmsHomeBrandApi) UpdateSort(ctx *gin.Context) {
 	id := ctx.Param("id")
 	sort := ctx.PostForm("sort")
@@ -35,6 +37,7 @@ func (iApi SmsHomeBrandApi) UpdateSort(ctx *gin.Context) {
 	ctx.JSON(http.StatusOK, util.Success("修改成功"))
 }
 
+// 批量删除推荐品牌
 func (iApi SmsHomeBrandApi) Delete(ctx *gin.Context) {
 	ids := ctx.PostFormArray("ids")
 	err := iApi.Service.Delete(ids)
@@ -45,6 +48,7 @@ func (iApi SmsHomeBrandApi) Delete(ctx *gin.Context) {
 	ctx.JSON(http.StatusOK, util.Success("删除成功"))
 }
 
+// 批量修改推荐品牌状态
 func (iApi SmsHomeBrandApi) UpdateRecommendStatus(ctx *gin.Context) {
 	ids := ctx.PostFormArray("ids")
 	recommendStatus := ctx.PostForm("recommendStatus")
@@ -56,6 +60,7 @@ func (iApi SmsHomeBrandApi) UpdateRecommendStatus(ctx *gin.Context) {
 	ctx.JSON(http.StatusOK, util.Success("秀嘎成功"))
 }
 
+// 分页查询推荐品牌
 func (iApi SmsHomeBrandApi) List(ctx *gin.Context) {
 	brandName := ctx.Query("brandName")
 	recommendStatus := ctx.Query("recommendStatus")
