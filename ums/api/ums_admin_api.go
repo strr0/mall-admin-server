@@ -112,7 +112,7 @@ func (iApi UmsAdminApi) Delete(ctx *gin.Context) {
 // 更新状态
 func (iApi UmsAdminApi) UpdateStatus(ctx *gin.Context) {
 	id := ctx.Param("id")
-	status := ctx.Query("status")
+	status := ctx.PostForm("status")
 	err := iApi.UmsAdminService.UpdateStatus(id, status)
 	if err != nil {
 		ctx.JSON(http.StatusOK, util.Failed("修改失败"))
@@ -123,8 +123,8 @@ func (iApi UmsAdminApi) UpdateStatus(ctx *gin.Context) {
 
 // 角色分配
 func (iApi UmsAdminApi) UpdateRole(ctx *gin.Context) {
-	adminId := ctx.Query("adminId")
-	roleIds := ctx.QueryArray("roleIds")
+	adminId := ctx.PostForm("adminId")
+	roleIds := ctx.PostFormArray("roleIds")
 	err := iApi.UmsAdminService.UpdateRole(adminId, roleIds)
 	if err != nil {
 		ctx.JSON(http.StatusOK, util.Failed("修改失败"))

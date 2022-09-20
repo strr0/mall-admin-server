@@ -73,7 +73,7 @@ func (iApi UmsMenuApi) TreeList(ctx *gin.Context) {
 // 修改菜单显示状态
 func (iApi UmsMenuApi) UpdateHidden(ctx *gin.Context) {
 	id := ctx.Param("id")
-	hidden := ctx.Query("hidden")
+	hidden := ctx.PostForm("hidden")
 	err := iApi.Service.UpdateHidden(id, hidden)
 	if err != nil {
 		ctx.JSON(http.StatusOK, util.Failed("修改失败"))

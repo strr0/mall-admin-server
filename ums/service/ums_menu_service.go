@@ -96,14 +96,14 @@ func (UmsMenuService) TreeList() []*dto.UmsMenuDto {
 	for _, menu := range find {
 		menuDto := dto.UmsMenuDto{
 			UmsMenu:  *menu,
-			Children: make([]*dto.UmsMenuDto, 0),
+			Children: make([]dto.UmsMenuDto, 0),
 		}
 		menuMap[menu.ID] = &menuDto
 		if menu.ParentID == 0 {
 			res = append(res, &menuDto)
 		} else {
 			if parent, exist := menuMap[menu.ParentID]; exist {
-				parent.Children = append(parent.Children, &menuDto)
+				parent.Children = append(parent.Children, menuDto)
 			}
 		}
 	}

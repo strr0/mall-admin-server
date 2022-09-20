@@ -65,7 +65,7 @@ func (iApi UmsRoleApi) List(ctx *gin.Context) {
 // 修改角色状态
 func (iApi UmsRoleApi) UpdateStatus(ctx *gin.Context) {
 	id := ctx.Param("id")
-	status := ctx.Query("status")
+	status := ctx.PostForm("status")
 	err := iApi.Service.UpdateStatus(id, status)
 	if err != nil {
 		ctx.JSON(http.StatusOK, util.Failed("修改失败"))
@@ -90,8 +90,8 @@ func (iApi UmsRoleApi) ListResource(ctx *gin.Context) {
 
 // 菜单分配
 func (iApi UmsRoleApi) AllocMenu(ctx *gin.Context) {
-	roleId := ctx.Query("roleId")
-	menuIds := ctx.QueryArray("menuIds")
+	roleId := ctx.PostForm("roleId")
+	menuIds := ctx.PostFormArray("menuIds")
 	err := iApi.Service.AllocMenu(roleId, menuIds)
 	if err != nil {
 		ctx.JSON(http.StatusOK, util.Failed("修改失败"))
@@ -102,8 +102,8 @@ func (iApi UmsRoleApi) AllocMenu(ctx *gin.Context) {
 
 // 资源分配
 func (iApi UmsRoleApi) AllocResource(ctx *gin.Context) {
-	roleId := ctx.Query("roleId")
-	resourceIds := ctx.QueryArray("resourceIds")
+	roleId := ctx.PostForm("roleId")
+	resourceIds := ctx.PostFormArray("resourceIds")
 	err := iApi.Service.AllocResource(roleId, resourceIds)
 	if err != nil {
 		ctx.JSON(http.StatusOK, util.Failed("修改失败"))

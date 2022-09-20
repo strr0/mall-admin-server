@@ -4,7 +4,11 @@ import (
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
 	"log"
-	"mall-admin-server/ums/query"
+	cms "mall-admin-server/cms/query"
+	oms "mall-admin-server/oms/query"
+	pms "mall-admin-server/pms/query"
+	sms "mall-admin-server/sms/query"
+	ums "mall-admin-server/ums/query"
 )
 
 func init() {
@@ -13,5 +17,9 @@ func init() {
 	if err != nil {
 		log.Fatalf("connect mysql failed: %v", err)
 	}
-	query.SetDefault(db)
+	cms.SetDefault(db)
+	oms.SetDefault(db)
+	pms.SetDefault(db)
+	sms.SetDefault(db)
+	ums.SetDefault(db)
 }

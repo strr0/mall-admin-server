@@ -2,8 +2,7 @@ package main
 
 import (
 	"github.com/gin-gonic/gin"
-	_ "mall-admin-server/config"
-	"mall-admin-server/ums/router"
+	"mall-admin-server/router"
 )
 
 func main() {

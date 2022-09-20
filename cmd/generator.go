@@ -8,21 +8,18 @@ import (
 
 func Generator() {
 	g := gen.NewGenerator(gen.Config{
-		OutPath: "./ums/query",
+		OutPath: "./pms/query",
 		Mode:    gen.WithoutContext | gen.WithDefaultQuery,
 	})
 	db, _ := gorm.Open(mysql.Open("root:password@(127.0.0.1:3306)/mall?charset=utf8mb4&parseTime=True&loc=Local"))
 	g.UseDB(db)
 	g.ApplyBasic(
-		g.GenerateModel("ums_admin"),
-		g.GenerateModel("ums_member_level"),
-		g.GenerateModel("ums_menu"),
-		g.GenerateModel("ums_resource_category"),
-		g.GenerateModel("ums_resource"),
-		g.GenerateModel("ums_role"),
-		g.GenerateModel("ums_admin_role_relation"),
-		g.GenerateModel("ums_role_resource_relation"),
-		g.GenerateModel("ums_role_menu_relation"),
+		g.GenerateModel("pms_brand"),
+		g.GenerateModel("pms_product_attribute_category"),
+		g.GenerateModel("pms_product_attribute"),
+		g.GenerateModel("pms_product_category"),
+		g.GenerateModel("pms_product"),
+		g.GenerateModel("pms_sku_stock"),
 	)
 	g.Execute()
 }
