@@ -1,129 +1,118 @@
 package service
 
 import (
-	"gorm.io/gen"
+	"gorm.io/gorm"
 	"mall-admin-server/ums/model"
-	"mall-admin-server/ums/query"
 	"mall-admin-server/util"
 	"time"
 )
 
 type UmsAdminService struct {
-	//
+	DB *gorm.DB
 }
 
 // 根据用户名获取用户
-func (UmsAdminService) GetAdminByUsername(username string) *model.UmsAdmin {
-	first, err := query.UmsAdmin.Where(query.UmsAdmin.Username.Eq(username)).First()
-	if err != nil {
+func (iService UmsAdminService) GetAdminByUsername(username string) *model.UmsAdmin {
+	var umsAdmin model.UmsAdmin
+	result := iService.DB.Where("username = ?", username).First(&umsAdmin)
+	if result.Error != nil {
 		return nil
 	}
-	return first
+	return &umsAdmin
 }
 
 // 注册用户
-func (UmsAdminService) Register(umsAdmin model.UmsAdmin) error {
+func (iService UmsAdminService) Register(umsAdmin model.UmsAdmin) error {
 	umsAdmin.CreateTime = time.Now()
-	return query.UmsAdmin.Create(&umsAdmin)
+	result := iService.DB.Create(&umsAdmin)
+	return result.Error
 }
 
 // 登录
-func (UmsAdminService) Login(username, password string) *model.UmsAdmin {
-	first, err := query.UmsAdmin.Where(query.UmsAdmin.Username.Eq(username), query.UmsAdmin.Password.Eq(password)).First()
-	if err != nil {
+func (iService UmsAdminService) Login(username, password string) *model.UmsAdmin {
+	var umsAdmin model.UmsAdmin
+	result := iService.DB.Where("username = ? and password = ?", username, password).First(&umsAdmin)
+	if result.Error != nil {
 		return nil
 	}
-	return first
+	return &umsAdmin
 }
 
 // 根据id获取用户
-func (UmsAdminService) GetItem(idStr string) *model.UmsAdmin {
-	id, err := util.ParseInt64WithErr(idStr)
-	if err != nil {
+func (iService UmsAdminService) GetItem(id string) *model.UmsAdmin {
+	var umsAdmin model.UmsAdmin
+	result := iService.DB.First(&umsAdmin, id)
+	if result.Error != nil {
 		return nil
 	}
-	first, err := query.UmsAdmin.Where(query.UmsAdmin.ID.Eq(id)).First()
-	if err != nil {
-		return nil
-	}
-	return first
+	return &umsAdmin
 }
 
 // 用户列表
-func (UmsAdminService) List(keyword string, pageStr, sizeStr string) ([]*model.UmsAdmin, int64) {
+func (iService UmsAdminService) List(keyword string, pageStr, sizeStr string) ([]model.UmsAdmin, int64) {
 	page := util.ParseInt(pageStr, 1)
 	size := util.ParseInt(sizeStr, 10)
 	offset := (page - 1) * size
-	umsAdmin := query.UmsAdmin
-	conds := make([]gen.Condition, 0)
+	funcs := make([]func(*gorm.DB) *gorm.DB, 0)
 	if keyword != "" {
-		conds = append(conds, umsAdmin.NickName.Like("%"+keyword+"%"))
+		funcs = append(funcs, func(db *gorm.DB) *gorm.DB {
+			return db.Where("nickname like ?", "%"+keyword+"%")
+		})
 	}
-	umsAdminDo := umsAdmin.Where(conds...)
-	total, err := umsAdminDo.Count()
-	if err != nil || total == 0 {
+	scopes := iService.DB.Scopes(funcs...)
+	var count int64
+	result := scopes.Model(&model.UmsAdmin{}).Count(&count)
+	if result.Error != nil || count == 0 {
 		return nil, 0
 	}
-	find, err := umsAdminDo.Offset(offset).Limit(size).Find()
-	if err != nil {
-		return nil, total
+	var list []model.UmsAdmin
+	result = scopes.Offset(offset).Limit(size).Find(&list)
+	if result.Error != nil {
+		return nil, count
 	}
-	return find, total
+	return list, count
 }
 
 // 更新用户信息
-func (UmsAdminService) Update(idStr string, umsAdmin model.UmsAdmin) error {
-	id, err := util.ParseInt64WithErr(idStr)
-	if err != nil {
-		return err
-	}
-	_, err = query.UmsAdmin.Where(query.UmsAdmin.ID.Eq(id)).Updates(umsAdmin)
-	return err
+func (iService UmsAdminService) Update(idStr string, umsAdmin model.UmsAdmin) error {
+	result := iService.DB.Save(&umsAdmin)
+	return result.Error
 }
 
 // 删除用户
-func (UmsAdminService) Delete(idStr string) error {
-	id, err := util.ParseInt64WithErr(idStr)
-	if err != nil {
-		return err
-	}
-	_, err = query.UmsAdmin.Where(query.UmsAdmin.ID.Eq(id)).Delete()
-	return err
+func (iService UmsAdminService) Delete(id string) error {
+	result := iService.DB.Delete(&model.UmsAdmin{}, id)
+	return result.Error
 }
 
 // 更新状态
-func (UmsAdminService) UpdateStatus(idStr, statusStr string) error {
-	id, err := util.ParseInt64WithErr(idStr)
-	if err != nil {
-		return err
-	}
-	status, err := util.ParseInt32WithErr(statusStr)
-	if err != nil {
-		return err
-	}
-	var umsAdmin model.UmsAdmin
-	umsAdmin.Status = status
-	_, err = query.UmsAdmin.Where(query.UmsAdmin.ID.Eq(id)).Updates(umsAdmin)
-	return err
+func (iService UmsAdminService) UpdateStatus(id, status string) error {
+	result := iService.DB.Model(&model.UmsAdmin{}).Where("id = ?", id).Update("status", status)
+	return result.Error
 }
 
 // 角色分配
-func (UmsAdminService) UpdateRole(adminIdStr string, roleIdsStr []string) error {
+func (iService UmsAdminService) UpdateRole(adminIdStr string, roleIdsStr []string) error {
 	var err error
 	adminId, err := util.ParseInt64WithErr(adminIdStr)
 	if err != nil {
 		return err
 	}
-	_, err = query.UmsAdminRoleRelation.Where(query.UmsAdminRoleRelation.AdminID.Eq(adminId)).Delete()
-	if err != nil {
-		return err
+	result := iService.DB.Delete(&model.UmsAdmin{}, adminId)
+	if result.Error != nil {
+		return result.Error
+	}
+	var relation model.UmsAdminRoleRelation
+	result = iService.DB.Where("admin_id", adminId).Delete(&relation)
+	if result.Error != nil {
+		return result.Error
 	}
 	for _, roleIdStr := range roleIdsStr {
 		roleId, err := util.ParseInt64WithErr(roleIdStr)
 		if err == nil {
 			rel := model.UmsAdminRoleRelation{AdminID: adminId, RoleID: roleId}
-			err = query.UmsAdminRoleRelation.Create(&rel)
+			result = iService.DB.Create(&rel)
 		}
 	}
-	return err
+	return result.Error
 }

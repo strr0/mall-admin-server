@@ -2,6 +2,7 @@ package router
 
 import (
 	"github.com/gin-gonic/gin"
+	"mall-admin-server/config"
 	"mall-admin-server/ums/api"
 	"mall-admin-server/ums/service"
 )
@@ -11,10 +12,9 @@ func init() {
 }
 
 func registerUmsMemberLevelRouter(e *gin.Engine) {
-	iService := service.UmsMemberLevelService{}
-	iApi := api.UmsMemberLevelApi{
-		Service: iService,
-	}
+	db := config.GetDb()
+	iService := service.UmsMemberLevelService{DB: db}
+	iApi := api.UmsMemberLevelApi{Service: iService}
 	memberLevel := e.Group("/memberLevel")
 	{
 		memberLevel.GET("/list", iApi.List)

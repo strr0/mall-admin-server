@@ -1,23 +1,16 @@
 package service
 
 import (
+	"gorm.io/gorm"
 	"mall-admin-server/ums/model"
-	"mall-admin-server/ums/query"
-	"mall-admin-server/util"
 )
 
 type UmsMemberLevelService struct {
-	//
+	DB *gorm.DB
 }
 
-func (UmsMemberLevelService) List(defaultStatusStr string) []*model.UmsMemberLevel {
-	defaultStatus, err := util.ParseInt32WithErr(defaultStatusStr)
-	if err != nil {
-		return nil
-	}
-	find, err := query.UmsMemberLevel.Where(query.UmsMemberLevel.DefaultStatus.Eq(defaultStatus)).Find()
-	if err != nil {
-		return nil
-	}
-	return find
+func (iService UmsMemberLevelService) List(defaultStatus string) []model.UmsMemberLevel {
+	var list []model.UmsMemberLevel
+	iService.DB.Where("default_status = ?", defaultStatus).Find(&list)
+	return list
 }

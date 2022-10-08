@@ -1,106 +1,86 @@
 package service
 
 import (
-	"gorm.io/gen"
+	"gorm.io/gorm"
 	"mall-admin-server/ums/model"
-	"mall-admin-server/ums/query"
 	"mall-admin-server/util"
 	"time"
 )
 
 type UmsRoleService struct {
-	//
+	DB *gorm.DB
 }
 
-func (UmsRoleService) Create(umsRole model.UmsRole) error {
+func (iService UmsRoleService) Create(umsRole model.UmsRole) error {
 	umsRole.CreateTime = time.Now()
-	return query.UmsRole.Create(&umsRole)
+	result := iService.DB.Create(&umsRole)
+	return result.Error
 }
 
-func (UmsRoleService) Update(idStr string, umsRole model.UmsRole) error {
-	id, err := util.ParseInt64WithErr(idStr)
-	if err != nil {
-		return err
-	}
-	_, err = query.UmsRole.Where(query.UmsRole.ID.Eq(id)).Updates(umsRole)
-	return err
+func (iService UmsRoleService) Update(idStr string, umsRole model.UmsRole) error {
+	result := iService.DB.Save(&umsRole)
+	return result.Error
 }
 
-func (UmsRoleService) Delete(idStr string) error {
-	id, err := util.ParseInt64WithErr(idStr)
-	if err != nil {
-		return err
-	}
-	_, err = query.UmsRole.Where(query.UmsRole.ID.Eq(id)).Delete()
-	return err
+func (iService UmsRoleService) Delete(id string) error {
+	result := iService.DB.Delete(&model.UmsRole{}, id)
+	return result.Error
 }
 
-func (UmsRoleService) ListAll() []*model.UmsRole {
-	find, err := query.UmsRole.Find()
-	if err != nil {
+func (iService UmsRoleService) ListAll() []model.UmsRole {
+	var list []model.UmsRole
+	result := iService.DB.Find(&list)
+	if result.Error != nil {
 		return nil
 	}
-	return find
+	return list
 }
 
-func (UmsRoleService) List(keyword, pageStr, sizeStr string) ([]*model.UmsRole, int64) {
+func (iService UmsRoleService) List(keyword, pageStr, sizeStr string) ([]model.UmsRole, int64) {
 	page := util.ParseInt(pageStr, 1)
 	size := util.ParseInt(sizeStr, 10)
 	offset := (page - 1) * size
-	umsRole := query.UmsRole
-	conds := make([]gen.Condition, 0)
+	funcs := make([]func(*gorm.DB) *gorm.DB, 0)
 	if keyword != "" {
-		conds = append(conds, umsRole.Name.Like("%"+keyword+"%"))
+		funcs = append(funcs, func(db *gorm.DB) *gorm.DB {
+			return db.Where("name like ?", "%"+keyword+"%")
+		})
 	}
-	umsRoleDo := umsRole.Where(conds...)
-	total, err := umsRoleDo.Count()
-	if err != nil || total == 0 {
+	scopes := iService.DB.Scopes(funcs...)
+	var count int64
+	result := scopes.Model(&model.UmsRole{}).Count(&count)
+	if result.Error != nil || count == 0 {
 		return nil, 0
 	}
-	find, err := umsRoleDo.Offset(offset).Limit(size).Find()
-	if err != nil {
-		return nil, total
+	var list []model.UmsRole
+	result = scopes.Offset(offset).Limit(size).Find(&list)
+	if result.Error != nil {
+		return nil, count
 	}
-	return find, total
+	return list, count
 }
 
 // 修改角色状态
-func (UmsRoleService) UpdateStatus(idStr, statusStr string) error {
-	id, err := util.ParseInt64WithErr(idStr)
-	if err != nil {
-		return err
-	}
-	status, err := util.ParseInt32WithErr(statusStr)
-	if err != nil {
-		return err
-	}
-	var umsRole model.UmsRole
-	umsRole.Status = status
-	_, err = query.UmsRole.Where(query.UmsRole.ID.Eq(id)).Updates(umsRole)
-	return err
+func (iService UmsRoleService) UpdateStatus(id, status string) error {
+	result := iService.DB.Model(&model.UmsRole{}).Where("id = ?", id).Update("status", status)
+	return result.Error
 }
 
 // 根据用户id获取角色
-func (UmsRoleService) GetRoleList(adminIdStr string) []*model.UmsRole {
-	adminId, err := util.ParseInt64WithErr(adminIdStr)
-	if err != nil {
-		return nil
-	}
-	list, err := query.UmsRole.GetRoleList(adminId)
-	if err != nil {
+func (iService UmsRoleService) GetRoleList(adminId string) []model.UmsRole {
+	var list []model.UmsRole
+	result := iService.DB.Raw("select r.* from ums_admin_role_relation ar left join ums_role r on ar.role_id = r.id where ar.admin_id = ?", adminId).Scan(&list)
+	if result.Error != nil {
 		return nil
 	}
 	return list
 }
 
 // 根据用户id获取角色名称
-func (UmsRoleService) GetRoleNameList(adminIdStr string) []string {
-	adminId, err := util.ParseInt64WithErr(adminIdStr)
-	if err != nil {
-		return nil
-	}
-	list, err := query.UmsRole.GetRoleList(adminId)
-	if err != nil {
+func (iService UmsRoleService) GetRoleNameList(adminId string) []string {
+	var list []model.UmsRole
+	result := iService.DB.Raw("select r.* from ums_admin_role_relation ar left join ums_role r on ar.role_id = r.id where ar.admin_id = ?", adminId).Scan(&list)
+	if result.Error != nil {
 		return nil
 	}
 	var res []string
@@ -111,69 +91,61 @@ func (UmsRoleService) GetRoleNameList(adminIdStr string) []string {
 }
 
 // 根据角色id获取菜单
-func (UmsRoleService) ListMenu(roleIdStr string) []*model.UmsMenu {
-	roleId, err := util.ParseInt64WithErr(roleIdStr)
-	if err != nil {
+func (iService UmsRoleService) ListMenu(roleId string) []model.UmsMenu {
+	var list []model.UmsMenu
+	result := iService.DB.Raw("SELECT m.id, m.parent_id, m.create_time, m.title, m.level, m.sort, m.name, m.icon, m.hidden FROM ums_role_menu_relation rmr LEFT JOIN ums_menu m ON rmr.menu_id = m.id WHERE rmr.role_id = ? AND m.id IS NOT NULL GROUP BY m.i", roleId).Scan(&list)
+	if result.Error != nil {
 		return nil
 	}
-	menus, err := query.UmsMenu.GetMenuListByRoleId(roleId)
-	if err != nil {
-		return nil
-	}
-	return menus
+	return list
 }
 
 // 根据角色id获取资源
-func (UmsRoleService) ListResource(roleIdStr string) []*model.UmsResource {
-	roleId, err := util.ParseInt64WithErr(roleIdStr)
-	if err != nil {
+func (iService UmsRoleService) ListResource(roleId string) []model.UmsResource {
+	var list []model.UmsResource
+	result := iService.DB.Raw("SELECT r.id, r.create_time, r.`name`, r.url, r.description, r.category_id FROM ums_role_resource_relation rrr LEFT JOIN ums_resource r ON rrr.resource_id = r.id WHERE rrr.role_id = ? AND r.id IS NOT NULL GROUP BY r.id", roleId).Scan(&list)
+	if result.Error != nil {
 		return nil
 	}
-	resources, err := query.UmsResource.GetResourceListByRoleId(roleId)
-	if err != nil {
-		return nil
-	}
-	return resources
+	return list
 }
 
 // 菜单分配
-func (UmsRoleService) AllocMenu(roleIdStr string, menuIdsStr []string) error {
-	var err error
+func (iService UmsRoleService) AllocMenu(roleIdStr string, menuIdsStr []string) error {
 	roleId, err := util.ParseInt64WithErr(roleIdStr)
 	if err != nil {
 		return err
 	}
-	_, err = query.UmsRoleMenuRelation.Where(query.UmsRoleMenuRelation.RoleID.Eq(roleId)).Delete()
-	if err != nil {
+	result := iService.DB.Where("role_id = ?", roleId).Delete(&model.UmsRoleMenuRelation{})
+	if result.Error != nil {
 		return err
 	}
 	for _, menuIdStr := range menuIdsStr {
 		menuId, err := util.ParseInt64WithErr(menuIdStr)
 		if err == nil {
 			rel := model.UmsRoleMenuRelation{RoleID: roleId, MenuID: menuId}
-			err = query.UmsRoleMenuRelation.Create(&rel)
+			result = iService.DB.Create(&rel)
 		}
 	}
-	return err
+	return result.Error
 }
 
 // 资源分配
-func (UmsRoleService) AllocResource(roleIdStr string, resourceIdsStr []string) error {
-	var err error
+func (iService UmsRoleService) AllocResource(roleIdStr string, resourceIdsStr []string) error {
 	roleId, err := util.ParseInt64WithErr(roleIdStr)
 	if err != nil {
 		return err
 	}
-	_, err = query.UmsRoleResourceRelation.Where(query.UmsRoleResourceRelation.RoleID.Eq(roleId)).Delete()
-	if err != nil {
+	result := iService.DB.Where("role_id = ?", roleId).Delete(&model.UmsRoleResourceRelation{})
+	if result.Error != nil {
 		return err
 	}
 	for _, resourceIdStr := range resourceIdsStr {
 		resourceId, err := util.ParseInt64WithErr(resourceIdStr)
 		if err == nil {
 			rel := model.UmsRoleResourceRelation{RoleID: roleId, ResourceID: resourceId}
-			err = query.UmsRoleResourceRelation.Create(&rel)
+			result = iService.DB.Create(&rel)
 		}
 	}
-	return err
+	return result.Error
 }

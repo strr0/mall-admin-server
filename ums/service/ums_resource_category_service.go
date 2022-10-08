@@ -1,47 +1,41 @@
 package service
 
 import (
+	"gorm.io/gorm"
 	"mall-admin-server/ums/model"
-	"mall-admin-server/ums/query"
-	"mall-admin-server/util"
 	"time"
 )
 
 type UmsResourceCategoryService struct {
-	//
+	DB *gorm.DB
 }
 
 // 获取所有分类
-func (UmsResourceCategoryService) ListAll() []*model.UmsResourceCategory {
-	find, err := query.UmsResourceCategory.Find()
-	if err != nil {
+func (iService UmsResourceCategoryService) ListAll() []model.UmsResourceCategory {
+	var list []model.UmsResourceCategory
+	result := iService.DB.Find(&list)
+	if result.Error != nil {
 		return nil
 	}
-	return find
+	return list
 }
 
 // 创建分类
-func (UmsResourceCategoryService) Create(umsResourceCategory model.UmsResourceCategory) error {
+func (iService UmsResourceCategoryService) Create(umsResourceCategory model.UmsResourceCategory) error {
 	umsResourceCategory.CreateTime = time.Now()
-	return query.UmsResourceCategory.Create(&umsResourceCategory)
+	result := iService.DB.Create(&umsResourceCategory)
+	return result.Error
 }
 
 // 修改分类
-func (UmsResourceCategoryService) Update(idStr string, umsResourceCategory model.UmsResourceCategory) error {
-	id, err := util.ParseInt64WithErr(idStr)
-	if err != nil {
-		return err
-	}
-	_, err = query.UmsResourceCategory.Where(query.UmsResourceCategory.ID.Eq(id)).Updates(umsResourceCategory)
-	return err
+func (iService UmsResourceCategoryService) Update(idStr string, umsResourceCategory model.UmsResourceCategory) error {
+	result := iService.DB.Save(&umsResourceCategory)
+	return result.Error
 }
 
 // 删除分类
-func (UmsResourceCategoryService) Delete(idStr string) error {
-	id, err := util.ParseInt64WithErr(idStr)
-	if err != nil {
-		return err
-	}
-	_, err = query.UmsResourceCategory.Where(query.UmsResourceCategory.ID.Eq(id)).Delete()
-	return err
+func (iService UmsResourceCategoryService) Delete(id string) error {
+	var umsResourceCategory model.UmsResourceCategory
+	result := iService.DB.Delete(&umsResourceCategory, id)
+	return result.Error
 }

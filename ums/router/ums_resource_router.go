@@ -2,6 +2,7 @@ package router
 
 import (
 	"github.com/gin-gonic/gin"
+	"mall-admin-server/config"
 	"mall-admin-server/ums/api"
 	"mall-admin-server/ums/service"
 )
@@ -11,10 +12,9 @@ func init() {
 }
 
 func registerUmsResourceRouter(e *gin.Engine) {
-	iService := service.UmsResourceService{}
-	iApi := api.UmsResourceApi{
-		Service: iService,
-	}
+	db := config.GetDb()
+	iService := service.UmsResourceService{DB: db}
+	iApi := api.UmsResourceApi{Service: iService}
 	resource := e.Group("/resource")
 	{
 		resource.POST("/create", iApi.Create)

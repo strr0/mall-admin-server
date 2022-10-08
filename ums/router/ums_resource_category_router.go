@@ -2,6 +2,7 @@ package router
 
 import (
 	"github.com/gin-gonic/gin"
+	"mall-admin-server/config"
 	"mall-admin-server/ums/api"
 	"mall-admin-server/ums/service"
 )
@@ -11,10 +12,9 @@ func init() {
 }
 
 func registerUmsResourceCategoryRouter(e *gin.Engine) {
-	iService := service.UmsResourceCategoryService{}
-	iApi := api.UmsResourceCategoryApi{
-		Service: iService,
-	}
+	db := config.GetDb()
+	iService := service.UmsResourceCategoryService{DB: db}
+	iApi := api.UmsResourceCategoryApi{Service: iService}
 	resourceCategory := e.Group("/resourceCategory")
 	{
 		resourceCategory.GET("/listAll", iApi.ListAll)
