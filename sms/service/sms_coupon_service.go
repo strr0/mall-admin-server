@@ -1,16 +1,15 @@
 package service
 
 import (
-	"gorm.io/gen"
+	"gorm.io/gorm"
 	"mall-admin-server/sms/model"
-	"mall-admin-server/sms/query"
 	"mall-admin-server/sms/service/dto"
 	"mall-admin-server/util"
 )
 
 // 优惠券管理
 type SmsCouponService struct {
-	//
+	DB *gorm.DB
 }
 
 // 新增优惠券
@@ -19,50 +18,42 @@ func (iService SmsCouponService) Create(smsCouponDto dto.SmsCouponDto) error {
 	smsCoupon.Count_ = smsCoupon.PublishCount
 	smsCoupon.UseCount = 0
 	smsCoupon.ReceiveCount = 0
-	err := query.SmsCoupon.Create(&smsCoupon)
-	if err != nil {
-		return err
+	result := iService.DB.Create(&smsCoupon)
+	if result.Error != nil {
+		return result.Error
 	}
 	return iService.UpdateRelation(smsCouponDto)
 }
 
 // 删除优惠券
-func (iService SmsCouponService) Delete(idStr string) error {
-	id, err := util.ParseInt64WithErr(idStr)
-	if err != nil {
-		return err
-	}
-	_, err = query.SmsCoupon.Where(query.SmsCoupon.ID.Eq(id)).Delete()
-	if err != nil {
-		return err
+func (iService SmsCouponService) Delete(id string) error {
+	result := iService.DB.Delete(&model.SmsCoupon{}, id)
+	if result.Error != nil {
+		return result.Error
 	}
 	return iService.DeleteRelation(id)
 }
 
 // 删除关联
-func (SmsCouponService) DeleteRelation(id int64) error {
-	_, err := query.SmsCouponProductCategoryRelation.Where(query.SmsCouponProductCategoryRelation.CouponID.Eq(id)).Delete()
-	if err != nil {
-		return err
+func (iService SmsCouponService) DeleteRelation(id string) error {
+	result := iService.DB.Where("coupon_id = ?", id).Delete(&model.SmsCouponProductCategoryRelation{})
+	if result.Error != nil {
+		return result.Error
 	}
-	_, err = query.SmsCouponProductRelation.Where(query.SmsCouponProductRelation.CouponID.Eq(id)).Delete()
-	if err != nil {
-		return err
+	result = iService.DB.Where("coupon_id = ?", id).Delete(&model.SmsCouponProductRelation{})
+	if result.Error != nil {
+		return result.Error
 	}
 	return nil
 }
 
 // 更新优惠券
-func (iService SmsCouponService) Update(idStr string, smsCouponDto dto.SmsCouponDto) error {
-	id, err := util.ParseInt64WithErr(idStr)
-	if err != nil {
-		return err
+func (iService SmsCouponService) Update(id string, smsCouponDto dto.SmsCouponDto) error {
+	result := iService.DB.Save(&smsCouponDto.SmsCoupon)
+	if result.Error != nil {
+		return result.Error
 	}
-	_, err = query.SmsCoupon.Where(query.SmsCoupon.ID.Eq(id)).Updates(smsCouponDto.SmsCoupon)
-	if err != nil {
-		return err
-	}
-	err = iService.DeleteRelation(id)
+	err := iService.DeleteRelation(id)
 	if err != nil {
 		return err
 	}
@@ -70,58 +61,60 @@ func (iService SmsCouponService) Update(idStr string, smsCouponDto dto.SmsCoupon
 }
 
 // 更新关联
-func (SmsCouponService) UpdateRelation(smsCouponDto dto.SmsCouponDto) error {
-	var err error
+func (iService SmsCouponService) UpdateRelation(smsCouponDto dto.SmsCouponDto) error {
+	var result *gorm.DB
 	switch smsCouponDto.UseType {
 	case 1:
 		for _, productCategoryRelation := range smsCouponDto.ProductCategoryRelationList {
 			productCategoryRelation.CouponID = smsCouponDto.ID
-			err = query.SmsCouponProductCategoryRelation.Create(&productCategoryRelation)
+			result = iService.DB.Create(&productCategoryRelation)
 		}
 	case 2:
 		for _, productRelation := range smsCouponDto.ProductRelationList {
 			productRelation.CouponID = smsCouponDto.ID
-			err = query.SmsCouponProductRelation.Create(&productRelation)
+			result = iService.DB.Create(&productRelation)
 		}
 	default:
 	}
-	return err
+	return result.Error
 }
 
 // 优惠券列表
-func (SmsCouponService) List(name, typeStr, pageStr, sizeStr string) ([]*model.SmsCoupon, int64) {
+func (iService SmsCouponService) List(name, type_, pageStr, sizeStr string) ([]model.SmsCoupon, int64) {
 	page := util.ParseInt(pageStr, 1)
 	size := util.ParseInt(sizeStr, 10)
 	offset := (page - 1) * size
-	smsCoupon := query.SmsCoupon
-	conds := make([]gen.Condition, 0)
+	funcs := make([]func(*gorm.DB) *gorm.DB, 0)
 	if name != "" {
-		conds = append(conds, smsCoupon.Name.Like("%"+name+"%"))
+		funcs = append(funcs, func(db *gorm.DB) *gorm.DB {
+			return db.Where("name like ?", "%"+name+"%")
+		})
 	}
-	if type_, err := util.ParseInt32WithErr(typeStr); err != nil {
-		conds = append(conds, smsCoupon.Type.Eq(type_))
+	if type_ != "" {
+		funcs = append(funcs, func(db *gorm.DB) *gorm.DB {
+			return db.Where("type = ?", type_)
+		})
 	}
-	smsCoupon.Where(conds...)
-	total, err := smsCoupon.Count()
-	if err != nil {
+	scopes := iService.DB.Scopes(funcs...)
+	var count int64
+	result := scopes.Model(&model.SmsCoupon{}).Count(&count)
+	if result.Error != nil {
 		return nil, 0
 	}
-	find, err := smsCoupon.Offset(offset).Limit(size).Find()
-	if err != nil {
-		return nil, total
+	var list []model.SmsCoupon
+	result = scopes.Offset(offset).Limit(size).Find(&list)
+	if result.Error != nil {
+		return nil, count
 	}
-	return find, total
+	return list, count
 }
 
 // 优惠券详情
-func (SmsCouponService) GetItem(idStr string) *model.SmsCoupon {
-	id, err := util.ParseInt64WithErr(idStr)
-	if err != nil {
+func (iService SmsCouponService) GetItem(id string) *model.SmsCoupon {
+	var smsCoupon model.SmsCoupon
+	result := iService.DB.First(&smsCoupon, id)
+	if result.Error != nil {
 		return nil
 	}
-	first, err := query.SmsCoupon.Where(query.SmsCoupon.ID.Eq(id)).First()
-	if err != nil {
-		return nil
-	}
-	return first
+	return &smsCoupon
 }

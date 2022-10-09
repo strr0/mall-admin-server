@@ -1,88 +1,63 @@
 package service
 
 import (
-	"gorm.io/gen"
+	"gorm.io/gorm"
 	"mall-admin-server/sms/model"
-	"mall-admin-server/sms/query"
 	"mall-admin-server/util"
 )
 
 // 首页专题推荐管理
 type SmsHomeRecommendSubjectService struct {
-	//
+	DB *gorm.DB
 }
 
-func (SmsHomeRecommendSubjectService) Create(smsHomeRecommendSubject model.SmsHomeRecommendSubject) error {
+func (iService SmsHomeRecommendSubjectService) Create(smsHomeRecommendSubject model.SmsHomeRecommendSubject) error {
 	smsHomeRecommendSubject.RecommendStatus = 1
 	smsHomeRecommendSubject.Sort = 0
-	return query.SmsHomeRecommendSubject.Create(&smsHomeRecommendSubject)
+	result := iService.DB.Create(&smsHomeRecommendSubject)
+	return result.Error
 }
 
-func (SmsHomeRecommendSubjectService) UpdateSort(idStr, sortStr string) error {
-	id, err := util.ParseInt64WithErr(idStr)
-	if err != nil {
-		return err
-	}
-	sort, err := util.ParseInt32WithErr(sortStr)
-	if err != nil {
-		return err
-	}
-	var smsHomeRecommendSubject model.SmsHomeRecommendSubject
-	smsHomeRecommendSubject.Sort = sort
-	_, err = query.SmsHomeRecommendSubject.Where(query.SmsHomeRecommendSubject.ID.Eq(id)).Updates(smsHomeRecommendSubject)
-	return err
+func (iService SmsHomeRecommendSubjectService) UpdateSort(id, sort string) error {
+	result := iService.DB.Model(&model.SmsHomeRecommendSubject{}).Where("id = ?", id).Update("sort", sort)
+	return result.Error
 }
 
-func (SmsHomeRecommendSubjectService) Delete(idsStr []string) error {
-	ids := make([]int64, 0)
-	for _, idStr := range idsStr {
-		id, err := util.ParseInt64WithErr(idStr)
-		if err == nil {
-			ids = append(ids, id)
-		}
-	}
-	_, err := query.SmsHomeRecommendSubject.Where(query.SmsHomeRecommendSubject.ID.In(ids...)).Delete()
-	return err
+func (iService SmsHomeRecommendSubjectService) Delete(ids []string) error {
+	result := iService.DB.Delete(&model.SmsHomeRecommendSubject{}, ids)
+	return result.Error
 }
 
-func (SmsHomeRecommendSubjectService) UpdateRecommendStatus(idsStr []string, recommendStatusStr string) error {
-	ids := make([]int64, 0)
-	for _, idStr := range idsStr {
-		id, err := util.ParseInt64WithErr(idStr)
-		if err == nil {
-			ids = append(ids, id)
-		}
-	}
-	recommendStatus, err := util.ParseInt32WithErr(recommendStatusStr)
-	if err != nil {
-		return err
-	}
-	var smsHomeRecommendSubject model.SmsHomeRecommendSubject
-	smsHomeRecommendSubject.RecommendStatus = recommendStatus
-	_, err = query.SmsHomeRecommendSubject.Where(query.SmsHomeRecommendSubject.ID.In(ids...)).Updates(smsHomeRecommendSubject)
-	return err
+func (iService SmsHomeRecommendSubjectService) UpdateRecommendStatus(ids []string, recommendStatus string) error {
+	result := iService.DB.Model(&model.SmsHomeRecommendSubject{}).Where("id in ?", ids).Update("recommend_status", recommendStatus)
+	return result.Error
 }
 
-func (SmsHomeRecommendSubjectService) List(subjectName, recommendStatusStr, pageStr, sizeStr string) ([]*model.SmsHomeRecommendSubject, int64) {
+func (iService SmsHomeRecommendSubjectService) List(subjectName, recommendStatus, pageStr, sizeStr string) ([]model.SmsHomeRecommendSubject, int64) {
 	page := util.ParseInt(pageStr, 1)
 	size := util.ParseInt(sizeStr, 10)
 	offset := (page - 1) * size
-	smsHomeRecommendSubject := query.SmsHomeRecommendSubject
-	conds := make([]gen.Condition, 0)
+	funcs := make([]func(*gorm.DB) *gorm.DB, 0)
 	if subjectName != "" {
-		conds = append(conds, smsHomeRecommendSubject.SubjectName.Like("%"+subjectName+"%"))
+		funcs = append(funcs, func(db *gorm.DB) *gorm.DB {
+			return db.Where("subject_name like ?", "%"+subjectName+"%")
+		})
 	}
-	if recommendStatus, err := util.ParseInt32WithErr(recommendStatusStr); err != nil {
-		conds = append(conds, smsHomeRecommendSubject.RecommendStatus.Eq(recommendStatus))
+	if recommendStatus != "" {
+		funcs = append(funcs, func(db *gorm.DB) *gorm.DB {
+			return db.Where("recommend_status = ?", recommendStatus)
+		})
 	}
-	smsHomeRecommendSubjectDo := smsHomeRecommendSubject.Where(conds...)
-	total, err := smsHomeRecommendSubjectDo.Count()
-	if err != nil {
+	scopes := iService.DB.Scopes(funcs...)
+	var count int64
+	result := scopes.Model(&model.SmsHomeRecommendSubject{}).Count(&count)
+	if result.Error != nil {
 		return nil, 0
 	}
-	find, err := smsHomeRecommendSubjectDo.Offset(offset).Limit(size).Find()
-	if err != nil {
-		return nil, total
+	var list []model.SmsHomeRecommendSubject
+	result = scopes.Offset(offset).Limit(size).Find(&list)
+	if result.Error != nil {
+		return nil, count
 	}
-	return find, total
+	return list, count
 }

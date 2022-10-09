@@ -2,6 +2,7 @@ package router
 
 import (
 	"github.com/gin-gonic/gin"
+	"mall-admin-server/config"
 	"mall-admin-server/sms/api"
 	"mall-admin-server/sms/service"
 )
@@ -11,10 +12,9 @@ func init() {
 }
 
 func registerSmsCouponRouter(e *gin.Engine) {
-	iService := service.SmsCouponService{}
-	iApi := api.SmsCouponApi{
-		Service: iService,
-	}
+	db := config.GetDb()
+	iService := service.SmsCouponService{DB: db}
+	iApi := api.SmsCouponApi{Service: iService}
 	coupon := e.Group("/coupon")
 	{
 		coupon.POST("/create", iApi.Create)

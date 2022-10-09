@@ -1,97 +1,72 @@
 package service
 
 import (
+	"gorm.io/gorm"
 	"mall-admin-server/sms/model"
-	"mall-admin-server/sms/query"
 	"mall-admin-server/sms/service/dto"
-	"mall-admin-server/util"
 	"time"
 )
 
 // 限购场次
 type SmsFlashPromotionSessionService struct {
-	//
+	DB *gorm.DB
 }
 
-func (SmsFlashPromotionSessionService) Create(smsFlashPromotionSession model.SmsFlashPromotionSession) error {
+func (iService SmsFlashPromotionSessionService) Create(smsFlashPromotionSession model.SmsFlashPromotionSession) error {
 	smsFlashPromotionSession.CreateTime = time.Now()
-	return query.SmsFlashPromotionSession.Create(&smsFlashPromotionSession)
+	result := iService.DB.Create(&smsFlashPromotionSession)
+	return result.Error
 }
 
-func (SmsFlashPromotionSessionService) Update(idStr string, smsFlashPromotionSession model.SmsFlashPromotionSession) error {
-	id, err := util.ParseInt64WithErr(idStr)
-	if err != nil {
-		return err
-	}
-	_, err = query.SmsFlashPromotionSession.Where(query.SmsFlashPromotionSession.ID.Eq(id)).Updates(smsFlashPromotionSession)
-	return err
+func (iService SmsFlashPromotionSessionService) Update(idStr string, smsFlashPromotionSession model.SmsFlashPromotionSession) error {
+	result := iService.DB.Save(&smsFlashPromotionSession)
+	return result.Error
 }
 
-func (SmsFlashPromotionSessionService) UpdateStatus(idStr, statusStr string) error {
-	id, err := util.ParseInt64WithErr(idStr)
-	if err != nil {
-		return err
-	}
-	status, err := util.ParseInt32WithErr(statusStr)
-	if err != nil {
-		return err
-	}
+func (iService SmsFlashPromotionSessionService) UpdateStatus(id, status string) error {
+	result := iService.DB.Model(&model.SmsFlashPromotionSession{}).Where("id = ?", id).Update("status", status)
+	return result.Error
+}
+
+func (iService SmsFlashPromotionSessionService) Delete(id string) error {
+	result := iService.DB.Delete(&model.SmsFlashPromotionSession{}, id)
+	return result.Error
+}
+
+func (iService SmsFlashPromotionSessionService) GetItem(id string) *model.SmsFlashPromotionSession {
 	var smsFlashPromotionSession model.SmsFlashPromotionSession
-	smsFlashPromotionSession.Status = status
-	_, err = query.SmsFlashPromotionSession.Where(query.SmsFlashPromotionSession.ID.Eq(id)).Updates(smsFlashPromotionSession)
-	return err
+	result := iService.DB.First(&smsFlashPromotionSession, id)
+	if result.Error != nil {
+		return nil
+	}
+	return &smsFlashPromotionSession
 }
 
-func (SmsFlashPromotionSessionService) Delete(idStr string) error {
-	id, err := util.ParseInt64WithErr(idStr)
-	if err != nil {
-		return err
+func (iService SmsFlashPromotionSessionService) ListAll() []model.SmsFlashPromotionSession {
+	var list []model.SmsFlashPromotionSession
+	result := iService.DB.Find(&list)
+	if result.Error != nil {
+		return nil
 	}
-	_, err = query.SmsFlashPromotionSession.Where(query.SmsFlashPromotionSession.ID.Eq(id)).Delete()
-	return err
+	return list
 }
 
-func (SmsFlashPromotionSessionService) GetItem(idStr string) *model.SmsFlashPromotionSession {
-	id, err := util.ParseInt64WithErr(idStr)
-	if err != nil {
+func (iService SmsFlashPromotionSessionService) SelectList(flashPromotionId string) []dto.SmsFlashPromotionSessionDto {
+	dtos := make([]dto.SmsFlashPromotionSessionDto, 0)
+	var list []model.SmsFlashPromotionSession
+	result := iService.DB.Find(&list)
+	if result.Error != nil {
 		return nil
 	}
-	first, err := query.SmsFlashPromotionSession.Where(query.SmsFlashPromotionSession.ID.Eq(id)).First()
-	if err != nil {
-		return nil
-	}
-	return first
-}
-
-func (SmsFlashPromotionSessionService) ListAll() []*model.SmsFlashPromotionSession {
-	find, err := query.SmsFlashPromotionSession.Find()
-	if err != nil {
-		return nil
-	}
-	return find
-}
-
-func (SmsFlashPromotionSessionService) SelectList(flashPromotionIdStr string) []*dto.SmsFlashPromotionSessionDto {
-	flashPromotionId, err := util.ParseInt64WithErr(flashPromotionIdStr)
-	if err != nil {
-		return nil
-	}
-	result := make([]*dto.SmsFlashPromotionSessionDto, 0)
-	find, err := query.SmsFlashPromotionSession.Where(query.SmsFlashPromotionSession.Status.Eq(1)).Find()
-	if err != nil {
-		return nil
-	}
-	for _, flashPromotionSession := range find {
-		count, err := query.SmsFlashPromotionProductRelation.Where(
-			query.SmsFlashPromotionProductRelation.FlashPromotionID.Eq(flashPromotionId),
-			query.SmsFlashPromotionProductRelation.FlashPromotionSessionID.Eq(flashPromotionSession.ID),
-		).Count()
-		if err == nil {
-			result = append(result, &dto.SmsFlashPromotionSessionDto{
-				SmsFlashPromotionSession: *flashPromotionSession,
+	for _, flashPromotionSession := range list {
+		var count int64
+		result := iService.DB.Model(&model.SmsFlashPromotionProductRelation{}).Where("flash_promotion_id = ? and flash_promotion_session_id = ?", flashPromotionId, flashPromotionSession.ID).Count(&count)
+		if result.Error == nil {
+			dtos = append(dtos, dto.SmsFlashPromotionSessionDto{
+				SmsFlashPromotionSession: flashPromotionSession,
 				ProductCount:             count,
 			})
 		}
 	}
-	return result
+	return dtos
 }

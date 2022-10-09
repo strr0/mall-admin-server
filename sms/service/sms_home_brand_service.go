@@ -1,88 +1,63 @@
 package service
 
 import (
-	"gorm.io/gen"
+	"gorm.io/gorm"
 	"mall-admin-server/sms/model"
-	"mall-admin-server/sms/query"
 	"mall-admin-server/util"
 )
 
 // 首页品牌管理
 type SmsHomeBrandService struct {
-	//
+	DB *gorm.DB
 }
 
-func (SmsHomeBrandService) Create(smsHomeBrand model.SmsHomeBrand) error {
+func (iService SmsHomeBrandService) Create(smsHomeBrand model.SmsHomeBrand) error {
 	smsHomeBrand.RecommendStatus = 1
 	smsHomeBrand.Sort = 0
-	return query.SmsHomeBrand.Create(&smsHomeBrand)
+	result := iService.DB.Create(&smsHomeBrand)
+	return result.Error
 }
 
-func (SmsHomeBrandService) UpdateSort(idStr, sortStr string) error {
-	id, err := util.ParseInt64WithErr(idStr)
-	if err != nil {
-		return err
-	}
-	sort, err := util.ParseInt32WithErr(sortStr)
-	if err != nil {
-		return err
-	}
-	var smsHomeBrand model.SmsHomeBrand
-	smsHomeBrand.Sort = sort
-	_, err = query.SmsHomeBrand.Where(query.SmsHomeBrand.ID.Eq(id)).Updates(smsHomeBrand)
-	return err
+func (iService SmsHomeBrandService) UpdateSort(id, sort string) error {
+	result := iService.DB.Model(&model.SmsHomeBrand{}).Where("id = ?", id).Update("sort", sort)
+	return result.Error
 }
 
-func (SmsHomeBrandService) Delete(idsStr []string) error {
-	ids := make([]int64, 0)
-	for _, idStr := range idsStr {
-		id, err := util.ParseInt64WithErr(idStr)
-		if err == nil {
-			ids = append(ids, id)
-		}
-	}
-	_, err := query.SmsHomeBrand.Where(query.SmsHomeBrand.ID.In(ids...)).Delete()
-	return err
+func (iService SmsHomeBrandService) Delete(ids []string) error {
+	result := iService.DB.Delete(&model.SmsHomeBrand{}, ids)
+	return result.Error
 }
 
-func (SmsHomeBrandService) UpdateRecommendStatus(idsStr []string, recommendStatusStr string) error {
-	ids := make([]int64, 0)
-	for _, idStr := range idsStr {
-		id, err := util.ParseInt64WithErr(idStr)
-		if err == nil {
-			ids = append(ids, id)
-		}
-	}
-	recommendStatus, err := util.ParseInt32WithErr(recommendStatusStr)
-	if err != nil {
-		return err
-	}
-	var smsHomeBrand model.SmsHomeBrand
-	smsHomeBrand.RecommendStatus = recommendStatus
-	_, err = query.SmsHomeBrand.Where(query.SmsHomeBrand.ID.In(ids...)).Updates(smsHomeBrand)
-	return err
+func (iService SmsHomeBrandService) UpdateRecommendStatus(ids []string, recommendStatus string) error {
+	result := iService.DB.Model(&model.SmsHomeBrand{}).Where("id in ?", ids).Update("recommend_status", recommendStatus)
+	return result.Error
 }
 
-func (SmsHomeBrandService) List(brandName, recommendStatusStr, pageStr, sizeStr string) ([]*model.SmsHomeBrand, int64) {
+func (iService SmsHomeBrandService) List(brandName, recommendStatus, pageStr, sizeStr string) ([]model.SmsHomeBrand, int64) {
 	page := util.ParseInt(pageStr, 1)
 	size := util.ParseInt(sizeStr, 10)
 	offset := (page - 1) * size
-	smsHomeBrand := query.SmsHomeBrand
-	conds := make([]gen.Condition, 0)
+	funcs := make([]func(*gorm.DB) *gorm.DB, 0)
 	if brandName != "" {
-		conds = append(conds, smsHomeBrand.BrandName.Like("%"+brandName+"%"))
+		funcs = append(funcs, func(db *gorm.DB) *gorm.DB {
+			return db.Where("brand_name like ?", "%"+brandName+"%")
+		})
 	}
-	if recommendStatus, err := util.ParseInt32WithErr(recommendStatusStr); err != nil {
-		conds = append(conds, smsHomeBrand.RecommendStatus.Eq(recommendStatus))
+	if recommendStatus != "" {
+		funcs = append(funcs, func(db *gorm.DB) *gorm.DB {
+			return db.Where("recommend_status = ?", recommendStatus)
+		})
 	}
-	smsHomeBrandDo := smsHomeBrand.Where(conds...)
-	total, err := smsHomeBrandDo.Count()
-	if err != nil {
+	scopes := iService.DB.Scopes(funcs...)
+	var count int64
+	result := scopes.Model(&model.SmsHomeBrand{}).Count(&count)
+	if result.Error != nil {
 		return nil, 0
 	}
-	find, err := smsHomeBrandDo.Offset(offset).Limit(size).Find()
-	if err != nil {
-		return nil, total
+	var list []model.SmsHomeBrand
+	result = scopes.Offset(offset).Limit(size).Find(&list)
+	if result.Error != nil {
+		return nil, count
 	}
-	return find, total
+	return list, count
 }

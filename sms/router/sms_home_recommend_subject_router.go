@@ -2,6 +2,7 @@ package router
 
 import (
 	"github.com/gin-gonic/gin"
+	"mall-admin-server/config"
 	"mall-admin-server/sms/api"
 	"mall-admin-server/sms/service"
 )
@@ -11,10 +12,9 @@ func init() {
 }
 
 func registerSmsHomeRecommendSubjectRouter(e *gin.Engine) {
-	iService := service.SmsHomeRecommendSubjectService{}
-	iApi := api.SmsHomeRecommendSubjectApi{
-		Service: iService,
-	}
+	db := config.GetDb()
+	iService := service.SmsHomeRecommendSubjectService{DB: db}
+	iApi := api.SmsHomeRecommendSubjectApi{Service: iService}
 	homeRecommendSubject := e.Group("/home/recommendSubject")
 	{
 		homeRecommendSubject.POST("/create", iApi.Create)

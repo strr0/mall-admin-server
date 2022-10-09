@@ -1,83 +1,65 @@
 package service
 
 import (
-	"gorm.io/gen"
+	"gorm.io/gorm"
 	"mall-admin-server/sms/model"
-	"mall-admin-server/sms/query"
 	"mall-admin-server/util"
 )
 
 // 限购活动
 type SmsFlashPromotionService struct {
-	//
+	DB *gorm.DB
 }
 
-func (SmsFlashPromotionService) Create(smsFlashPromotion model.SmsFlashPromotion) error {
-	return query.SmsFlashPromotion.Create(&smsFlashPromotion)
+func (iService SmsFlashPromotionService) Create(smsFlashPromotion model.SmsFlashPromotion) error {
+	result := iService.DB.Create(&smsFlashPromotion)
+	return result.Error
 }
 
-func (SmsFlashPromotionService) Update(idStr string, smsFlashPromotion model.SmsFlashPromotion) error {
-	id, err := util.ParseInt64WithErr(idStr)
-	if err != nil {
-		return err
-	}
-	_, err = query.SmsFlashPromotion.Where(query.SmsFlashPromotion.ID.Eq(id)).Updates(smsFlashPromotion)
-	return err
+func (iService SmsFlashPromotionService) Update(idStr string, smsFlashPromotion model.SmsFlashPromotion) error {
+	result := iService.DB.Save(&smsFlashPromotion)
+	return result.Error
 }
 
-func (SmsFlashPromotionService) Delete(idStr string) error {
-	id, err := util.ParseInt64WithErr(idStr)
-	if err != nil {
-		return err
-	}
-	_, err = query.SmsFlashPromotion.Where(query.SmsFlashPromotion.ID.Eq(id)).Delete()
-	return err
+func (iService SmsFlashPromotionService) Delete(id string) error {
+	result := iService.DB.Delete(&model.SmsFlashPromotion{}, id)
+	return result.Error
 }
 
-func (SmsFlashPromotionService) UpdateStatus(idStr, statusStr string) error {
-	id, err := util.ParseInt64WithErr(idStr)
-	if err != nil {
-		return err
-	}
-	status, err := util.ParseInt32WithErr(statusStr)
-	if err != nil {
-		return err
-	}
+func (iService SmsFlashPromotionService) UpdateStatus(id, status string) error {
+	result := iService.DB.Model(&model.SmsFlashPromotion{}).Where("id = ?", id).Update("status", status)
+	return result.Error
+}
+
+func (iService SmsFlashPromotionService) GetItem(id string) *model.SmsFlashPromotion {
 	var smsFlashPromotion model.SmsFlashPromotion
-	smsFlashPromotion.Status = status
-	_, err = query.SmsFlashPromotion.Where(query.SmsFlashPromotion.ID.Eq(id)).Updates(smsFlashPromotion)
-	return err
-}
-
-func (SmsFlashPromotionService) GetItem(idStr string) *model.SmsFlashPromotion {
-	id, err := util.ParseInt64WithErr(idStr)
-	if err != nil {
+	result := iService.DB.First(&smsFlashPromotion, id)
+	if result.Error != nil {
 		return nil
 	}
-	first, err := query.SmsFlashPromotion.Where(query.SmsFlashPromotion.ID.Eq(id)).First()
-	if err != nil {
-		return nil
-	}
-	return first
+	return &smsFlashPromotion
 }
 
-func (SmsFlashPromotionService) List(keyword, pageStr, sizeStr string) ([]*model.SmsFlashPromotion, int64) {
+func (iService SmsFlashPromotionService) List(keyword, pageStr, sizeStr string) ([]model.SmsFlashPromotion, int64) {
 	page := util.ParseInt(pageStr, 1)
 	size := util.ParseInt(sizeStr, 10)
 	offset := (page - 1) * size
-	smsFlashPromotion := query.SmsFlashPromotion
-	conds := make([]gen.Condition, 0)
+	funcs := make([]func(*gorm.DB) *gorm.DB, 0)
 	if keyword != "" {
-		conds = append(conds, smsFlashPromotion.Title.Like("%"+keyword+"%"))
+		funcs = append(funcs, func(db *gorm.DB) *gorm.DB {
+			return db.Where("title like ?", "%"+keyword+"%")
+		})
 	}
-	smsFlashPromotion.Where(conds...)
-	total, err := smsFlashPromotion.Count()
-	if err != nil {
+	scopes := iService.DB.Scopes(funcs...)
+	var count int64
+	result := scopes.Model(&model.SmsFlashPromotion{}).Count(&count)
+	if result.Error != nil || count == 0 {
 		return nil, 0
 	}
-	find, err := smsFlashPromotion.Offset(offset).Limit(size).Find()
-	if err != nil {
-		return nil, total
+	var list []model.SmsFlashPromotion
+	result = scopes.Offset(offset).Limit(size).Find(&list)
+	if result.Error != nil {
+		return nil, count
 	}
-	return find, total
+	return list, count
 }

@@ -1,88 +1,63 @@
 package service
 
 import (
-	"gorm.io/gen"
+	"gorm.io/gorm"
 	"mall-admin-server/sms/model"
-	"mall-admin-server/sms/query"
 	"mall-admin-server/util"
 )
 
 // 首页新品推荐管理
 type SmsHomeNewProductService struct {
-	//
+	DB *gorm.DB
 }
 
-func (SmsHomeNewProductService) Create(smsHomeNewProduct model.SmsHomeNewProduct) error {
+func (iService SmsHomeNewProductService) Create(smsHomeNewProduct model.SmsHomeNewProduct) error {
 	smsHomeNewProduct.RecommendStatus = 1
 	smsHomeNewProduct.Sort = 0
-	return query.SmsHomeNewProduct.Create(&smsHomeNewProduct)
+	result := iService.DB.Create(&smsHomeNewProduct)
+	return result.Error
 }
 
-func (SmsHomeNewProductService) UpdateSort(idStr, sortStr string) error {
-	id, err := util.ParseInt64WithErr(idStr)
-	if err != nil {
-		return err
-	}
-	sort, err := util.ParseInt32WithErr(sortStr)
-	if err != nil {
-		return err
-	}
-	var smsHomeNewProduct model.SmsHomeNewProduct
-	smsHomeNewProduct.Sort = sort
-	_, err = query.SmsHomeNewProduct.Where(query.SmsHomeNewProduct.ID.Eq(id)).Updates(smsHomeNewProduct)
-	return err
+func (iService SmsHomeNewProductService) UpdateSort(id, sort string) error {
+	result := iService.DB.Model(&model.SmsHomeNewProduct{}).Where("id = ?", id).Update("sort", sort)
+	return result.Error
 }
 
-func (SmsHomeNewProductService) Delete(idsStr []string) error {
-	ids := make([]int64, 0)
-	for _, idStr := range idsStr {
-		id, err := util.ParseInt64WithErr(idStr)
-		if err == nil {
-			ids = append(ids, id)
-		}
-	}
-	_, err := query.SmsHomeNewProduct.Where(query.SmsHomeNewProduct.ID.In(ids...)).Delete()
-	return err
+func (iService SmsHomeNewProductService) Delete(ids []string) error {
+	result := iService.DB.Delete(&model.SmsHomeNewProduct{}, ids)
+	return result.Error
 }
 
-func (SmsHomeNewProductService) UpdateRecommendStatus(idsStr []string, recommendStatusStr string) error {
-	ids := make([]int64, 0)
-	for _, idStr := range idsStr {
-		id, err := util.ParseInt64WithErr(idStr)
-		if err == nil {
-			ids = append(ids, id)
-		}
-	}
-	recommendStatus, err := util.ParseInt32WithErr(recommendStatusStr)
-	if err != nil {
-		return err
-	}
-	var smsHomeNewProduct model.SmsHomeNewProduct
-	smsHomeNewProduct.RecommendStatus = recommendStatus
-	_, err = query.SmsHomeNewProduct.Where(query.SmsHomeNewProduct.ID.In(ids...)).Updates(smsHomeNewProduct)
-	return err
+func (iService SmsHomeNewProductService) UpdateRecommendStatus(ids []string, recommendStatus string) error {
+	result := iService.DB.Model(&model.SmsHomeNewProduct{}).Where("id in ?", ids).Update("recommend_status", recommendStatus)
+	return result.Error
 }
 
-func (SmsHomeNewProductService) List(productName, recommendStatusStr, pageStr, sizeStr string) ([]*model.SmsHomeNewProduct, int64) {
+func (iService SmsHomeNewProductService) List(productName, recommendStatus, pageStr, sizeStr string) ([]model.SmsHomeNewProduct, int64) {
 	page := util.ParseInt(pageStr, 1)
 	size := util.ParseInt(sizeStr, 10)
 	offset := (page - 1) * size
-	smsHomeNewProduct := query.SmsHomeNewProduct
-	conds := make([]gen.Condition, 0)
+	funcs := make([]func(*gorm.DB) *gorm.DB, 0)
 	if productName != "" {
-		conds = append(conds, smsHomeNewProduct.ProductName.Like("%"+productName+"%"))
+		funcs = append(funcs, func(db *gorm.DB) *gorm.DB {
+			return db.Where("product_name like ?", "%"+productName+"%")
+		})
 	}
-	if recommendStatus, err := util.ParseInt32WithErr(recommendStatusStr); err != nil {
-		conds = append(conds, smsHomeNewProduct.RecommendStatus.Eq(recommendStatus))
+	if recommendStatus != "" {
+		funcs = append(funcs, func(db *gorm.DB) *gorm.DB {
+			return db.Where("recommend_status = ?", recommendStatus)
+		})
 	}
-	smsHomeNewProductDo := smsHomeNewProduct.Where(conds...)
-	total, err := smsHomeNewProductDo.Count()
-	if err != nil {
+	scopes := iService.DB.Scopes(funcs...)
+	var count int64
+	result := scopes.Model(&model.SmsHomeNewProduct{}).Count(&count)
+	if result.Error != nil {
 		return nil, 0
 	}
-	find, err := smsHomeNewProductDo.Offset(offset).Limit(size).Find()
-	if err != nil {
-		return nil, total
+	var list []model.SmsHomeNewProduct
+	result = scopes.Offset(offset).Limit(size).Find(&list)
+	if result.Error != nil {
+		return nil, count
 	}
-	return find, total
+	return list, count
 }

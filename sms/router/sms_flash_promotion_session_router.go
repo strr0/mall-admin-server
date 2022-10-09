@@ -2,6 +2,7 @@ package router
 
 import (
 	"github.com/gin-gonic/gin"
+	"mall-admin-server/config"
 	"mall-admin-server/sms/api"
 	"mall-admin-server/sms/service"
 )
@@ -11,10 +12,9 @@ func init() {
 }
 
 func registerSmsFlashPromotionSessionRouter(e *gin.Engine) {
-	iService := service.SmsFlashPromotionSessionService{}
-	iApi := api.SmsFlashPromotionSessionApi{
-		Service: iService,
-	}
+	db := config.GetDb()
+	iService := service.SmsFlashPromotionSessionService{DB: db}
+	iApi := api.SmsFlashPromotionSessionApi{Service: iService}
 	flashSession := e.Group("/flashSession")
 	{
 		flashSession.POST("/create", iApi.Create)

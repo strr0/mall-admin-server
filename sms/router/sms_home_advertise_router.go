@@ -2,6 +2,7 @@ package router
 
 import (
 	"github.com/gin-gonic/gin"
+	"mall-admin-server/config"
 	"mall-admin-server/sms/api"
 	"mall-admin-server/sms/service"
 )
@@ -11,10 +12,9 @@ func init() {
 }
 
 func registerSmsHomeAdvertiseRouter(e *gin.Engine) {
-	iService := service.SmsHomeAdvertiseService{}
-	iApi := api.SmsHomeAdvertiseApi{
-		Service: iService,
-	}
+	db := config.GetDb()
+	iService := service.SmsHomeAdvertiseService{DB: db}
+	iApi := api.SmsHomeAdvertiseApi{Service: iService}
 	homeAdvertise := e.Group("/home/advertise")
 	{
 		homeAdvertise.POST("/create", iApi.Create)

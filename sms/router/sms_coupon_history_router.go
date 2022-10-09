@@ -2,6 +2,7 @@ package router
 
 import (
 	"github.com/gin-gonic/gin"
+	"mall-admin-server/config"
 	"mall-admin-server/sms/api"
 	"mall-admin-server/sms/service"
 )
@@ -11,10 +12,9 @@ func init() {
 }
 
 func registerSmsCouponHistoryRouter(e *gin.Engine) {
-	iService := service.SmsCouponHistoryService{}
-	iApi := api.SmsCouponHistoryApi{
-		Service: iService,
-	}
+	db := config.GetDb()
+	iService := service.SmsCouponHistoryService{DB: db}
+	iApi := api.SmsCouponHistoryApi{Service: iService}
 	couponHistory := e.Group("/couponHistory")
 	{
 		couponHistory.GET("/list", iApi.List)

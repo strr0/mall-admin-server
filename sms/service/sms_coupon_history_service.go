@@ -1,40 +1,46 @@
 package service
 
 import (
-	"gorm.io/gen"
+	"gorm.io/gorm"
 	"mall-admin-server/sms/model"
-	"mall-admin-server/sms/query"
 	"mall-admin-server/util"
 )
 
 type SmsCouponHistoryService struct {
-	//
+	DB *gorm.DB
 }
 
 // 优惠券领取记录
-func (SmsCouponHistoryService) List(couponIdStr, useStatusStr, orderSn, pageStr, sizeStr string) ([]*model.SmsCouponHistory, int64) {
+func (iService SmsCouponHistoryService) List(couponId, useStatus, orderSn, pageStr, sizeStr string) ([]model.SmsCouponHistory, int64) {
 	page := util.ParseInt(pageStr, 1)
 	size := util.ParseInt(sizeStr, 10)
 	offset := (page - 1) * size
-	smsCouponHistory := query.SmsCouponHistory
-	conds := make([]gen.Condition, 0)
-	if couponId, err := util.ParseInt64WithErr(couponIdStr); err == nil {
-		conds = append(conds, smsCouponHistory.CouponID.Eq(couponId))
+	funcs := make([]func(*gorm.DB) *gorm.DB, 0)
+	if couponId != "" {
+		funcs = append(funcs, func(db *gorm.DB) *gorm.DB {
+			return db.Where("coupon_id = ?", couponId)
+		})
 	}
-	if useStatus, err := util.ParseInt32WithErr(useStatusStr); err == nil {
-		conds = append(conds, smsCouponHistory.UseStatus.Eq(useStatus))
+	if useStatus != "" {
+		funcs = append(funcs, func(db *gorm.DB) *gorm.DB {
+			return db.Where("use_status = ?", useStatus)
+		})
 	}
 	if orderSn != "" {
-		conds = append(conds, smsCouponHistory.OrderSn.Eq(orderSn))
+		funcs = append(funcs, func(db *gorm.DB) *gorm.DB {
+			return db.Where("order_sn = ?", orderSn)
+		})
 	}
-	smsCouponHistory.Where(conds...)
-	total, err := smsCouponHistory.Count()
-	if err != nil {
+	scopes := iService.DB.Scopes(funcs...)
+	var count int64
+	result := scopes.Model(&model.SmsCouponHistory{}).Count(&count)
+	if result.Error != nil {
 		return nil, 0
 	}
-	find, err := smsCouponHistory.Offset(offset).Limit(size).Find()
-	if err != nil {
-		return nil, total
+	var list []model.SmsCouponHistory
+	result = scopes.Offset(offset).Limit(size).Find(&list)
+	if result.Error != nil {
+		return nil, count
 	}
-	return find, total
+	return list, count
 }

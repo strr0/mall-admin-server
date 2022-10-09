@@ -10,7 +10,6 @@ import (
 	omsr "mall-admin-server/oms/router"
 	pmsq "mall-admin-server/pms/query"
 	pmsr "mall-admin-server/pms/router"
-	smsq "mall-admin-server/sms/query"
 	smsr "mall-admin-server/sms/router"
 	umsr "mall-admin-server/ums/router"
 )
@@ -29,7 +28,6 @@ func initQuery() {
 	cmsq.SetDefault(db)
 	omsq.SetDefault(db)
 	pmsq.SetDefault(db)
-	smsq.SetDefault(db)
 }
 
 func initRouter() {

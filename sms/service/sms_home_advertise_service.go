@@ -1,102 +1,77 @@
 package service
 
 import (
-	"gorm.io/gen"
+	"gorm.io/gorm"
 	"mall-admin-server/sms/model"
-	"mall-admin-server/sms/query"
 	"mall-admin-server/util"
 )
 
 // 首页广告
 type SmsHomeAdvertiseService struct {
-	//
+	DB *gorm.DB
 }
 
-func (SmsHomeAdvertiseService) Create(smsHomeAdvertise model.SmsHomeAdvertise) error {
+func (iService SmsHomeAdvertiseService) Create(smsHomeAdvertise model.SmsHomeAdvertise) error {
 	smsHomeAdvertise.ClickCount = 0
 	smsHomeAdvertise.OrderCount = 0
-	return query.SmsHomeAdvertise.Create(&smsHomeAdvertise)
+	result := iService.DB.Create(&smsHomeAdvertise)
+	return result.Error
 }
 
-func (SmsHomeAdvertiseService) Delete(idsStr []string) error {
-	ids := make([]int64, 0)
-	for _, idStr := range idsStr {
-		id, err := util.ParseInt64WithErr(idStr)
-		if err == nil {
-			ids = append(ids, id)
-		}
-	}
-	_, err := query.SmsHomeAdvertise.Where(query.SmsHomeAdvertise.ID.In(ids...)).Delete()
-	return err
+func (iService SmsHomeAdvertiseService) Delete(ids []string) error {
+	result := iService.DB.Delete(&model.SmsHomeAdvertise{}, ids)
+	return result.Error
 }
 
-func (SmsHomeAdvertiseService) UpdateStatus(idStr, statusStr string) error {
-	id, err := util.ParseInt64WithErr(idStr)
-	if err != nil {
-		return err
-	}
-	status, err := util.ParseInt32WithErr(statusStr)
-	if err != nil {
-		return err
-	}
+func (iService SmsHomeAdvertiseService) UpdateStatus(id, status string) error {
+	result := iService.DB.Model(&model.SmsHomeAdvertise{}).Where("id = ?", id).Update("status", status)
+	return result.Error
+}
+
+func (iService SmsHomeAdvertiseService) GetItem(id string) *model.SmsHomeAdvertise {
 	var smsHomeAdvertise model.SmsHomeAdvertise
-	smsHomeAdvertise.Status = status
-	_, err = query.SmsHomeAdvertise.Where(query.SmsHomeAdvertise.ID.Eq(id)).Updates(smsHomeAdvertise)
-	return err
-}
-
-func (SmsHomeAdvertiseService) GetItem(idStr string) *model.SmsHomeAdvertise {
-	id, err := util.ParseInt64WithErr(idStr)
-	if err != nil {
+	result := iService.DB.First(&smsHomeAdvertise, id)
+	if result.Error != nil {
 		return nil
 	}
-	first, err := query.SmsHomeAdvertise.Where(query.SmsHomeAdvertise.ID.Eq(id)).First()
-	if err != nil {
-		return nil
-	}
-	return first
+	return &smsHomeAdvertise
 }
 
-func (SmsHomeAdvertiseService) Update(idStr string, smsHomeAdvertise model.SmsHomeAdvertise) error {
-	id, err := util.ParseInt64WithErr(idStr)
-	if err != nil {
-		return err
-	}
-	_, err = query.SmsHomeAdvertise.Where(query.SmsHomeAdvertise.ID.Eq(id)).Updates(smsHomeAdvertise)
-	return err
+func (iService SmsHomeAdvertiseService) Update(idStr string, smsHomeAdvertise model.SmsHomeAdvertise) error {
+	result := iService.DB.Save(&smsHomeAdvertise)
+	return result.Error
 }
 
-func (SmsHomeAdvertiseService) List(name, typeStr, endTimeStr, pageStr, sizeStr string) ([]*model.SmsHomeAdvertise, int64) {
+func (iService SmsHomeAdvertiseService) List(name, type_, endTime, pageStr, sizeStr string) ([]model.SmsHomeAdvertise, int64) {
 	page := util.ParseInt(pageStr, 1)
 	size := util.ParseInt(sizeStr, 10)
 	offset := (page - 1) * size
-	smsHomeAdvertise := query.SmsHomeAdvertise
-	conds := make([]gen.Condition, 0)
+	funcs := make([]func(*gorm.DB) *gorm.DB, 0)
 	if name != "" {
-		conds = append(conds, smsHomeAdvertise.Name.Like("%"+name+"%"))
+		funcs = append(funcs, func(db *gorm.DB) *gorm.DB {
+			return db.Where("name like ?", "%"+name+"%")
+		})
 	}
-	if type_, err := util.ParseInt32WithErr(typeStr); err != nil {
-		conds = append(conds, smsHomeAdvertise.Type.Eq(type_))
+	if type_ != "" {
+		funcs = append(funcs, func(db *gorm.DB) *gorm.DB {
+			return db.Where("type = ?", type_)
+		})
 	}
-	if endTimeStr != "" {
-		startTime, err := util.ParseTimeWithErr(endTimeStr + " 00:00:00")
-		if err != nil {
-			return nil, 0
-		}
-		endTime, err := util.ParseTimeWithErr(endTimeStr + " 23:59:59")
-		if err != nil {
-			return nil, 0
-		}
-		conds = append(conds, smsHomeAdvertise.EndTime.Between(startTime, endTime))
+	if endTime != "" {
+		funcs = append(funcs, func(db *gorm.DB) *gorm.DB {
+			return db.Where("end_time >= ? and end_time <= ?", endTime+" 00:00:00", endTime+" 23:59:59")
+		})
 	}
-	smsHomeAdvertiseDo := smsHomeAdvertise.Where(conds...)
-	total, err := smsHomeAdvertiseDo.Count()
-	if err != nil {
+	scopes := iService.DB.Scopes(funcs...)
+	var count int64
+	result := scopes.Model(&model.SmsHomeAdvertise{}).Count(&count)
+	if result.Error != nil {
 		return nil, 0
 	}
-	find, err := smsHomeAdvertiseDo.Offset(offset).Limit(size).Find()
-	if err != nil {
-		return nil, total
+	var list []model.SmsHomeAdvertise
+	result = scopes.Offset(offset).Limit(size).Find(&list)
+	if result.Error != nil {
+		return nil, count
 	}
-	return find, total
+	return list, count
 }
