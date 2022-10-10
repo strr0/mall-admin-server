@@ -4,6 +4,7 @@ import (
 	"github.com/gin-gonic/gin"
 	"mall-admin-server/cms/api"
 	"mall-admin-server/cms/service"
+	"mall-admin-server/config"
 )
 
 func init() {
@@ -11,10 +12,9 @@ func init() {
 }
 
 func registerCmsSubjectRouter(e *gin.Engine) {
-	iService := service.CmsSubjectService{}
-	iApi := api.CmsSubjectApi{
-		Service: iService,
-	}
+	db := config.GetDb()
+	iService := service.CmsSubjectService{DB: db}
+	iApi := api.CmsSubjectApi{Service: iService}
 	subject := e.Group("/subject")
 	{
 		subject.GET("/listAll", iApi.ListAll)

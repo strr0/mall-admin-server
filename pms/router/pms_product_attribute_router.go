@@ -2,6 +2,7 @@ package router
 
 import (
 	"github.com/gin-gonic/gin"
+	"mall-admin-server/config"
 	"mall-admin-server/pms/api"
 	"mall-admin-server/pms/service"
 )
@@ -11,10 +12,9 @@ func init() {
 }
 
 func registerPmsProductAttributeRouter(e *gin.Engine) {
-	iService := service.PmsProductAttributeService{}
-	iApi := api.PmsProductAttributeApi{
-		Service: iService,
-	}
+	db := config.GetDb()
+	iService := service.PmsProductAttributeService{DB: db}
+	iApi := api.PmsProductAttributeApi{Service: iService}
 	attribute := e.Group("/productAttribute")
 	{
 		attribute.GET("/list/:cid", iApi.List)

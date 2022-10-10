@@ -2,6 +2,7 @@ package router
 
 import (
 	"github.com/gin-gonic/gin"
+	"mall-admin-server/config"
 	"mall-admin-server/pms/api"
 	"mall-admin-server/pms/service"
 )
@@ -11,10 +12,9 @@ func init() {
 }
 
 func registerPmsBrandRouter(e *gin.Engine) {
-	iService := service.PmsBrandService{}
-	iApi := api.PmsBrandApi{
-		Service: iService,
-	}
+	db := config.GetDb()
+	iService := service.PmsBrandService{DB: db}
+	iApi := api.PmsBrandApi{Service: iService}
 	brand := e.Group("/brand")
 	{
 		brand.GET("/listAll", iApi.ListAll)

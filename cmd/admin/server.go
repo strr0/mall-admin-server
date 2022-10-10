@@ -3,15 +3,11 @@ package admin
 import (
 	"github.com/gin-gonic/gin"
 	"github.com/spf13/cobra"
-	cmsq "mall-admin-server/cms/query"
-	cmsr "mall-admin-server/cms/router"
-	"mall-admin-server/config"
-	omsq "mall-admin-server/oms/query"
-	omsr "mall-admin-server/oms/router"
-	pmsq "mall-admin-server/pms/query"
-	pmsr "mall-admin-server/pms/router"
-	smsr "mall-admin-server/sms/router"
-	umsr "mall-admin-server/ums/router"
+	cms "mall-admin-server/cms/router"
+	oms "mall-admin-server/oms/router"
+	pms "mall-admin-server/pms/router"
+	sms "mall-admin-server/sms/router"
+	ums "mall-admin-server/ums/router"
 )
 
 var StartCmd = &cobra.Command{
@@ -23,24 +19,16 @@ var StartCmd = &cobra.Command{
 	},
 }
 
-func initQuery() {
-	db := config.GetDb()
-	cmsq.SetDefault(db)
-	omsq.SetDefault(db)
-	pmsq.SetDefault(db)
-}
-
 func initRouter() {
 	e := gin.Default()
-	cmsr.InitRouter(e)
-	omsr.InitRouter(e)
-	pmsr.InitRouter(e)
-	smsr.InitRouter(e)
-	umsr.InitRouter(e)
+	cms.InitRouter(e)
+	oms.InitRouter(e)
+	pms.InitRouter(e)
+	sms.InitRouter(e)
+	ums.InitRouter(e)
 	_ = e.Run()
 }
 
 func run() {
-	initQuery()
 	initRouter()
 }

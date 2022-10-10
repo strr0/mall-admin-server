@@ -2,6 +2,7 @@ package router
 
 import (
 	"github.com/gin-gonic/gin"
+	"mall-admin-server/config"
 	"mall-admin-server/oms/api"
 	"mall-admin-server/oms/service"
 )
@@ -11,10 +12,9 @@ func init() {
 }
 
 func registerOmsOrderRouter(e *gin.Engine) {
-	iService := service.OmsOrderService{}
-	iApi := api.OmsOrderApi{
-		Service: iService,
-	}
+	db := config.GetDb()
+	iService := service.OmsOrderService{DB: db}
+	iApi := api.OmsOrderApi{Service: iService}
 	order := e.Group("/order")
 	{
 		order.GET("/list", iApi.List)

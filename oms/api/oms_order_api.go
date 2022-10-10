@@ -39,7 +39,7 @@ func (iApi OmsOrderApi) Delivery(ctx *gin.Context) {
 func (iApi OmsOrderApi) Close(ctx *gin.Context) {
 	ids := ctx.PostFormArray("ids")
 	note := ctx.PostForm("note")
-	err := iApi.Service.Clone(ids, note)
+	err := iApi.Service.Close(ids, note)
 	if err != nil {
 		ctx.JSON(http.StatusOK, util.Failed("操作失败"))
 		return

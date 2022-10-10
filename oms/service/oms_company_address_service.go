@@ -1,19 +1,20 @@
 package service
 
 import (
+	"gorm.io/gorm"
 	"mall-admin-server/oms/model"
-	"mall-admin-server/oms/query"
 )
 
 // 收货地址管理
 type OmsCompanyAddressService struct {
-	//
+	DB *gorm.DB
 }
 
-func (OmsCompanyAddressService) List() []*model.OmsCompanyAddress {
-	find, err := query.OmsCompanyAddress.Find()
-	if err != nil {
+func (iService OmsCompanyAddressService) List() []model.OmsCompanyAddress {
+	var list []model.OmsCompanyAddress
+	result := iService.DB.Find(&list)
+	if result.Error != nil {
 		return nil
 	}
-	return find
+	return list
 }

@@ -1,33 +1,25 @@
 package service
 
 import (
+	"gorm.io/gorm"
 	"mall-admin-server/oms/model"
-	"mall-admin-server/oms/query"
-	"mall-admin-server/util"
 )
 
 // 订单设置管理
 type OmsOrderSettingService struct {
-	//
+	DB *gorm.DB
 }
 
-func (OmsOrderSettingService) GetItem(idStr string) *model.OmsOrderSetting {
-	id, err := util.ParseInt64WithErr(idStr)
-	if err != nil {
+func (iService OmsOrderSettingService) GetItem(id string) *model.OmsOrderSetting {
+	var omsOrderSetting model.OmsOrderSetting
+	result := iService.DB.First(&omsOrderSetting, id)
+	if result.Error != nil {
 		return nil
 	}
-	first, err := query.OmsOrderSetting.Where(query.OmsOrderSetting.ID.Eq(id)).First()
-	if err != nil {
-		return nil
-	}
-	return first
+	return &omsOrderSetting
 }
 
-func (OmsOrderSettingService) Update(idStr string, omsOrderSetting model.OmsOrderSetting) error {
-	id, err := util.ParseInt64WithErr(idStr)
-	if err != nil {
-		return err
-	}
-	_, err = query.OmsOrderSetting.Where(query.OmsOrderSetting.ID.Eq(id)).Updates(omsOrderSetting)
-	return err
+func (iService OmsOrderSettingService) Update(idStr string, omsOrderSetting model.OmsOrderSetting) error {
+	result := iService.DB.Save(&omsOrderSetting)
+	return result.Error
 }

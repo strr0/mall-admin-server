@@ -1,24 +1,24 @@
 package service
 
 import (
+	"gorm.io/gorm"
 	"mall-admin-server/pms/model"
-	"mall-admin-server/pms/query"
 	"mall-admin-server/pms/service/dto"
 	"mall-admin-server/util"
 )
 
 // 商品分类管理
 type PmsProductCategoryService struct {
-	//
+	DB *gorm.DB
 }
 
 func (iService PmsProductCategoryService) Create(pmsProductCategoryDto dto.PmsProductCategoryDto) error {
 	pmsProductCategory := pmsProductCategoryDto.PmsProductCategory
 	pmsProductCategory.ProductCount = 0
 	iService.setCategoryLevel(&pmsProductCategory)
-	err := query.PmsProductCategory.Create(&pmsProductCategory)
-	if err != nil {
-		return err
+	result := iService.DB.Create(&pmsProductCategory)
+	if result.Error != nil {
+		return result.Error
 	}
 	// 创建关联属性
 	if len(pmsProductCategoryDto.ProductAttributeIdList) > 0 {
@@ -30,122 +30,82 @@ func (iService PmsProductCategoryService) Create(pmsProductCategoryDto dto.PmsPr
 	return nil
 }
 
-func (iService PmsProductCategoryService) Update(idStr string, pmsProductCategoryDto dto.PmsProductCategoryDto) error {
-	id, err := util.ParseInt64WithErr(idStr)
-	if err != nil {
-		return err
-	}
+func (iService PmsProductCategoryService) Update(id string, pmsProductCategoryDto dto.PmsProductCategoryDto) error {
 	pmsProductCategory := pmsProductCategoryDto.PmsProductCategory
 	iService.setCategoryLevel(&pmsProductCategory)
 	// 更新商品的分类名称
-	var pmsProduct model.PmsProduct
-	pmsProduct.ProductCategoryName = pmsProductCategory.Name
-	_, err = query.PmsProduct.Where(query.PmsProduct.ProductCategoryID.Eq(id)).Updates(pmsProduct)
-	if err != nil {
-		return err
+	result := iService.DB.Model(&model.PmsProduct{}).Where("product_category_id = ?", pmsProductCategoryDto.ID).Update("product_category_name", pmsProductCategory.Name)
+	if result.Error != nil {
+		return result.Error
 	}
 	// 更新关联属性
-	_, err = query.PmsProductCategoryAttributeRelation.Where(query.PmsProductCategoryAttributeRelation.ProductCategoryID.Eq(id)).Delete()
-	if err != nil {
-		return err
+	result = iService.DB.Where("product_category_id = ?", pmsProductCategoryDto.ID).Delete(&model.PmsProductCategoryAttributeRelation{})
+	if result.Error != nil {
+		return result.Error
 	}
 	if len(pmsProductCategoryDto.ProductAttributeIdList) > 0 {
-		err = iService.insertRelationList(id, pmsProductCategoryDto.ProductAttributeIdList)
+		err := iService.insertRelationList(pmsProductCategoryDto.ID, pmsProductCategoryDto.ProductAttributeIdList)
 		if err != nil {
 			return err
 		}
 	}
-	_, err = query.PmsProductCategory.Where(query.PmsProductCategory.ID.Eq(id)).Updates(pmsProductCategory)
-	return err
+	result = iService.DB.Save(&pmsProductCategory)
+	return result.Error
 }
 
-func (PmsProductCategoryService) List(parentIdStr, pageStr, sizeStr string) ([]*model.PmsProductCategory, int64) {
-	parentId, err := util.ParseInt64WithErr(parentIdStr)
-	if err != nil {
-		return nil, 0
-	}
+func (iService PmsProductCategoryService) List(parentId, pageStr, sizeStr string) ([]model.PmsProductCategory, int64) {
 	page := util.ParseInt(pageStr, 1)
 	size := util.ParseInt(sizeStr, 10)
 	offset := (page - 1) * size
-	pmsProductCategoryDo := query.PmsProductCategory.Where(query.PmsProductCategory.ParentID.Eq(parentId))
-	total, err := pmsProductCategoryDo.Count()
-	if err != nil {
+	where := iService.DB.Where("parent_id = ?", parentId)
+	var count int64
+	result := where.Model(&model.PmsProductCategory{}).Count(&count)
+	if result.Error != nil {
 		return nil, 0
 	}
-	find, err := pmsProductCategoryDo.Offset(offset).Limit(size).Find()
-	if err != nil {
-		return nil, total
+	var list []model.PmsProductCategory
+	result = where.Offset(offset).Limit(size).Find(&list)
+	if result.Error != nil {
+		return nil, count
 	}
-	return find, total
+	return list, count
 }
 
-func (PmsProductCategoryService) Delete(idStr string) error {
-	id, err := util.ParseInt64WithErr(idStr)
-	if err != nil {
-		return err
-	}
-	_, err = query.PmsProductCategory.Where(query.PmsProductCategory.ID.Eq(id)).Delete()
-	return err
+func (iService PmsProductCategoryService) Delete(id string) error {
+	result := iService.DB.Delete(&model.PmsProductCategory{}, id)
+	return result.Error
 }
 
-func (PmsProductCategoryService) GetItem(idStr string) *model.PmsProductCategory {
-	id, err := util.ParseInt64WithErr(idStr)
-	if err != nil {
+func (iService PmsProductCategoryService) GetItem(id string) *model.PmsProductCategory {
+	var pmsProductCategory model.PmsProductCategory
+	result := iService.DB.First(&pmsProductCategory, id)
+	if result.Error != nil {
 		return nil
 	}
-	first, err := query.PmsProductCategory.Where(query.PmsProductCategory.ID.Eq(id)).First()
-	if err != nil {
-		return nil
-	}
-	return first
+	return &pmsProductCategory
 }
 
-func (PmsProductCategoryService) UpdateNavStatus(idsStr []string, navStatusStr string) error {
-	ids := make([]int64, 0)
-	for _, idStr := range idsStr {
-		id, err := util.ParseInt64WithErr(idStr)
-		if err == nil {
-			ids = append(ids, id)
-		}
-	}
-	navStatus, err := util.ParseInt32WithErr(navStatusStr)
-	if err != nil {
-		return err
-	}
-	var pmsProductCategory model.PmsProductCategory
-	pmsProductCategory.NavStatus = navStatus
-	_, err = query.PmsProductCategory.Where(query.PmsProductCategory.ID.In(ids...)).Updates(pmsProductCategory)
-	return err
+func (iService PmsProductCategoryService) UpdateNavStatus(ids []string, navStatus string) error {
+	result := iService.DB.Model(&model.PmsProductCategory{}).Where("id in ?", ids).Update("nav_status", navStatus)
+	return result.Error
 }
 
-func (PmsProductCategoryService) UpdateShowStatus(idsStr []string, showStatusStr string) error {
-	ids := make([]int64, 0)
-	for _, idStr := range idsStr {
-		id, err := util.ParseInt64WithErr(idStr)
-		if err == nil {
-			ids = append(ids, id)
-		}
-	}
-	showStatus, err := util.ParseInt32WithErr(showStatusStr)
-	if err != nil {
-		return err
-	}
-	var pmsProductCategory model.PmsProductCategory
-	pmsProductCategory.ShowStatus = showStatus
-	_, err = query.PmsProductCategory.Where(query.PmsProductCategory.ID.In(ids...)).Updates(pmsProductCategory)
-	return err
+func (iService PmsProductCategoryService) UpdateShowStatus(ids []string, showStatus string) error {
+	result := iService.DB.Model(&model.PmsProductCategory{}).Where("id in ?", ids).Update("show_status", showStatus)
+	return result.Error
 }
 
-func (PmsProductCategoryService) TreeList() []*dto.PmsProductCategoryTreeDto {
-	find, err := query.PmsProductCategory.Find()
-	if err != nil {
+func (iService PmsProductCategoryService) TreeList() []*dto.PmsProductCategoryTreeDto {
+	var list []model.PmsProductCategory
+	result := iService.DB.Find(&list)
+	if result.Error != nil {
 		return nil
 	}
 	categoryMap := make(map[int64]*dto.PmsProductCategoryTreeDto)
 	res := make([]*dto.PmsProductCategoryTreeDto, 0)
-	for _, category := range find {
+	for _, category := range list {
 		categoryDto := dto.PmsProductCategoryTreeDto{
-			PmsProductCategory: *category,
+			PmsProductCategory: category,
 			Children:           make([]dto.PmsProductCategoryTreeDto, 0),
 		}
 		categoryMap[category.ID] = &categoryDto
@@ -161,28 +121,29 @@ func (PmsProductCategoryService) TreeList() []*dto.PmsProductCategoryTreeDto {
 }
 
 // 创建关联属性
-func (PmsProductCategoryService) insertRelationList(productCategoryId int64, productAttributeIdList []int64) error {
-	values := make([]*model.PmsProductCategoryAttributeRelation, 0)
+func (iService PmsProductCategoryService) insertRelationList(productCategoryId int64, productAttributeIdList []int64) error {
 	for _, productAttributeId := range productAttributeIdList {
-		values = append(values, &model.PmsProductCategoryAttributeRelation{
+		rel := model.PmsProductCategoryAttributeRelation{
 			ProductAttributeID: productAttributeId,
 			ProductCategoryID:  productCategoryId,
-		})
+		}
+		_ = iService.DB.Create(&rel)
 	}
-	return query.PmsProductCategoryAttributeRelation.Create(values...)
+	return nil
 }
 
 // 设置分类level
-func (PmsProductCategoryService) setCategoryLevel(pmsProductCategory *model.PmsProductCategory) {
+func (iService PmsProductCategoryService) setCategoryLevel(pmsProductCategory *model.PmsProductCategory) {
 	if pmsProductCategory.ParentID == 0 {
 		pmsProductCategory.Level = 0
 	} else {
-		first, err := query.PmsProductCategory.Where(query.PmsProductCategory.ID.Eq(pmsProductCategory.ParentID)).First()
-		if err != nil {
+		var parent model.PmsProductCategory
+		result := iService.DB.First(&parent, pmsProductCategory.ParentID)
+		if result.Error != nil {
 			return
 		}
-		if first != nil {
-			pmsProductCategory.Level = first.Level + 1
+		if parent.ID != 0 {
+			pmsProductCategory.Level = parent.Level + 1
 		} else {
 			pmsProductCategory.Level = 0
 		}

@@ -1,82 +1,60 @@
 package service
 
 import (
+	"gorm.io/gorm"
 	"mall-admin-server/oms/model"
-	"mall-admin-server/oms/query"
 	"mall-admin-server/util"
 	"time"
 )
 
 // 订单原因管理
 type OmsOrderReturnReasonService struct {
-	//
+	DB *gorm.DB
 }
 
-func (OmsOrderReturnReasonService) Create(omsOrderReturnReason model.OmsOrderReturnReason) error {
+func (iService OmsOrderReturnReasonService) Create(omsOrderReturnReason model.OmsOrderReturnReason) error {
 	omsOrderReturnReason.CreateTime = time.Now()
-	return query.OmsOrderReturnReason.Create(&omsOrderReturnReason)
+	result := iService.DB.Create(&omsOrderReturnReason)
+	return result.Error
 }
 
-func (OmsOrderReturnReasonService) Update(idStr string, omsOrderReturnReason model.OmsOrderReturnReason) error {
-	id, err := util.ParseInt64WithErr(idStr)
-	if err != nil {
-		return err
-	}
-	_, err = query.OmsOrderReturnReason.Where(query.OmsOrderReturnReason.ID.Eq(id)).Updates(omsOrderReturnReason)
-	return err
+func (iService OmsOrderReturnReasonService) Update(idStr string, omsOrderReturnReason model.OmsOrderReturnReason) error {
+	result := iService.DB.Save(&omsOrderReturnReason)
+	return result.Error
 }
 
-func (OmsOrderReturnReasonService) Delete(idsStr []string) error {
-	ids := make([]int64, 0)
-	for _, idStr := range idsStr {
-		id, err := util.ParseInt64WithErr(idStr)
-		if err == nil {
-			ids = append(ids, id)
-		}
-	}
-	_, err := query.OmsOrderReturnReason.Where(query.OmsOrderReturnReason.ID.In(ids...)).Delete()
-	return err
+func (iService OmsOrderReturnReasonService) Delete(ids []string) error {
+	result := iService.DB.Delete(&model.OmsOrderReturnReason{}, ids)
+	return result.Error
 }
 
-func (OmsOrderReturnReasonService) List(pageStr, sizeStr string) ([]*model.OmsOrderReturnReason, int64) {
+func (iService OmsOrderReturnReasonService) List(pageStr, sizeStr string) ([]model.OmsOrderReturnReason, int64) {
 	page := util.ParseInt(pageStr, 1)
 	size := util.ParseInt(sizeStr, 10)
 	offset := (page - 1) * size
-	count, err := query.OmsOrderReturnReason.Count()
-	if err != nil {
+	var count int64
+	result := iService.DB.Model(&model.OmsOrderReturnReason{}).Count(&count)
+	if result.Error != nil {
 		return nil, 0
 	}
-	find, err := query.OmsOrderReturnReason.Order(query.OmsOrderReturnReason.Sort.Desc()).Offset(offset).Limit(size).Find()
-	if err != nil {
+	var list []model.OmsOrderReturnReason
+	result = iService.DB.Offset(offset).Limit(size).Find(&list)
+	if result.Error != nil {
 		return nil, count
 	}
-	return find, count
+	return list, count
 }
 
-func (OmsOrderReturnReasonService) UpdateStatus(idsStr []string, statusStr string) error {
-	ids := make([]int64, 0)
-	for _, idStr := range idsStr {
-		id, err := util.ParseInt64WithErr(idStr)
-		if err == nil {
-			ids = append(ids, id)
-		}
-	}
-	status, err := util.ParseInt32WithErr(statusStr)
-	if err != nil {
-		return err
-	}
-	_, err = query.OmsOrderReturnReason.Where(query.OmsOrderReturnReason.ID.In(ids...)).Update(query.OmsOrderReturnReason.Status, status)
-	return err
+func (iService OmsOrderReturnReasonService) UpdateStatus(ids []string, status string) error {
+	result := iService.DB.Model(&model.OmsOrderReturnReason{}).Where("id in ?", ids).Update("status", status)
+	return result.Error
 }
 
-func (OmsOrderReturnReasonService) GetItem(idStr string) *model.OmsOrderReturnReason {
-	id, err := util.ParseInt64WithErr(idStr)
-	if err != nil {
+func (iService OmsOrderReturnReasonService) GetItem(id string) *model.OmsOrderReturnReason {
+	var omsOrderReturnReason model.OmsOrderReturnReason
+	result := iService.DB.First(&omsOrderReturnReason, id)
+	if result.Error != nil {
 		return nil
 	}
-	first, err := query.OmsOrderReturnReason.Where(query.OmsOrderReturnReason.ID.Eq(id)).First()
-	if err != nil {
-		return nil
-	}
-	return first
+	return &omsOrderReturnReason
 }

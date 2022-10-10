@@ -1,9 +1,8 @@
 package service
 
 import (
-	"gorm.io/gen"
+	"gorm.io/gorm"
 	"mall-admin-server/oms/model"
-	"mall-admin-server/oms/query"
 	"mall-admin-server/oms/service/dto"
 	"mall-admin-server/util"
 	"time"
@@ -11,65 +10,64 @@ import (
 
 // 订单退货管理
 type OmsOrderReturnApplyService struct {
-	//
+	DB *gorm.DB
 }
 
-func (OmsOrderReturnApplyService) List(queryDto dto.OmsOrderReturnApplyQueryDto, pageStr, sizeStr string) ([]*model.OmsOrderReturnApply, int64) {
+func (iService OmsOrderReturnApplyService) List(queryDto dto.OmsOrderReturnApplyQueryDto, pageStr, sizeStr string) ([]model.OmsOrderReturnApply, int64) {
 	page := util.ParseInt(pageStr, 1)
 	size := util.ParseInt(sizeStr, 10)
 	offset := (page - 1) * size
-	omsOrderReturnApply := query.OmsOrderReturnApply
-	conds := make([]gen.Condition, 0)
+	funcs := make([]func(*gorm.DB) *gorm.DB, 0)
 	if queryDto.Id != 0 {
-		conds = append(conds, omsOrderReturnApply.ID.Eq(queryDto.Id))
+		funcs = append(funcs, func(db *gorm.DB) *gorm.DB {
+			return db.Where("id = ?", queryDto.Id)
+		})
 	}
 	if queryDto.Status != 0 {
-		conds = append(conds, omsOrderReturnApply.Status.Eq(queryDto.Status))
+		funcs = append(funcs, func(db *gorm.DB) *gorm.DB {
+			return db.Where("status = ?", queryDto.Status)
+		})
 	}
 	if queryDto.HandleMan != "" {
-		conds = append(conds, omsOrderReturnApply.HandleMan.Eq(queryDto.HandleMan))
+		funcs = append(funcs, func(db *gorm.DB) *gorm.DB {
+			return db.Where("handle_man = ?", queryDto.HandleMan)
+		})
 	}
 	if !queryDto.CreateTime.IsZero() {
-		conds = append(conds, omsOrderReturnApply.CreateTime.Gte(queryDto.CreateTime))
+		funcs = append(funcs, func(db *gorm.DB) *gorm.DB {
+			return db.Where("create_time >= ?", queryDto.CreateTime)
+		})
 	}
 	if !queryDto.HandleTime.IsZero() {
-		conds = append(conds, omsOrderReturnApply.HandleTime.Gte(queryDto.HandleTime))
+		funcs = append(funcs, func(db *gorm.DB) *gorm.DB {
+			return db.Where("handle_time >= ?", queryDto.HandleTime)
+		})
 	}
 	if queryDto.ReceiverKeyword != "" {
-		conds = append(conds, omsOrderReturnApply.Or(
-			omsOrderReturnApply.ReturnName.Like("%"+queryDto.ReceiverKeyword+"%"),
-			omsOrderReturnApply.ReturnPhone.Like("%"+queryDto.ReceiverKeyword+"%"),
-		))
+		funcs = append(funcs, func(db *gorm.DB) *gorm.DB {
+			return db.Where("(return_name like ? or return_phone like ?)", "%"+queryDto.ReceiverKeyword+"%", "%"+queryDto.ReceiverKeyword+"%")
+		})
 	}
-	omsOrderReturnApplyDo := omsOrderReturnApply.Where(conds...)
-	count, err := omsOrderReturnApplyDo.Count()
-	if err != nil {
+	scopes := iService.DB.Scopes(funcs...)
+	var count int64
+	result := scopes.Model(&model.OmsOrderReturnApply{}).Count(&count)
+	if result.Error != nil {
 		return nil, 0
 	}
-	find, err := omsOrderReturnApplyDo.Offset(offset).Limit(size).Find()
-	if err != nil {
+	var list []model.OmsOrderReturnApply
+	result = scopes.Offset(offset).Limit(size).Find(&list)
+	if result.Error != nil {
 		return nil, count
 	}
-	return find, count
+	return list, count
 }
 
-func (OmsOrderReturnApplyService) Delete(idsStr []string) error {
-	ids := make([]int64, 0)
-	for _, idStr := range idsStr {
-		id, err := util.ParseInt64WithErr(idStr)
-		if err == nil {
-			ids = append(ids, id)
-		}
-	}
-	_, err := query.OmsOrderReturnApply.Where(query.OmsOrderReturnApply.ID.In(ids...)).Delete()
-	return err
+func (iService OmsOrderReturnApplyService) Delete(ids []string) error {
+	result := iService.DB.Delete(&model.OmsOrderReturnApply{}, ids)
+	return result.Error
 }
 
-func (OmsOrderReturnApplyService) UpdateStatus(idStr string, statusDto dto.OmsUpdateStatusDto) error {
-	id, err := util.ParseInt64WithErr(idStr)
-	if err != nil {
-		return err
-	}
+func (iService OmsOrderReturnApplyService) UpdateStatus(idStr string, statusDto dto.OmsUpdateStatusDto) error {
 	var returnApply model.OmsOrderReturnApply
 	switch statusDto.Status {
 	case 1:
@@ -90,20 +88,14 @@ func (OmsOrderReturnApplyService) UpdateStatus(idStr string, statusDto dto.OmsUp
 		returnApply.HandleMan = statusDto.HandleMan
 		returnApply.HandleNote = statusDto.HandleNote
 	}
-	_, err = query.OmsOrderReturnApply.Where(query.OmsOrderReturnApply.ID.Eq(id)).Updates(returnApply)
-	return err
+	result := iService.DB.Save(&returnApply)
+	return result.Error
 }
 
-func (OmsOrderReturnApplyService) GetItem(idStr string) *dto.OmsOrderReturnApplyDto {
-	apply := query.OmsOrderReturnApply
-	address := query.OmsCompanyAddress
-	id, err := util.ParseInt64WithErr(idStr)
-	if err != nil {
-		return nil
-	}
+func (iService OmsOrderReturnApplyService) GetItem(id string) *dto.OmsOrderReturnApplyDto {
 	var omsOrderReturnApplyDto dto.OmsOrderReturnApplyDto
-	err = apply.LeftJoin(address, address.ID.EqCol(apply.CompanyAddressID)).Where(apply.ID.Eq(id)).Scan(&omsOrderReturnApplyDto)
-	if err != nil {
+	result := iService.DB.Table("oms_order_return_apply t1").Select("t1.*, t2.*").Joins("left join oms_company_address t2 on t1.company_address_id = t2.id").Where("t1.apply_id = ?", id).Scan(&omsOrderReturnApplyDto)
+	if result.Error != nil {
 		return nil
 	}
 	return &omsOrderReturnApplyDto

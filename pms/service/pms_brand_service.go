@@ -1,136 +1,94 @@
 package service
 
 import (
-	"gorm.io/gen"
+	"gorm.io/gorm"
 	"mall-admin-server/pms/model"
-	"mall-admin-server/pms/query"
 	"mall-admin-server/util"
 )
 
 // 商品品牌管理
 type PmsBrandService struct {
-	//
+	DB *gorm.DB
 }
 
-func (PmsBrandService) ListAll() []*model.PmsBrand {
-	find, err := query.PmsBrand.Find()
-	if err != nil {
+func (iService PmsBrandService) ListAll() []model.PmsBrand {
+	var list []model.PmsBrand
+	result := iService.DB.Find(&list)
+	if result.Error != nil {
 		return nil
 	}
-	return find
+	return list
 }
 
-func (PmsBrandService) Create(pmsBrand model.PmsBrand) error {
+func (iService PmsBrandService) Create(pmsBrand model.PmsBrand) error {
 	if pmsBrand.FirstLetter == "" {
 		pmsBrand.FirstLetter = string(pmsBrand.Name[0])
 	}
-	return query.PmsBrand.Create(&pmsBrand)
+	result := iService.DB.Create(&pmsBrand)
+	return result.Error
 }
 
-func (PmsBrandService) Update(idStr string, pmsBrand model.PmsBrand) error {
-	id, err := util.ParseInt64WithErr(idStr)
-	if err != nil {
-		return err
-	}
+func (iService PmsBrandService) Update(id string, pmsBrand model.PmsBrand) error {
 	if pmsBrand.FirstLetter == "" {
 		pmsBrand.FirstLetter = string(pmsBrand.Name[0])
 	}
-	_, err = query.PmsBrand.Where(query.PmsBrand.ID.Eq(id)).Updates(pmsBrand)
-	if err != nil {
-		return err
+	result := iService.DB.Save(&pmsBrand)
+	if result.Error != nil {
+		return result.Error
 	}
-	var pmsProduct model.PmsProduct
-	pmsProduct.BrandName = pmsBrand.Name
-	_, err = query.PmsProduct.Where(query.PmsProduct.BrandID.Eq(id)).Updates(pmsProduct)
-	return err
+	result = iService.DB.Model(&model.PmsProduct{}).Where("brand_id = ?", id).Update("brand_name", pmsBrand.Name)
+	return result.Error
 }
 
-func (PmsBrandService) Delete(idStr string) error {
-	id, err := util.ParseInt64WithErr(idStr)
-	if err != nil {
-		return err
-	}
-	_, err = query.PmsBrand.Where(query.PmsBrand.ID.Eq(id)).Delete()
-	return err
+func (iService PmsBrandService) Delete(id string) error {
+	result := iService.DB.Delete(&model.PmsBrand{}, id)
+	return result.Error
 }
 
-func (PmsBrandService) DeleteBrand(idsStr []string) error {
-	ids := make([]int64, 0)
-	for _, idStr := range idsStr {
-		id, err := util.ParseInt64WithErr(idStr)
-		if err == nil {
-			ids = append(ids, id)
-		}
-	}
-	_, err := query.PmsBrand.Where(query.PmsBrand.ID.In(ids...)).Delete()
-	return err
+func (iService PmsBrandService) DeleteBrand(ids []string) error {
+	result := iService.DB.Delete(&model.PmsBrand{}, ids)
+	return result.Error
 }
 
-func (PmsBrandService) List(keyword, pageStr, sizeStr string) ([]*model.PmsBrand, int64) {
+func (iService PmsBrandService) List(keyword, pageStr, sizeStr string) ([]model.PmsBrand, int64) {
 	page := util.ParseInt(pageStr, 1)
 	size := util.ParseInt(sizeStr, 10)
 	offset := (page - 1) * size
-	pmsBrand := query.PmsBrand
-	conds := make([]gen.Condition, 0)
+	funcs := make([]func(*gorm.DB) *gorm.DB, 0)
 	if keyword != "" {
-		conds = append(conds, query.PmsBrand.Name.Like("%"+keyword+"%"))
+		funcs = append(funcs, func(db *gorm.DB) *gorm.DB {
+			return db.Where("name like ?", "%"+keyword+"%")
+		})
 	}
-	pmsBrandDo := pmsBrand.Where(conds...)
-	total, err := pmsBrandDo.Count()
-	if err != nil {
+	scopes := iService.DB.Scopes(funcs...)
+	var count int64
+	result := scopes.Model(&model.PmsBrand{}).Count(&count)
+	if result.Error != nil {
 		return nil, 0
 	}
-	find, err := pmsBrandDo.Offset(offset).Limit(size).Find()
-	if err != nil {
-		return nil, total
+	var list []model.PmsBrand
+	result = scopes.Offset(offset).Limit(size).Find(&list)
+	if result.Error != nil {
+		return nil, count
 	}
-	return find, total
+	return list, count
 }
 
-func (PmsBrandService) GetItem(idStr string) *model.PmsBrand {
-	id, err := util.ParseInt64WithErr(idStr)
-	if err != nil {
+func (iService PmsBrandService) GetItem(id string) *model.PmsBrand {
+	var pmsBrand model.PmsBrand
+	result := iService.DB.First(&pmsBrand, id)
+	if result.Error != nil {
 		return nil
 	}
-	first, err := query.PmsBrand.Where(query.PmsBrand.ID.Eq(id)).First()
-	if err != nil {
-		return nil
-	}
-	return first
+	return &pmsBrand
 }
 
-func (PmsBrandService) UpdateShowStatus(idsStr []string, showStatusStr string) error {
-	ids := make([]int64, 0)
-	for _, idStr := range idsStr {
-		id, err := util.ParseInt64WithErr(idStr)
-		if err == nil {
-			ids = append(ids, id)
-		}
-	}
-	showStatus, err := util.ParseInt32WithErr(showStatusStr)
-	if err != nil {
-		return err
-	}
-	var pmsBrand model.PmsBrand
-	pmsBrand.ShowStatus = showStatus
-	_, err = query.PmsBrand.Where(query.PmsBrand.ID.In(ids...)).Updates(pmsBrand)
-	return err
+func (iService PmsBrandService) UpdateShowStatus(ids []string, showStatus string) error {
+	result := iService.DB.Model(&model.PmsBrand{}).Where("id in ?", ids).Update("show_status", showStatus)
+	return result.Error
 }
 
-func (PmsBrandService) UpdateFactoryStatus(idsStr []string, factoryStatusStr string) error {
-	ids := make([]int64, 0)
-	for _, idStr := range idsStr {
-		id, err := util.ParseInt64WithErr(idStr)
-		if err == nil {
-			ids = append(ids, id)
-		}
-	}
-	factoryStatus, err := util.ParseInt32WithErr(factoryStatusStr)
-	if err != nil {
-		return err
-	}
-	var pmsBrand model.PmsBrand
-	pmsBrand.FactoryStatus = factoryStatus
-	_, err = query.PmsBrand.Where(query.PmsBrand.ID.In(ids...)).Updates(pmsBrand)
-	return err
+func (iService PmsBrandService) UpdateFactoryStatus(ids []string, factoryStatus string) error {
+	result := iService.DB.Model(&model.PmsBrand{}).Where("id in ?", ids).Update("factory_status", factoryStatus)
+	return result.Error
 }

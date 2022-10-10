@@ -1,75 +1,65 @@
 package service
 
 import (
+	"gorm.io/gorm"
 	"mall-admin-server/pms/model"
-	"mall-admin-server/pms/query"
 	"mall-admin-server/pms/service/dto"
 	"mall-admin-server/util"
 )
 
 // 商品属性分类管理
 type PmsProductAttributeCategoryService struct {
-	//
+	DB *gorm.DB
 }
 
-func (PmsProductAttributeCategoryService) Create(name string) error {
+func (iService PmsProductAttributeCategoryService) Create(name string) error {
 	var pmsProductAttributeCategory model.PmsProductAttributeCategory
 	pmsProductAttributeCategory.Name = name
-	return query.PmsProductAttributeCategory.Create(&pmsProductAttributeCategory)
+	result := iService.DB.Create(&pmsProductAttributeCategory)
+	return result.Error
 }
 
-func (PmsProductAttributeCategoryService) Update(idStr, name string) error {
-	id, err := util.ParseInt64WithErr(idStr)
-	if err != nil {
-		return err
-	}
+func (iService PmsProductAttributeCategoryService) Update(id, name string) error {
+	result := iService.DB.Model(&model.PmsProductAttributeCategory{}).Where("id = ?", id).Update("name", name)
+	return result.Error
+}
+
+func (iService PmsProductAttributeCategoryService) Delete(id string) error {
+	result := iService.DB.Delete(&model.PmsProductAttributeCategory{}, id)
+	return result.Error
+}
+
+func (iService PmsProductAttributeCategoryService) GetItem(id string) *model.PmsProductAttributeCategory {
 	var pmsProductAttributeCategory model.PmsProductAttributeCategory
-	pmsProductAttributeCategory.Name = name
-	_, err = query.PmsProductAttributeCategory.Where(query.PmsProductAttributeCategory.ID.Eq(id)).Updates(pmsProductAttributeCategory)
-	return err
-}
-
-func (PmsProductAttributeCategoryService) Delete(idStr string) error {
-	id, err := util.ParseInt64WithErr(idStr)
-	if err != nil {
-		return err
-	}
-	_, err = query.PmsProductAttributeCategory.Where(query.PmsProductAttributeCategory.ID.Eq(id)).Delete()
-	return err
-}
-
-func (PmsProductAttributeCategoryService) GetItem(idStr string) *model.PmsProductAttributeCategory {
-	id, err := util.ParseInt64WithErr(idStr)
-	if err != nil {
+	result := iService.DB.First(&pmsProductAttributeCategory, id)
+	if result.Error != nil {
 		return nil
 	}
-	first, err := query.PmsProductAttributeCategory.Where(query.PmsProductAttributeCategory.ID.Eq(id)).First()
-	if err != nil {
-		return nil
-	}
-	return first
+	return &pmsProductAttributeCategory
 }
 
-func (PmsProductAttributeCategoryService) List(pageStr, sizeStr string) ([]*model.PmsProductAttributeCategory, int64) {
+func (iService PmsProductAttributeCategoryService) List(pageStr, sizeStr string) ([]model.PmsProductAttributeCategory, int64) {
 	page := util.ParseInt(pageStr, 1)
 	size := util.ParseInt(sizeStr, 10)
 	offset := (page - 1) * size
-	pmsProductAttributeCategory := query.PmsProductAttributeCategory
-	total, err := pmsProductAttributeCategory.Count()
-	if err != nil {
+	var count int64
+	result := iService.DB.Model(&model.PmsProductAttributeCategory{}).Count(&count)
+	if result.Error != nil {
 		return nil, 0
 	}
-	find, err := pmsProductAttributeCategory.Offset(offset).Limit(size).Find()
-	if err != nil {
-		return nil, total
+	var list []model.PmsProductAttributeCategory
+	result = iService.DB.Offset(offset).Limit(size).Find(&list)
+	if result.Error != nil {
+		return nil, count
 	}
-	return find, total
+	return list, count
 }
 
-func (PmsProductAttributeCategoryService) GetListWithAttr() []*dto.PmsProductAttributeCategoryDto {
-	attr, err := query.PmsProductAttributeCategory.GetListWithAttr()
-	if err != nil {
+func (iService PmsProductAttributeCategoryService) GetListWithAttr() []dto.PmsProductAttributeCategoryDto {
+	var list []dto.PmsProductAttributeCategoryDto
+	result := iService.DB.Raw("SELECT pac.id, pac.name, pa.id attr_id, pa.name attr_name FROM pms_product_attribute_category pac LEFT JOIN pms_product_attribute pa ON pac.id = pa.product_attribute_category_id AND pa.type=1").Scan(&list)
+	if result.Error != nil {
 		return nil
 	}
-	return attr
+	return list
 }

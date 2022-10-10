@@ -1,38 +1,34 @@
 package service
 
 import (
-	"gorm.io/gen"
+	"gorm.io/gorm"
 	"mall-admin-server/pms/model"
-	"mall-admin-server/pms/query"
-	"mall-admin-server/util"
 )
 
 // 商品SKU库存管理
 type PmsSkuStockService struct {
-	//
+	DB *gorm.DB
 }
 
-func (PmsSkuStockService) GetList(pidStr, keyword string) []*model.PmsSkuStock {
-	pid, err := util.ParseInt64WithErr(pidStr)
-	if err != nil {
-		return nil
-	}
-	pmsSkuStock := query.PmsSkuStock
-	conds := make([]gen.Condition, 0)
-	conds = append(conds, query.PmsSkuStock.ProductID.Eq(pid))
+func (iService PmsSkuStockService) GetList(pid, keyword string) []model.PmsSkuStock {
+	funcs := make([]func(*gorm.DB) *gorm.DB, 0)
+	funcs = append(funcs, func(db *gorm.DB) *gorm.DB {
+		return db.Where("product_id = ?", pid)
+	})
 	if keyword != "" {
-		conds = append(conds, query.PmsSkuStock.SkuCode.Like("%"+keyword+"%"))
+		funcs = append(funcs, func(db *gorm.DB) *gorm.DB {
+			return db.Where("sku_code like ?", "%"+keyword+"%")
+		})
 	}
-	find, err := pmsSkuStock.Where(conds...).Find()
-	if err != nil {
+	var list []model.PmsSkuStock
+	result := iService.DB.Scopes(funcs...).Find(&list)
+	if result.Error != nil {
 		return nil
 	}
-	return find
+	return list
 }
 
-func (PmsSkuStockService) Update(pmsSkuStocks []model.PmsSkuStock) error {
-	for _, pmsSkuStock := range pmsSkuStocks {
-		_ = query.PmsSkuStock.Create(&pmsSkuStock)
-	}
-	return nil
+func (iService PmsSkuStockService) Update(pmsSkuStocks []model.PmsSkuStock) error {
+	result := iService.DB.Save(&pmsSkuStocks)
+	return result.Error
 }

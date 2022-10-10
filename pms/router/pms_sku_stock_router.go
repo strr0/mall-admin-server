@@ -2,6 +2,7 @@ package router
 
 import (
 	"github.com/gin-gonic/gin"
+	"mall-admin-server/config"
 	"mall-admin-server/pms/api"
 	"mall-admin-server/pms/service"
 )
@@ -11,10 +12,9 @@ func init() {
 }
 
 func registerPmsSkuStockRouter(e *gin.Engine) {
-	iService := service.PmsSkuStockService{}
-	iApi := api.PmsSkuStockApi{
-		Service: iService,
-	}
+	db := config.GetDb()
+	iService := service.PmsSkuStockService{DB: db}
+	iApi := api.PmsSkuStockApi{Service: iService}
 	sku := e.Group("/sku")
 	{
 		sku.GET("/:pid", iApi.GetList)

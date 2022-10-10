@@ -1,42 +1,45 @@
 package service
 
 import (
-	"gorm.io/gen"
+	"gorm.io/gorm"
 	"mall-admin-server/cms/model"
-	"mall-admin-server/cms/query"
 	"mall-admin-server/util"
 )
 
 // 商品专题管理
 type CmsSubjectService struct {
-	//
+	DB *gorm.DB
 }
 
-func (CmsSubjectService) ListAll() []*model.CmsSubject {
-	find, err := query.CmsSubject.Find()
-	if err != nil {
+func (iService CmsSubjectService) ListAll() []model.CmsSubject {
+	var list []model.CmsSubject
+	result := iService.DB.Find(&list)
+	if result.Error != nil {
 		return nil
 	}
-	return find
+	return list
 }
 
-func (CmsSubjectService) List(keyword, pageStr, sizeStr string) ([]*model.CmsSubject, int64) {
+func (iService CmsSubjectService) List(keyword, pageStr, sizeStr string) ([]model.CmsSubject, int64) {
 	page := util.ParseInt(pageStr, 1)
 	size := util.ParseInt(sizeStr, 10)
 	offset := (page - 1) * size
-	cmsSubject := query.CmsSubject
-	conds := make([]gen.Condition, 0)
+	funcs := make([]func(*gorm.DB) *gorm.DB, 0)
 	if keyword != "" {
-		conds = append(conds, cmsSubject.Title.Like("%"+keyword+"%"))
+		funcs = append(funcs, func(db *gorm.DB) *gorm.DB {
+			return db.Where("title like ?", "%"+keyword+"%")
+		})
 	}
-	cmsSubjectDo := cmsSubject.Where(conds...)
-	count, err := cmsSubjectDo.Count()
-	if err != nil {
+	scopes := iService.DB.Scopes(funcs...)
+	var count int64
+	result := scopes.Model(&model.CmsSubject{}).Count(&count)
+	if result.Error != nil {
 		return nil, 0
 	}
-	find, err := cmsSubjectDo.Offset(offset).Limit(size).Find()
-	if err != nil {
+	var list []model.CmsSubject
+	result = scopes.Offset(offset).Limit(size).Find(&list)
+	if result.Error != nil {
 		return nil, count
 	}
-	return find, count
+	return list, count
 }

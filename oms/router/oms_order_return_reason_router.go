@@ -2,6 +2,7 @@ package router
 
 import (
 	"github.com/gin-gonic/gin"
+	"mall-admin-server/config"
 	"mall-admin-server/oms/api"
 	"mall-admin-server/oms/service"
 )
@@ -11,10 +12,9 @@ func init() {
 }
 
 func registerOmsOrderReturnReasonRouter(e *gin.Engine) {
-	iService := service.OmsOrderReturnReasonService{}
-	iApi := api.OmsOrderReturnReasonApi{
-		Service: iService,
-	}
+	db := config.GetDb()
+	iService := service.OmsOrderReturnReasonService{DB: db}
+	iApi := api.OmsOrderReturnReasonApi{Service: iService}
 	returnReason := e.Group("/returnReason")
 	{
 		returnReason.POST("/create", iApi.Create)
