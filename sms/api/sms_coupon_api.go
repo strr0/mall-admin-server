@@ -13,7 +13,17 @@ type SmsCouponApi struct {
 	Service service.SmsCouponService
 }
 
-// 添加优惠券
+// @Summary      添加优惠券
+// @Description  添加优惠券
+// @Tags         优惠券管理
+// @Accept       json
+// @Produce      json
+// @Param        smsCouponDto   query      dto.SmsCouponDto  false  "优惠券"
+// @Success      200  {object}  util.CommonResult
+// @Failure      400  {object}  util.CommonResult
+// @Failure      404  {object}  util.CommonResult
+// @Failure      500  {object}  util.CommonResult
+// @Router       /coupon/create [post]
 func (iApi SmsCouponApi) Create(ctx *gin.Context) {
 	var smsCouponDto dto.SmsCouponDto
 	_ = ctx.Bind(&smsCouponDto)
@@ -25,7 +35,17 @@ func (iApi SmsCouponApi) Create(ctx *gin.Context) {
 	ctx.JSON(http.StatusOK, util.Success("保存成功"))
 }
 
-// 删除优惠券
+// @Summary      删除优惠券
+// @Description  删除优惠券
+// @Tags         优惠券管理
+// @Accept       json
+// @Produce      json
+// @Param        id   path      string  false  "id"
+// @Success      200  {object}  util.CommonResult
+// @Failure      400  {object}  util.CommonResult
+// @Failure      404  {object}  util.CommonResult
+// @Failure      500  {object}  util.CommonResult
+// @Router       /coupon/delete/{id} [post]
 func (iApi SmsCouponApi) Delete(ctx *gin.Context) {
 	id := ctx.Param("id")
 	err := iApi.Service.Delete(id)
@@ -36,7 +56,18 @@ func (iApi SmsCouponApi) Delete(ctx *gin.Context) {
 	ctx.JSON(http.StatusOK, util.Success("删除成功"))
 }
 
-// 修改优惠券
+// @Summary      修改优惠券
+// @Description  修改优惠券
+// @Tags         优惠券管理
+// @Accept       json
+// @Produce      json
+// @Param        id   path      string  false  "id"
+// @Param        smsCouponDto   query      dto.SmsCouponDto  false  "优惠券"
+// @Success      200  {object}  util.CommonResult
+// @Failure      400  {object}  util.CommonResult
+// @Failure      404  {object}  util.CommonResult
+// @Failure      500  {object}  util.CommonResult
+// @Router       /coupon/update/{id} [post]
 func (iApi SmsCouponApi) Update(ctx *gin.Context) {
 	id := ctx.Param("id")
 	var smsCouponDto dto.SmsCouponDto
@@ -49,7 +80,20 @@ func (iApi SmsCouponApi) Update(ctx *gin.Context) {
 	ctx.JSON(http.StatusOK, util.Success("修改成功"))
 }
 
-// 根据优惠券名称和类型分页获取优惠券列表
+// @Summary      根据优惠券名称和类型分页获取优惠券列表
+// @Description  根据优惠券名称和类型分页获取优惠券列表
+// @Tags         优惠券管理
+// @Accept       json
+// @Produce      json
+// @Param        name   query      string  false  "名称"
+// @Param        type   query      string  false  "类型"
+// @Param        pageNum   query      string  false  "页码"
+// @Param        pageSize   query      string  false  "数量"
+// @Success      200  {object}  util.CommonResult
+// @Failure      400  {object}  util.CommonResult
+// @Failure      404  {object}  util.CommonResult
+// @Failure      500  {object}  util.CommonResult
+// @Router       /coupon/list [get]
 func (iApi SmsCouponApi) List(ctx *gin.Context) {
 	name := ctx.Query("name")
 	type_ := ctx.Query("type")
@@ -59,7 +103,17 @@ func (iApi SmsCouponApi) List(ctx *gin.Context) {
 	ctx.JSON(http.StatusOK, util.Page(list, total))
 }
 
-// 获取单个优惠券的详细信息
+// @Summary      获取单个优惠券的详细信息
+// @Description  获取单个优惠券的详细信息
+// @Tags         优惠券管理
+// @Accept       json
+// @Produce      json
+// @Param        id   path      string  false  "id"
+// @Success      200  {object}  util.CommonResult
+// @Failure      400  {object}  util.CommonResult
+// @Failure      404  {object}  util.CommonResult
+// @Failure      500  {object}  util.CommonResult
+// @Router       /coupon/{id} [get]
 func (iApi SmsCouponApi) GetItem(ctx *gin.Context) {
 	id := ctx.Param("id")
 	item := iApi.Service.GetItem(id)

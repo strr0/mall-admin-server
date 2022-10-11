@@ -13,7 +13,17 @@ type SmsHomeNewProductApi struct {
 	Service service.SmsHomeNewProductService
 }
 
-// 添加首页新品
+// @Summary      添加首页新品
+// @Description  添加首页新品
+// @Tags         首页新品管理
+// @Accept       json
+// @Produce      json
+// @Param        smsHomeNewProduct   query      model.SmsHomeNewProduct  false  "新品"
+// @Success      200  {object}  util.CommonResult
+// @Failure      400  {object}  util.CommonResult
+// @Failure      404  {object}  util.CommonResult
+// @Failure      500  {object}  util.CommonResult
+// @Router       /home/newProduct/create [post]
 func (iApi SmsHomeNewProductApi) Create(ctx *gin.Context) {
 	var smsHomeNewProduct model.SmsHomeNewProduct
 	_ = ctx.Bind(&smsHomeNewProduct)
@@ -25,7 +35,18 @@ func (iApi SmsHomeNewProductApi) Create(ctx *gin.Context) {
 	ctx.JSON(http.StatusOK, util.Success("保存成功"))
 }
 
-// 修改首页新品排序
+// @Summary      修改首页新品排序
+// @Description  修改首页新品排序
+// @Tags         首页新品管理
+// @Accept       json
+// @Produce      json
+// @Param        id   path      string  false  "id"
+// @Param        sort   query      string  false  "sort"
+// @Success      200  {object}  util.CommonResult
+// @Failure      400  {object}  util.CommonResult
+// @Failure      404  {object}  util.CommonResult
+// @Failure      500  {object}  util.CommonResult
+// @Router       /home/newProduct/update/sort/{id} [post]
 func (iApi SmsHomeNewProductApi) UpdateSort(ctx *gin.Context) {
 	id := ctx.Param("id")
 	sort := ctx.PostForm("sort")
@@ -37,7 +58,17 @@ func (iApi SmsHomeNewProductApi) UpdateSort(ctx *gin.Context) {
 	ctx.JSON(http.StatusOK, util.Success("修改成功"))
 }
 
-// 批量删除首页新品
+// @Summary      批量删除首页新品
+// @Description  批量删除首页新品
+// @Tags         首页新品管理
+// @Accept       json
+// @Produce      json
+// @Param        ids   query      []string  false  "ids"
+// @Success      200  {object}  util.CommonResult
+// @Failure      400  {object}  util.CommonResult
+// @Failure      404  {object}  util.CommonResult
+// @Failure      500  {object}  util.CommonResult
+// @Router       /home/newProduct/delete [post]
 func (iApi SmsHomeNewProductApi) Delete(ctx *gin.Context) {
 	ids := ctx.PostFormArray("ids")
 	err := iApi.Service.Delete(ids)
@@ -48,7 +79,18 @@ func (iApi SmsHomeNewProductApi) Delete(ctx *gin.Context) {
 	ctx.JSON(http.StatusOK, util.Success("删除成功"))
 }
 
-// 批量修改首页新品状态
+// @Summary      批量修改首页新品状态
+// @Description  批量修改首页新品状态
+// @Tags         首页新品管理
+// @Accept       json
+// @Produce      json
+// @Param        ids   query      []string  false  "ids"
+// @Param        recommendStatus   query      string  false  "recommendStatus"
+// @Success      200  {object}  util.CommonResult
+// @Failure      400  {object}  util.CommonResult
+// @Failure      404  {object}  util.CommonResult
+// @Failure      500  {object}  util.CommonResult
+// @Router       /home/newProduct/update/recommendStatus [post]
 func (iApi SmsHomeNewProductApi) UpdateRecommendStatus(ctx *gin.Context) {
 	ids := ctx.PostFormArray("ids")
 	recommendStatus := ctx.PostForm("recommendStatus")
@@ -60,7 +102,20 @@ func (iApi SmsHomeNewProductApi) UpdateRecommendStatus(ctx *gin.Context) {
 	ctx.JSON(http.StatusOK, util.Success("修改成功"))
 }
 
-// 分页查询首页新品
+// @Summary      分页查询首页新品
+// @Description  分页查询首页新品
+// @Tags         首页新品管理
+// @Accept       json
+// @Produce      json
+// @Param        productName   query      string  false  "productName"
+// @Param        recommendStatus   query      string  false  "recommendStatus"
+// @Param        pageNum   query      string  false  "页码"
+// @Param        pageSize   query      string  false  "数量"
+// @Success      200  {object}  util.CommonResult
+// @Failure      400  {object}  util.CommonResult
+// @Failure      404  {object}  util.CommonResult
+// @Failure      500  {object}  util.CommonResult
+// @Router       /home/newProduct/list [get]
 func (iApi SmsHomeNewProductApi) List(ctx *gin.Context) {
 	productName := ctx.Query("productName")
 	recommendStatus := ctx.Query("recommendStatus")

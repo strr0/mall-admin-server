@@ -12,7 +12,16 @@ type CmsPrefrenceAreaApi struct {
 	Service service.CmsPrefrenceAreaService
 }
 
-// 获取所有商品优选
+// @Summary      获取所有商品优选
+// @Description  获取所有商品优选
+// @Tags         商品优选管理
+// @Accept       json
+// @Produce      json
+// @Success      200  {object}  util.CommonResult
+// @Failure      400  {object}  util.CommonResult
+// @Failure      404  {object}  util.CommonResult
+// @Failure      500  {object}  util.CommonResult
+// @Router       /prefrenceArea/listAll [get]
 func (iApi CmsPrefrenceAreaApi) ListAll(ctx *gin.Context) {
 	all := iApi.Service.ListAll()
 	ctx.JSON(http.StatusOK, util.Data(all))

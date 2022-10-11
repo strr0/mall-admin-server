@@ -13,7 +13,17 @@ type SmsHomeRecommendProductApi struct {
 	Service service.SmsHomeRecommendProductService
 }
 
-// 添加首页推荐
+// @Summary      添加首页推荐
+// @Description  添加首页推荐
+// @Tags         首页人气推荐管理
+// @Accept       json
+// @Produce      json
+// @Param        smsHomeRecommendProduct   query      model.SmsHomeRecommendProduct  false  "人气推荐"
+// @Success      200  {object}  util.CommonResult
+// @Failure      400  {object}  util.CommonResult
+// @Failure      404  {object}  util.CommonResult
+// @Failure      500  {object}  util.CommonResult
+// @Router       /home/recommendProduct/create [post]
 func (iApi SmsHomeRecommendProductApi) Create(ctx *gin.Context) {
 	var smsHomeRecommendProduct model.SmsHomeRecommendProduct
 	_ = ctx.Bind(&smsHomeRecommendProduct)
@@ -25,7 +35,18 @@ func (iApi SmsHomeRecommendProductApi) Create(ctx *gin.Context) {
 	ctx.JSON(http.StatusOK, util.Success("保存成功"))
 }
 
-// 修改推荐排序
+// @Summary      修改推荐排序
+// @Description  修改推荐排序
+// @Tags         首页人气推荐管理
+// @Accept       json
+// @Produce      json
+// @Param        id   path      string  false  "id"
+// @Param        sort   query      string  false  "sort"
+// @Success      200  {object}  util.CommonResult
+// @Failure      400  {object}  util.CommonResult
+// @Failure      404  {object}  util.CommonResult
+// @Failure      500  {object}  util.CommonResult
+// @Router       /home/recommendProduct/update/sort/{id} [post]
 func (iApi SmsHomeRecommendProductApi) UpdateSort(ctx *gin.Context) {
 	id := ctx.Param("id")
 	sort := ctx.PostForm("sort")
@@ -37,7 +58,17 @@ func (iApi SmsHomeRecommendProductApi) UpdateSort(ctx *gin.Context) {
 	ctx.JSON(http.StatusOK, util.Success("修改成功"))
 }
 
-// 批量删除推荐
+// @Summary      批量删除推荐
+// @Description  批量删除推荐
+// @Tags         首页人气推荐管理
+// @Accept       json
+// @Produce      json
+// @Param        ids   query      []string  false  "ids"
+// @Success      200  {object}  util.CommonResult
+// @Failure      400  {object}  util.CommonResult
+// @Failure      404  {object}  util.CommonResult
+// @Failure      500  {object}  util.CommonResult
+// @Router       /home/recommendProduct/delete [post]
 func (iApi SmsHomeRecommendProductApi) Delete(ctx *gin.Context) {
 	ids := ctx.PostFormArray("ids")
 	err := iApi.Service.Delete(ids)
@@ -48,7 +79,18 @@ func (iApi SmsHomeRecommendProductApi) Delete(ctx *gin.Context) {
 	ctx.JSON(http.StatusOK, util.Success("删除成功"))
 }
 
-// 批量修改推荐状态
+// @Summary      批量修改推荐状态
+// @Description  批量修改推荐状态
+// @Tags         首页人气推荐管理
+// @Accept       json
+// @Produce      json
+// @Param        ids   query      []string  false  "ids"
+// @Param        recommendStatus   query      string  false  "recommendStatus"
+// @Success      200  {object}  util.CommonResult
+// @Failure      400  {object}  util.CommonResult
+// @Failure      404  {object}  util.CommonResult
+// @Failure      500  {object}  util.CommonResult
+// @Router       /home/recommendProduct/update/recommendStatus [post]
 func (iApi SmsHomeRecommendProductApi) UpdateRecommendStatus(ctx *gin.Context) {
 	ids := ctx.PostFormArray("ids")
 	recommendStatus := ctx.PostForm("recommendStatus")
@@ -60,7 +102,20 @@ func (iApi SmsHomeRecommendProductApi) UpdateRecommendStatus(ctx *gin.Context) {
 	ctx.JSON(http.StatusOK, util.Success("修改成功"))
 }
 
-// 分页查询推荐
+// @Summary      分页查询推荐
+// @Description  分页查询推荐
+// @Tags         首页人气推荐管理
+// @Accept       json
+// @Produce      json
+// @Param        productName   query      string  false  "productName"
+// @Param        recommendStatus   query      string  false  "recommendStatus"
+// @Param        pageNum   query      string  false  "页码"
+// @Param        pageSize   query      string  false  "数量"
+// @Success      200  {object}  util.CommonResult
+// @Failure      400  {object}  util.CommonResult
+// @Failure      404  {object}  util.CommonResult
+// @Failure      500  {object}  util.CommonResult
+// @Router       /home/recommendProduct/list [get]
 func (iApi SmsHomeRecommendProductApi) List(ctx *gin.Context) {
 	productName := ctx.Query("productName")
 	recommendStatus := ctx.Query("recommendStatus")

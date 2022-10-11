@@ -13,13 +13,32 @@ type UmsResourceCategoryApi struct {
 	Service service.UmsResourceCategoryService
 }
 
-// 资源分类列表
+// @Summary      资源分类列表
+// @Description  资源分类列表
+// @Tags         后台资源分类管理
+// @Accept       json
+// @Produce      json
+// @Success      200  {object}  util.CommonResult
+// @Failure      400  {object}  util.CommonResult
+// @Failure      404  {object}  util.CommonResult
+// @Failure      500  {object}  util.CommonResult
+// @Router       /resourceCategory/listAll [get]
 func (iApi UmsResourceCategoryApi) ListAll(ctx *gin.Context) {
 	all := iApi.Service.ListAll()
 	ctx.JSON(http.StatusOK, util.Data(all))
 }
 
-// 创建资源分类
+// @Summary      创建资源分类
+// @Description  创建资源分类
+// @Tags         后台资源分类管理
+// @Accept       json
+// @Produce      json
+// @Param        umsResourceCategory   query      model.UmsResourceCategory  false  "分类"
+// @Success      200  {object}  util.CommonResult
+// @Failure      400  {object}  util.CommonResult
+// @Failure      404  {object}  util.CommonResult
+// @Failure      500  {object}  util.CommonResult
+// @Router       /resourceCategory/create [post]
 func (iApi UmsResourceCategoryApi) Create(ctx *gin.Context) {
 	var umsResourceCategory model.UmsResourceCategory
 	_ = ctx.Bind(&umsResourceCategory)
@@ -31,7 +50,18 @@ func (iApi UmsResourceCategoryApi) Create(ctx *gin.Context) {
 	ctx.JSON(http.StatusOK, util.Success("保存成功"))
 }
 
-// 修改资源分类
+// @Summary      修改资源分类
+// @Description  修改资源分类
+// @Tags         后台资源分类管理
+// @Accept       json
+// @Produce      json
+// @Param        id   path      string  false  "id"
+// @Param        umsResourceCategory   query      model.UmsResourceCategory  false  "分类"
+// @Success      200  {object}  util.CommonResult
+// @Failure      400  {object}  util.CommonResult
+// @Failure      404  {object}  util.CommonResult
+// @Failure      500  {object}  util.CommonResult
+// @Router       /resourceCategory/update/{id} [post]
 func (iApi UmsResourceCategoryApi) Update(ctx *gin.Context) {
 	id := ctx.Param("id")
 	var umsResourceCategory model.UmsResourceCategory
@@ -44,7 +74,17 @@ func (iApi UmsResourceCategoryApi) Update(ctx *gin.Context) {
 	ctx.JSON(http.StatusOK, util.Success("修改成功"))
 }
 
-// 删除资源分类
+// @Summary      修改资源分类
+// @Description  修改资源分类
+// @Tags         后台资源分类管理
+// @Accept       json
+// @Produce      json
+// @Param        id   path      string  false  "id"
+// @Success      200  {object}  util.CommonResult
+// @Failure      400  {object}  util.CommonResult
+// @Failure      404  {object}  util.CommonResult
+// @Failure      500  {object}  util.CommonResult
+// @Router       /resourceCategory/delete/{id} [post]
 func (iApi UmsResourceCategoryApi) Delete(ctx *gin.Context) {
 	id := ctx.Param("id")
 	err := iApi.Service.Delete(id)

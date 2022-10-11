@@ -13,7 +13,17 @@ type OmsOrderReturnApplyApi struct {
 	Service service.OmsOrderReturnApplyService
 }
 
-// 分页查询退货申请
+// @Summary      分页查询退货申请
+// @Description  分页查询退货申请
+// @Tags         订单退货申请管理
+// @Accept       json
+// @Produce      json
+// @Param        queryDto   query      dto.OmsOrderReturnApplyQueryDto  false  "queryDto"
+// @Success      200  {object}  util.CommonResult
+// @Failure      400  {object}  util.CommonResult
+// @Failure      404  {object}  util.CommonResult
+// @Failure      500  {object}  util.CommonResult
+// @Router       /returnApply/list [get]
 func (iApi OmsOrderReturnApplyApi) List(ctx *gin.Context) {
 	var queryDto dto.OmsOrderReturnApplyQueryDto
 	_ = ctx.Bind(&queryDto)
@@ -23,7 +33,17 @@ func (iApi OmsOrderReturnApplyApi) List(ctx *gin.Context) {
 	ctx.JSON(http.StatusOK, util.Page(list, count))
 }
 
-// 批量删除退货申请
+// @Summary      批量删除退货申请
+// @Description  批量删除退货申请
+// @Tags         订单退货申请管理
+// @Accept       json
+// @Produce      json
+// @Param        ids   query      []string  false  "ids"
+// @Success      200  {object}  util.CommonResult
+// @Failure      400  {object}  util.CommonResult
+// @Failure      404  {object}  util.CommonResult
+// @Failure      500  {object}  util.CommonResult
+// @Router       /returnApply/delete [post]
 func (iApi OmsOrderReturnApplyApi) Delete(ctx *gin.Context) {
 	ids := ctx.PostFormArray("ids")
 	err := iApi.Service.Delete(ids)
@@ -34,14 +54,35 @@ func (iApi OmsOrderReturnApplyApi) Delete(ctx *gin.Context) {
 	ctx.JSON(http.StatusOK, util.Success("删除成功"))
 }
 
-// 获取退货申请详情
+// @Summary      获取退货申请详情
+// @Description  获取退货申请详情
+// @Tags         订单退货申请管理
+// @Accept       json
+// @Produce      json
+// @Param        id   path      string  false  "id"
+// @Success      200  {object}  util.CommonResult
+// @Failure      400  {object}  util.CommonResult
+// @Failure      404  {object}  util.CommonResult
+// @Failure      500  {object}  util.CommonResult
+// @Router       /returnApply/{id} [get]
 func (iApi OmsOrderReturnApplyApi) GetItem(ctx *gin.Context) {
 	id := ctx.Param("id")
 	item := iApi.Service.GetItem(id)
 	ctx.JSON(http.StatusOK, util.Data(item))
 }
 
-// 修改退货申请状态
+// @Summary      修改退货申请状态
+// @Description  修改退货申请状态
+// @Tags         订单退货申请管理
+// @Accept       json
+// @Produce      json
+// @Param        id   path      string  false  "id"
+// @Param        statusDto   query      dto.OmsUpdateStatusDto  false  "statusDto"
+// @Success      200  {object}  util.CommonResult
+// @Failure      400  {object}  util.CommonResult
+// @Failure      404  {object}  util.CommonResult
+// @Failure      500  {object}  util.CommonResult
+// @Router       /returnApply/update/status/{id} [post]
 func (iApi OmsOrderReturnApplyApi) UpdateStatus(ctx *gin.Context) {
 	id := ctx.Param("id")
 	var statusDto dto.OmsUpdateStatusDto

@@ -12,7 +12,17 @@ type UmsMemberLevelApi struct {
 	Service service.UmsMemberLevelService
 }
 
-// 会员等级管理
+// @Summary      列表
+// @Description  列表
+// @Tags         会员等级管理
+// @Accept       json
+// @Produce      json
+// @Param        defaultStatus   query      string  false  "defaultStatus"
+// @Success      200  {object}  util.CommonResult
+// @Failure      400  {object}  util.CommonResult
+// @Failure      404  {object}  util.CommonResult
+// @Failure      500  {object}  util.CommonResult
+// @Router       /memberLevel/list [get]
 func (iApi UmsMemberLevelApi) List(ctx *gin.Context) {
 	defaultStatus := ctx.Query("defaultStatus")
 	list := iApi.Service.List(defaultStatus)

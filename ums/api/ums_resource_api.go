@@ -13,7 +13,17 @@ type UmsResourceApi struct {
 	Service service.UmsResourceService
 }
 
-// 创建资源
+// @Summary      创建资源
+// @Description  创建资源
+// @Tags         后台资源管理
+// @Accept       json
+// @Produce      json
+// @Param        umsResource   query      model.UmsResource  false  "资源"
+// @Success      200  {object}  util.CommonResult
+// @Failure      400  {object}  util.CommonResult
+// @Failure      404  {object}  util.CommonResult
+// @Failure      500  {object}  util.CommonResult
+// @Router       /resource/create [post]
 func (iApi UmsResourceApi) Create(ctx *gin.Context) {
 	var umsResource model.UmsResource
 	_ = ctx.Bind(&umsResource)
@@ -25,7 +35,18 @@ func (iApi UmsResourceApi) Create(ctx *gin.Context) {
 	ctx.JSON(http.StatusOK, util.Success("保存成功"))
 }
 
-// 修改资源
+// @Summary      修改资源
+// @Description  修改资源
+// @Tags         后台资源管理
+// @Accept       json
+// @Produce      json
+// @Param        id   path      string  false  "id"
+// @Param        umsResource   query      model.UmsResource  false  "资源"
+// @Success      200  {object}  util.CommonResult
+// @Failure      400  {object}  util.CommonResult
+// @Failure      404  {object}  util.CommonResult
+// @Failure      500  {object}  util.CommonResult
+// @Router       /resource/update/{id} [post]
 func (iApi UmsResourceApi) Update(ctx *gin.Context) {
 	id := ctx.Param("id")
 	var umsResource model.UmsResource
@@ -37,14 +58,34 @@ func (iApi UmsResourceApi) Update(ctx *gin.Context) {
 	ctx.JSON(http.StatusOK, util.Success("修改成功"))
 }
 
-// 资源详情
+// @Summary      资源详情
+// @Description  资源详情
+// @Tags         后台资源管理
+// @Accept       json
+// @Produce      json
+// @Param        id   path      string  false  "id"
+// @Success      200  {object}  util.CommonResult
+// @Failure      400  {object}  util.CommonResult
+// @Failure      404  {object}  util.CommonResult
+// @Failure      500  {object}  util.CommonResult
+// @Router       /resource/{id} [get]
 func (iApi UmsResourceApi) GetItem(ctx *gin.Context) {
 	id := ctx.Param("id")
 	item := iApi.Service.GetItem(id)
 	ctx.JSON(http.StatusOK, util.Data(item))
 }
 
-// 删除资源
+// @Summary      删除资源
+// @Description  删除资源
+// @Tags         后台资源管理
+// @Accept       json
+// @Produce      json
+// @Param        id   path      string  false  "id"
+// @Success      200  {object}  util.CommonResult
+// @Failure      400  {object}  util.CommonResult
+// @Failure      404  {object}  util.CommonResult
+// @Failure      500  {object}  util.CommonResult
+// @Router       /resource/delete/{id} [post]
 func (iApi UmsResourceApi) Delete(ctx *gin.Context) {
 	id := ctx.Param("id")
 	err := iApi.Service.Delete(id)
@@ -55,7 +96,21 @@ func (iApi UmsResourceApi) Delete(ctx *gin.Context) {
 	ctx.JSON(http.StatusOK, util.Success("删除成功"))
 }
 
-// 资源列表
+// @Summary      资源列表
+// @Description  资源列表
+// @Tags         后台资源管理
+// @Accept       json
+// @Produce      json
+// @Param        categoryId   query      string  false  "categoryId"
+// @Param        nameKeyword   query      string  false  "nameKeyword"
+// @Param        urlKeyword   query      string  false  "urlKeyword"
+// @Param        pageNum   query      string  false  "页码"
+// @Param        pageSize   query      string  false  "数量"
+// @Success      200  {object}  util.CommonResult
+// @Failure      400  {object}  util.CommonResult
+// @Failure      404  {object}  util.CommonResult
+// @Failure      500  {object}  util.CommonResult
+// @Router       /resource/list [get]
 func (iApi UmsResourceApi) List(ctx *gin.Context) {
 	categoryId := ctx.Query("categoryId")
 	nameKeyword := ctx.Query("nameKeyword")
@@ -66,7 +121,16 @@ func (iApi UmsResourceApi) List(ctx *gin.Context) {
 	ctx.JSON(http.StatusOK, util.Page(list, total))
 }
 
-// 所有资源
+// @Summary      所有资源
+// @Description  所有资源
+// @Tags         后台资源管理
+// @Accept       json
+// @Produce      json
+// @Success      200  {object}  util.CommonResult
+// @Failure      400  {object}  util.CommonResult
+// @Failure      404  {object}  util.CommonResult
+// @Failure      500  {object}  util.CommonResult
+// @Router       /resource/listAll [get]
 func (iApi UmsResourceApi) ListAll(ctx *gin.Context) {
 	all := iApi.Service.ListAll()
 	ctx.JSON(http.StatusOK, util.Data(all))

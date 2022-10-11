@@ -13,7 +13,17 @@ type SmsHomeBrandApi struct {
 	Service service.SmsHomeBrandService
 }
 
-// 添加首页推荐品牌
+// @Summary      添加首页推荐品牌
+// @Description  添加首页推荐品牌
+// @Tags         首页品牌管理
+// @Accept       json
+// @Produce      json
+// @Param        smsHomeBrand   query      model.SmsHomeBrand  false  "品牌"
+// @Success      200  {object}  util.CommonResult
+// @Failure      400  {object}  util.CommonResult
+// @Failure      404  {object}  util.CommonResult
+// @Failure      500  {object}  util.CommonResult
+// @Router       /home/brand/create [post]
 func (iApi SmsHomeBrandApi) Create(ctx *gin.Context) {
 	var smsHomeBrand model.SmsHomeBrand
 	_ = ctx.Bind(&smsHomeBrand)
@@ -25,7 +35,18 @@ func (iApi SmsHomeBrandApi) Create(ctx *gin.Context) {
 	ctx.JSON(http.StatusOK, util.Success("保存成功"))
 }
 
-// 修改推荐品牌排序
+// @Summary      修改推荐品牌排序
+// @Description  修改推荐品牌排序
+// @Tags         首页品牌管理
+// @Accept       json
+// @Produce      json
+// @Param        id   path      string  false  "id"
+// @Param        sort   query      string  false  "sort"
+// @Success      200  {object}  util.CommonResult
+// @Failure      400  {object}  util.CommonResult
+// @Failure      404  {object}  util.CommonResult
+// @Failure      500  {object}  util.CommonResult
+// @Router       /home/brand/update/sort/{id} [post]
 func (iApi SmsHomeBrandApi) UpdateSort(ctx *gin.Context) {
 	id := ctx.Param("id")
 	sort := ctx.PostForm("sort")
@@ -37,7 +58,17 @@ func (iApi SmsHomeBrandApi) UpdateSort(ctx *gin.Context) {
 	ctx.JSON(http.StatusOK, util.Success("修改成功"))
 }
 
-// 批量删除推荐品牌
+// @Summary      批量删除推荐品牌
+// @Description  批量删除推荐品牌
+// @Tags         首页品牌管理
+// @Accept       json
+// @Produce      json
+// @Param        ids   query      []string  false  "ids"
+// @Success      200  {object}  util.CommonResult
+// @Failure      400  {object}  util.CommonResult
+// @Failure      404  {object}  util.CommonResult
+// @Failure      500  {object}  util.CommonResult
+// @Router       /home/brand/delete [post]
 func (iApi SmsHomeBrandApi) Delete(ctx *gin.Context) {
 	ids := ctx.PostFormArray("ids")
 	err := iApi.Service.Delete(ids)
@@ -48,7 +79,18 @@ func (iApi SmsHomeBrandApi) Delete(ctx *gin.Context) {
 	ctx.JSON(http.StatusOK, util.Success("删除成功"))
 }
 
-// 批量修改推荐品牌状态
+// @Summary      批量修改推荐品牌状态
+// @Description  批量修改推荐品牌状态
+// @Tags         首页品牌管理
+// @Accept       json
+// @Produce      json
+// @Param        ids   query      []string  false  "ids"
+// @Param        recommendStatus   query      string  false  "recommendStatus"
+// @Success      200  {object}  util.CommonResult
+// @Failure      400  {object}  util.CommonResult
+// @Failure      404  {object}  util.CommonResult
+// @Failure      500  {object}  util.CommonResult
+// @Router       /home/brand/update/recommendStatus [post]
 func (iApi SmsHomeBrandApi) UpdateRecommendStatus(ctx *gin.Context) {
 	ids := ctx.PostFormArray("ids")
 	recommendStatus := ctx.PostForm("recommendStatus")
@@ -60,7 +102,20 @@ func (iApi SmsHomeBrandApi) UpdateRecommendStatus(ctx *gin.Context) {
 	ctx.JSON(http.StatusOK, util.Success("秀嘎成功"))
 }
 
-// 分页查询推荐品牌
+// @Summary      分页查询推荐品牌
+// @Description  分页查询推荐品牌
+// @Tags         首页品牌管理
+// @Accept       json
+// @Produce      json
+// @Param        brandName   query      string  false  "brandName"
+// @Param        recommendStatus   query      string  false  "recommendStatus"
+// @Param        pageNum   query      string  false  "页码"
+// @Param        pageSize   query      string  false  "数量"
+// @Success      200  {object}  util.CommonResult
+// @Failure      400  {object}  util.CommonResult
+// @Failure      404  {object}  util.CommonResult
+// @Failure      500  {object}  util.CommonResult
+// @Router       /home/brand/list [get]
 func (iApi SmsHomeBrandApi) List(ctx *gin.Context) {
 	brandName := ctx.Query("brandName")
 	recommendStatus := ctx.Query("recommendStatus")

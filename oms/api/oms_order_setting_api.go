@@ -13,14 +13,35 @@ type OmsOrderSettingApi struct {
 	Service service.OmsOrderSettingService
 }
 
-// 获取指定订单设置
+// @Summary      获取指定订单设置
+// @Description  获取指定订单设置
+// @Tags         订单设置管理
+// @Accept       json
+// @Produce      json
+// @Param        id   path      string  false  "id"
+// @Success      200  {object}  util.CommonResult
+// @Failure      400  {object}  util.CommonResult
+// @Failure      404  {object}  util.CommonResult
+// @Failure      500  {object}  util.CommonResult
+// @Router       /orderSetting/{id} [get]
 func (iApi OmsOrderSettingApi) GetItem(ctx *gin.Context) {
 	id := ctx.Param("id")
 	item := iApi.Service.GetItem(id)
 	ctx.JSON(http.StatusOK, util.Data(item))
 }
 
-// 修改指定订单设置
+// @Summary      修改指定订单设置
+// @Description  修改指定订单设置
+// @Tags         订单设置管理
+// @Accept       json
+// @Produce      json
+// @Param        id   path      string  false  "id"
+// @Param        omsOrderSetting   query      model.OmsOrderSetting  false  "设置"
+// @Success      200  {object}  util.CommonResult
+// @Failure      400  {object}  util.CommonResult
+// @Failure      404  {object}  util.CommonResult
+// @Failure      500  {object}  util.CommonResult
+// @Router       /orderSetting/update/{id} [get]
 func (iApi OmsOrderSettingApi) Update(ctx *gin.Context) {
 	id := ctx.Param("id")
 	var omsOrderSetting model.OmsOrderSetting

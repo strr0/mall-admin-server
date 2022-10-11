@@ -13,7 +13,18 @@ type PmsSkuStockApi struct {
 	Service service.PmsSkuStockService
 }
 
-// 根据商品ID及sku编码模糊搜索sku库存
+// @Summary      根据商品ID及sku编码模糊搜索sku库存
+// @Description  根据商品ID及sku编码模糊搜索sku库存
+// @Tags         商品分类管理
+// @Accept       json
+// @Produce      json
+// @Param        pid   path      string  false  "pid"
+// @Param        keyword   query      string  false  "keyword"
+// @Success      200  {object}  util.CommonResult
+// @Failure      400  {object}  util.CommonResult
+// @Failure      404  {object}  util.CommonResult
+// @Failure      500  {object}  util.CommonResult
+// @Router       /sku/{pid} [get]
 func (iApi PmsSkuStockApi) GetList(ctx *gin.Context) {
 	pid := ctx.Param("pid")
 	keyword := ctx.Query("keyword")
@@ -21,7 +32,17 @@ func (iApi PmsSkuStockApi) GetList(ctx *gin.Context) {
 	ctx.JSON(http.StatusOK, util.Data(list))
 }
 
-// 批量更新sku库存信息
+// @Summary      批量更新sku库存信息
+// @Description  批量更新sku库存信息
+// @Tags         商品分类管理
+// @Accept       json
+// @Produce      json
+// @Param        skuStockList   body      []model.PmsSkuStock  false  "skuStockList"
+// @Success      200  {object}  util.CommonResult
+// @Failure      400  {object}  util.CommonResult
+// @Failure      404  {object}  util.CommonResult
+// @Failure      500  {object}  util.CommonResult
+// @Router       /sku/update [post]
 func (iApi PmsSkuStockApi) Update(ctx *gin.Context) {
 	skuStockList := make([]model.PmsSkuStock, 0)
 	_ = ctx.Bind(&skuStockList)

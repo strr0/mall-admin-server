@@ -4,6 +4,7 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/spf13/cobra"
 	cms "mall-admin-server/cms/router"
+	"mall-admin-server/docs"
 	oms "mall-admin-server/oms/router"
 	pms "mall-admin-server/pms/router"
 	sms "mall-admin-server/sms/router"
@@ -26,6 +27,7 @@ func initRouter() {
 	pms.InitRouter(e)
 	sms.InitRouter(e)
 	ums.InitRouter(e)
+	docs.InitSwagger(e) // 引入swagger
 	_ = e.Run()
 }
 

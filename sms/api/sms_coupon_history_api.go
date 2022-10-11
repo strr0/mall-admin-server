@@ -12,7 +12,21 @@ type SmsCouponHistoryApi struct {
 	Service service.SmsCouponHistoryService
 }
 
-// 根据优惠券id，使用状态，订单编号分页获取领取记录
+// @Summary      根据优惠券id，使用状态，订单编号分页获取领取记录
+// @Description  根据优惠券id，使用状态，订单编号分页获取领取记录
+// @Tags         优惠券领取记录管理
+// @Accept       json
+// @Produce      json
+// @Param        couponId   query      string  false  "couponId"
+// @Param        useStatus   query      string  false  "useStatus"
+// @Param        orderSn   query      string  false  "orderSn"
+// @Param        pageNum   query      string  false  "页码"
+// @Param        pageSize   query      string  false  "数量"
+// @Success      200  {object}  util.CommonResult
+// @Failure      400  {object}  util.CommonResult
+// @Failure      404  {object}  util.CommonResult
+// @Failure      500  {object}  util.CommonResult
+// @Router       /couponHistory/list [get]
 func (iApi SmsCouponHistoryApi) List(ctx *gin.Context) {
 	couponId := ctx.Query("couponId")
 	useStatus := ctx.Query("useStatus")
