@@ -15,7 +15,7 @@ func registerUmsResourceCategoryRouter(e *gin.Engine) {
 	db := config.GetDb()
 	iService := service.UmsResourceCategoryService{DB: db}
 	iApi := api.UmsResourceCategoryApi{Service: iService}
-	resourceCategory := e.Group("/resourceCategory")
+	resourceCategory := e.Group("/resourceCategory").Use(config.AuthCheckRole("resource"))
 	{
 		resourceCategory.GET("/listAll", iApi.ListAll)
 		resourceCategory.POST("/create", iApi.Create)

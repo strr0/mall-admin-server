@@ -19,6 +19,7 @@ type UmsResourceApi struct {
 // @Accept       json
 // @Produce      json
 // @Param        umsResource   query      model.UmsResource  false  "资源"
+// @Security ApiKeyAuth
 // @Success      200  {object}  util.CommonResult
 // @Failure      400  {object}  util.CommonResult
 // @Failure      404  {object}  util.CommonResult
@@ -42,6 +43,7 @@ func (iApi UmsResourceApi) Create(ctx *gin.Context) {
 // @Produce      json
 // @Param        id   path      string  false  "id"
 // @Param        umsResource   query      model.UmsResource  false  "资源"
+// @Security ApiKeyAuth
 // @Success      200  {object}  util.CommonResult
 // @Failure      400  {object}  util.CommonResult
 // @Failure      404  {object}  util.CommonResult
@@ -64,6 +66,7 @@ func (iApi UmsResourceApi) Update(ctx *gin.Context) {
 // @Accept       json
 // @Produce      json
 // @Param        id   path      string  false  "id"
+// @Security ApiKeyAuth
 // @Success      200  {object}  util.CommonResult
 // @Failure      400  {object}  util.CommonResult
 // @Failure      404  {object}  util.CommonResult
@@ -81,6 +84,7 @@ func (iApi UmsResourceApi) GetItem(ctx *gin.Context) {
 // @Accept       json
 // @Produce      json
 // @Param        id   path      string  false  "id"
+// @Security ApiKeyAuth
 // @Success      200  {object}  util.CommonResult
 // @Failure      400  {object}  util.CommonResult
 // @Failure      404  {object}  util.CommonResult
@@ -106,6 +110,7 @@ func (iApi UmsResourceApi) Delete(ctx *gin.Context) {
 // @Param        urlKeyword   query      string  false  "urlKeyword"
 // @Param        pageNum   query      string  false  "页码"
 // @Param        pageSize   query      string  false  "数量"
+// @Security ApiKeyAuth
 // @Success      200  {object}  util.CommonResult
 // @Failure      400  {object}  util.CommonResult
 // @Failure      404  {object}  util.CommonResult
@@ -126,6 +131,7 @@ func (iApi UmsResourceApi) List(ctx *gin.Context) {
 // @Tags         后台资源管理
 // @Accept       json
 // @Produce      json
+// @Security ApiKeyAuth
 // @Success      200  {object}  util.CommonResult
 // @Failure      400  {object}  util.CommonResult
 // @Failure      404  {object}  util.CommonResult

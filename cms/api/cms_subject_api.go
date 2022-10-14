@@ -17,6 +17,7 @@ type CmsSubjectApi struct {
 // @Tags         商品专题管理
 // @Accept       json
 // @Produce      json
+// @Security ApiKeyAuth
 // @Success      200  {object}  util.CommonResult
 // @Failure      400  {object}  util.CommonResult
 // @Failure      404  {object}  util.CommonResult
@@ -35,6 +36,7 @@ func (iApi CmsSubjectApi) ListAll(ctx *gin.Context) {
 // @Param        keyword   query      string  false  "keyword"
 // @Param        pageNum   query      string  false  "页码"
 // @Param        pageSize   query      string  false  "数量"
+// @Security ApiKeyAuth
 // @Success      200  {object}  util.CommonResult
 // @Failure      400  {object}  util.CommonResult
 // @Failure      404  {object}  util.CommonResult

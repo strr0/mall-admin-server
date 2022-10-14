@@ -15,7 +15,7 @@ func registerPmsProductCategoryRouter(e *gin.Engine) {
 	db := config.GetDb()
 	iService := service.PmsProductCategoryService{DB: db}
 	iApi := api.PmsProductCategoryApi{Service: iService}
-	category := e.Group("/productCategory")
+	category := e.Group("/productCategory").Use(config.AuthCheckRole("productCate"))
 	{
 		category.POST("/create", iApi.Create)
 		category.POST("/update/:id", iApi.Update)

@@ -15,7 +15,7 @@ func registerSmsCouponRouter(e *gin.Engine) {
 	db := config.GetDb()
 	iService := service.SmsCouponService{DB: db}
 	iApi := api.SmsCouponApi{Service: iService}
-	coupon := e.Group("/coupon")
+	coupon := e.Group("/coupon").Use(config.AuthCheckRole("coupon"))
 	{
 		coupon.POST("/create", iApi.Create)
 		coupon.POST("/delete/:id", iApi.Delete)

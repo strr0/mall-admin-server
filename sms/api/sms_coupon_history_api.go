@@ -22,6 +22,7 @@ type SmsCouponHistoryApi struct {
 // @Param        orderSn   query      string  false  "orderSn"
 // @Param        pageNum   query      string  false  "页码"
 // @Param        pageSize   query      string  false  "数量"
+// @Security ApiKeyAuth
 // @Success      200  {object}  util.CommonResult
 // @Failure      400  {object}  util.CommonResult
 // @Failure      404  {object}  util.CommonResult

@@ -15,7 +15,7 @@ func registerSmsHomeRecommendProductRouter(e *gin.Engine) {
 	db := config.GetDb()
 	iService := service.SmsHomeRecommendProductService{DB: db}
 	iApi := api.SmsHomeRecommendProductApi{Service: iService}
-	homeRecommendProduct := e.Group("/home/recommendProduct")
+	homeRecommendProduct := e.Group("/home/recommendProduct").Use(config.AuthCheckRole("homeHot"))
 	{
 		homeRecommendProduct.POST("/create", iApi.Create)
 		homeRecommendProduct.POST("/update/sort/:id", iApi.UpdateSort)

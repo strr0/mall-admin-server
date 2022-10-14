@@ -20,6 +20,7 @@ type OmsOrderApi struct {
 // @Produce      json
 // @Param        pageNum   query      string  false  "页码"
 // @Param        pageSize   query      string  false  "数量"
+// @Security ApiKeyAuth
 // @Success      200  {object}  util.CommonResult
 // @Failure      400  {object}  util.CommonResult
 // @Failure      404  {object}  util.CommonResult
@@ -40,6 +41,7 @@ func (iApi OmsOrderApi) List(ctx *gin.Context) {
 // @Accept       json
 // @Produce      json
 // @Param        deliveryParamList   body      []dto.OmsOrderDeliveryDto  false  "deliveryParamList"
+// @Security ApiKeyAuth
 // @Success      200  {object}  util.CommonResult
 // @Failure      400  {object}  util.CommonResult
 // @Failure      404  {object}  util.CommonResult
@@ -63,6 +65,7 @@ func (iApi OmsOrderApi) Delivery(ctx *gin.Context) {
 // @Produce      json
 // @Param        ids   query      []string  false  "ids"
 // @Param        note   query      string  false  "note"
+// @Security ApiKeyAuth
 // @Success      200  {object}  util.CommonResult
 // @Failure      400  {object}  util.CommonResult
 // @Failure      404  {object}  util.CommonResult
@@ -85,6 +88,7 @@ func (iApi OmsOrderApi) Close(ctx *gin.Context) {
 // @Accept       json
 // @Produce      json
 // @Param        ids   query      []string  false  "ids"
+// @Security ApiKeyAuth
 // @Success      200  {object}  util.CommonResult
 // @Failure      400  {object}  util.CommonResult
 // @Failure      404  {object}  util.CommonResult
@@ -106,6 +110,7 @@ func (iApi OmsOrderApi) Delete(ctx *gin.Context) {
 // @Accept       json
 // @Produce      json
 // @Param        id   path      string  false  "id"
+// @Security ApiKeyAuth
 // @Success      200  {object}  util.CommonResult
 // @Failure      400  {object}  util.CommonResult
 // @Failure      404  {object}  util.CommonResult
@@ -123,6 +128,7 @@ func (iApi OmsOrderApi) Detail(ctx *gin.Context) {
 // @Accept       json
 // @Produce      json
 // @Param        infoDto   query      dto.OmsReceiverInfoDto  false  "infoDto"
+// @Security ApiKeyAuth
 // @Success      200  {object}  util.CommonResult
 // @Failure      400  {object}  util.CommonResult
 // @Failure      404  {object}  util.CommonResult
@@ -145,6 +151,7 @@ func (iApi OmsOrderApi) UpdateReceiverInfo(ctx *gin.Context) {
 // @Accept       json
 // @Produce      json
 // @Param        infoDto   query      dto.OmsMoneyInfoDto  false  "infoDto"
+// @Security ApiKeyAuth
 // @Success      200  {object}  util.CommonResult
 // @Failure      400  {object}  util.CommonResult
 // @Failure      404  {object}  util.CommonResult
@@ -169,6 +176,7 @@ func (iApi OmsOrderApi) UpdateMoneyInfo(ctx *gin.Context) {
 // @Param        id   query      string  false  "id"
 // @Param        note   query      string  false  "note"
 // @Param        status   query      string  false  "status"
+// @Security ApiKeyAuth
 // @Success      200  {object}  util.CommonResult
 // @Failure      400  {object}  util.CommonResult
 // @Failure      404  {object}  util.CommonResult

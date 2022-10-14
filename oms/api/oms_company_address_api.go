@@ -17,6 +17,7 @@ type OmsCompanyAddressApi struct {
 // @Tags         收货地址管理
 // @Accept       json
 // @Produce      json
+// @Security ApiKeyAuth
 // @Success      200  {object}  util.CommonResult
 // @Failure      400  {object}  util.CommonResult
 // @Failure      404  {object}  util.CommonResult

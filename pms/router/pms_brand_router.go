@@ -15,7 +15,7 @@ func registerPmsBrandRouter(e *gin.Engine) {
 	db := config.GetDb()
 	iService := service.PmsBrandService{DB: db}
 	iApi := api.PmsBrandApi{Service: iService}
-	brand := e.Group("/brand")
+	brand := e.Group("/brand").Use(config.AuthCheckRole("brand"))
 	{
 		brand.GET("/listAll", iApi.ListAll)
 		brand.POST("/create", iApi.Create)

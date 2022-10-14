@@ -19,6 +19,7 @@ type SmsCouponApi struct {
 // @Accept       json
 // @Produce      json
 // @Param        smsCouponDto   query      dto.SmsCouponDto  false  "优惠券"
+// @Security ApiKeyAuth
 // @Success      200  {object}  util.CommonResult
 // @Failure      400  {object}  util.CommonResult
 // @Failure      404  {object}  util.CommonResult
@@ -41,6 +42,7 @@ func (iApi SmsCouponApi) Create(ctx *gin.Context) {
 // @Accept       json
 // @Produce      json
 // @Param        id   path      string  false  "id"
+// @Security ApiKeyAuth
 // @Success      200  {object}  util.CommonResult
 // @Failure      400  {object}  util.CommonResult
 // @Failure      404  {object}  util.CommonResult
@@ -63,6 +65,7 @@ func (iApi SmsCouponApi) Delete(ctx *gin.Context) {
 // @Produce      json
 // @Param        id   path      string  false  "id"
 // @Param        smsCouponDto   query      dto.SmsCouponDto  false  "优惠券"
+// @Security ApiKeyAuth
 // @Success      200  {object}  util.CommonResult
 // @Failure      400  {object}  util.CommonResult
 // @Failure      404  {object}  util.CommonResult
@@ -89,6 +92,7 @@ func (iApi SmsCouponApi) Update(ctx *gin.Context) {
 // @Param        type   query      string  false  "类型"
 // @Param        pageNum   query      string  false  "页码"
 // @Param        pageSize   query      string  false  "数量"
+// @Security ApiKeyAuth
 // @Success      200  {object}  util.CommonResult
 // @Failure      400  {object}  util.CommonResult
 // @Failure      404  {object}  util.CommonResult
@@ -109,6 +113,7 @@ func (iApi SmsCouponApi) List(ctx *gin.Context) {
 // @Accept       json
 // @Produce      json
 // @Param        id   path      string  false  "id"
+// @Security ApiKeyAuth
 // @Success      200  {object}  util.CommonResult
 // @Failure      400  {object}  util.CommonResult
 // @Failure      404  {object}  util.CommonResult

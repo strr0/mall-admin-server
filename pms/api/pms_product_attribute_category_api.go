@@ -18,6 +18,7 @@ type PmsProductAttributeCategoryApi struct {
 // @Accept       json
 // @Produce      json
 // @Param        name   query      string  false  "name"
+// @Security ApiKeyAuth
 // @Success      200  {object}  util.CommonResult
 // @Failure      400  {object}  util.CommonResult
 // @Failure      404  {object}  util.CommonResult
@@ -40,6 +41,7 @@ func (iApi PmsProductAttributeCategoryApi) Create(ctx *gin.Context) {
 // @Produce      json
 // @Param        id   path      string  false  "id"
 // @Param        name   query      string  false  "name"
+// @Security ApiKeyAuth
 // @Success      200  {object}  util.CommonResult
 // @Failure      400  {object}  util.CommonResult
 // @Failure      404  {object}  util.CommonResult
@@ -62,6 +64,7 @@ func (iApi PmsProductAttributeCategoryApi) Update(ctx *gin.Context) {
 // @Accept       json
 // @Produce      json
 // @Param        id   path      string  false  "id"
+// @Security ApiKeyAuth
 // @Success      200  {object}  util.CommonResult
 // @Failure      400  {object}  util.CommonResult
 // @Failure      404  {object}  util.CommonResult
@@ -83,6 +86,7 @@ func (iApi PmsProductAttributeCategoryApi) Delete(ctx *gin.Context) {
 // @Accept       json
 // @Produce      json
 // @Param        id   path      string  false  "id"
+// @Security ApiKeyAuth
 // @Success      200  {object}  util.CommonResult
 // @Failure      400  {object}  util.CommonResult
 // @Failure      404  {object}  util.CommonResult
@@ -101,6 +105,7 @@ func (iApi PmsProductAttributeCategoryApi) GetItem(ctx *gin.Context) {
 // @Produce      json
 // @Param        pageNum   query      string  false  "页码"
 // @Param        pageSize   query      string  false  "数量"
+// @Security ApiKeyAuth
 // @Success      200  {object}  util.CommonResult
 // @Failure      400  {object}  util.CommonResult
 // @Failure      404  {object}  util.CommonResult
@@ -118,6 +123,7 @@ func (iApi PmsProductAttributeCategoryApi) List(ctx *gin.Context) {
 // @Tags         商品属性分类管理
 // @Accept       json
 // @Produce      json
+// @Security ApiKeyAuth
 // @Success      200  {object}  util.CommonResult
 // @Failure      400  {object}  util.CommonResult
 // @Failure      404  {object}  util.CommonResult

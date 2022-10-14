@@ -19,6 +19,7 @@ type SmsFlashPromotionSessionApi struct {
 // @Accept       json
 // @Produce      json
 // @Param        smsFlashPromotionSession   query      model.SmsFlashPromotionSession  false  "场次"
+// @Security ApiKeyAuth
 // @Success      200  {object}  util.CommonResult
 // @Failure      400  {object}  util.CommonResult
 // @Failure      404  {object}  util.CommonResult
@@ -42,6 +43,7 @@ func (iApi SmsFlashPromotionSessionApi) Create(ctx *gin.Context) {
 // @Produce      json
 // @Param        id   path      string  false  "id"
 // @Param        smsFlashPromotionSession   query      model.SmsFlashPromotionSession  false  "场次"
+// @Security ApiKeyAuth
 // @Success      200  {object}  util.CommonResult
 // @Failure      400  {object}  util.CommonResult
 // @Failure      404  {object}  util.CommonResult
@@ -66,6 +68,7 @@ func (iApi SmsFlashPromotionSessionApi) Update(ctx *gin.Context) {
 // @Produce      json
 // @Param        id   path      string  false  "id"
 // @Param        status   query      string  false  "status"
+// @Security ApiKeyAuth
 // @Success      200  {object}  util.CommonResult
 // @Failure      400  {object}  util.CommonResult
 // @Failure      404  {object}  util.CommonResult
@@ -88,6 +91,7 @@ func (iApi SmsFlashPromotionSessionApi) UpdateStatus(ctx *gin.Context) {
 // @Accept       json
 // @Produce      json
 // @Param        id   path      string  false  "id"
+// @Security ApiKeyAuth
 // @Success      200  {object}  util.CommonResult
 // @Failure      400  {object}  util.CommonResult
 // @Failure      404  {object}  util.CommonResult
@@ -109,6 +113,7 @@ func (iApi SmsFlashPromotionSessionApi) Delete(ctx *gin.Context) {
 // @Accept       json
 // @Produce      json
 // @Param        id   path      string  false  "id"
+// @Security ApiKeyAuth
 // @Success      200  {object}  util.CommonResult
 // @Failure      400  {object}  util.CommonResult
 // @Failure      404  {object}  util.CommonResult
@@ -125,6 +130,7 @@ func (iApi SmsFlashPromotionSessionApi) GetItem(ctx *gin.Context) {
 // @Tags         限时购场次管理
 // @Accept       json
 // @Produce      json
+// @Security ApiKeyAuth
 // @Success      200  {object}  util.CommonResult
 // @Failure      400  {object}  util.CommonResult
 // @Failure      404  {object}  util.CommonResult
@@ -141,6 +147,7 @@ func (iApi SmsFlashPromotionSessionApi) ListAll(ctx *gin.Context) {
 // @Accept       json
 // @Produce      json
 // @Param        flashPromotionId   query      string  false  "flashPromotionId"
+// @Security ApiKeyAuth
 // @Success      200  {object}  util.CommonResult
 // @Failure      400  {object}  util.CommonResult
 // @Failure      404  {object}  util.CommonResult

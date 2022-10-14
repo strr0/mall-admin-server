@@ -15,7 +15,7 @@ func registerPmsProductRouter(e *gin.Engine) {
 	db := config.GetDb()
 	iService := service.PmsProductService{DB: db}
 	iApi := api.PmsProductApi{Service: iService}
-	product := e.Group("/product")
+	product := e.Group("/product").Use(config.AuthCheckRole("product"))
 	{
 		product.POST("/create", iApi.Create)
 		product.GET("/updateInfo/:id", iApi.GetUpdateInfo)

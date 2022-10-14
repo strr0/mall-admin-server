@@ -15,7 +15,7 @@ func registerUmsMenuRouter(e *gin.Engine) {
 	db := config.GetDb()
 	iService := service.UmsMenuService{DB: db}
 	iApi := api.UmsMenuApi{Service: iService}
-	menu := e.Group("/menu")
+	menu := e.Group("/menu").Use(config.AuthCheckRole("menu"))
 	{
 		menu.POST("/create", iApi.Create)
 		menu.POST("/update/:id", iApi.Update)

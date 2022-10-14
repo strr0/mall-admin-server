@@ -18,6 +18,7 @@ type PmsBrandApi struct {
 // @Tags         商品品牌管理
 // @Accept       json
 // @Produce      json
+// @Security ApiKeyAuth
 // @Success      200  {object}  util.CommonResult
 // @Failure      400  {object}  util.CommonResult
 // @Failure      404  {object}  util.CommonResult
@@ -34,6 +35,7 @@ func (iApi PmsBrandApi) ListAll(ctx *gin.Context) {
 // @Accept       json
 // @Produce      json
 // @Param        pmsBrand   query      model.PmsBrand  false  "品牌"
+// @Security ApiKeyAuth
 // @Success      200  {object}  util.CommonResult
 // @Failure      400  {object}  util.CommonResult
 // @Failure      404  {object}  util.CommonResult
@@ -57,6 +59,7 @@ func (iApi PmsBrandApi) Create(ctx *gin.Context) {
 // @Produce      json
 // @Param        id   path      string  false  "id"
 // @Param        pmsBrand   query      model.PmsBrand  false  "品牌"
+// @Security ApiKeyAuth
 // @Success      200  {object}  util.CommonResult
 // @Failure      400  {object}  util.CommonResult
 // @Failure      404  {object}  util.CommonResult
@@ -80,6 +83,7 @@ func (iApi PmsBrandApi) Update(ctx *gin.Context) {
 // @Accept       json
 // @Produce      json
 // @Param        id   path      string  false  "id"
+// @Security ApiKeyAuth
 // @Success      200  {object}  util.CommonResult
 // @Failure      400  {object}  util.CommonResult
 // @Failure      404  {object}  util.CommonResult
@@ -103,6 +107,7 @@ func (iApi PmsBrandApi) Delete(ctx *gin.Context) {
 // @Param        keyword   query      string  false  "名称"
 // @Param        pageNum   query      string  false  "页码"
 // @Param        pageSize   query      string  false  "数量"
+// @Security ApiKeyAuth
 // @Success      200  {object}  util.CommonResult
 // @Failure      400  {object}  util.CommonResult
 // @Failure      404  {object}  util.CommonResult
@@ -122,6 +127,7 @@ func (iApi PmsBrandApi) List(ctx *gin.Context) {
 // @Accept       json
 // @Produce      json
 // @Param        id   path      string  false  "id"
+// @Security ApiKeyAuth
 // @Success      200  {object}  util.CommonResult
 // @Failure      400  {object}  util.CommonResult
 // @Failure      404  {object}  util.CommonResult
@@ -139,6 +145,7 @@ func (iApi PmsBrandApi) GetItem(ctx *gin.Context) {
 // @Accept       json
 // @Produce      json
 // @Param        ids   query      []string  false  "ids"
+// @Security ApiKeyAuth
 // @Success      200  {object}  util.CommonResult
 // @Failure      400  {object}  util.CommonResult
 // @Failure      404  {object}  util.CommonResult
@@ -161,6 +168,7 @@ func (iApi PmsBrandApi) DeleteBrand(ctx *gin.Context) {
 // @Produce      json
 // @Param        ids   query      []string  false  "ids"
 // @Param        showStatus   query      string  false  "showStatus"
+// @Security ApiKeyAuth
 // @Success      200  {object}  util.CommonResult
 // @Failure      400  {object}  util.CommonResult
 // @Failure      404  {object}  util.CommonResult
@@ -184,6 +192,7 @@ func (iApi PmsBrandApi) UpdateShowStatus(ctx *gin.Context) {
 // @Produce      json
 // @Param        ids   query      []string  false  "ids"
 // @Param        factoryStatus   query      string  false  "factoryStatus"
+// @Security ApiKeyAuth
 // @Success      200  {object}  util.CommonResult
 // @Failure      400  {object}  util.CommonResult
 // @Failure      404  {object}  util.CommonResult

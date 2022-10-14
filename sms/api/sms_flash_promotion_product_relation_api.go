@@ -19,6 +19,7 @@ type SmsFlashPromotionProductRelationApi struct {
 // @Accept       json
 // @Produce      json
 // @Param        smsFlashPromotionProductRelation   query      model.SmsFlashPromotionProductRelation  false  "关联"
+// @Security ApiKeyAuth
 // @Success      200  {object}  util.CommonResult
 // @Failure      400  {object}  util.CommonResult
 // @Failure      404  {object}  util.CommonResult
@@ -42,6 +43,7 @@ func (iApi SmsFlashPromotionProductRelationApi) Create(ctx *gin.Context) {
 // @Produce      json
 // @Param        id   path      string  false  "id"
 // @Param        smsFlashPromotionProductRelation   query      model.SmsFlashPromotionProductRelation  false  "关联"
+// @Security ApiKeyAuth
 // @Success      200  {object}  util.CommonResult
 // @Failure      400  {object}  util.CommonResult
 // @Failure      404  {object}  util.CommonResult
@@ -65,6 +67,7 @@ func (iApi SmsFlashPromotionProductRelationApi) Update(ctx *gin.Context) {
 // @Accept       json
 // @Produce      json
 // @Param        id   path      string  false  "id"
+// @Security ApiKeyAuth
 // @Success      200  {object}  util.CommonResult
 // @Failure      400  {object}  util.CommonResult
 // @Failure      404  {object}  util.CommonResult
@@ -86,6 +89,7 @@ func (iApi SmsFlashPromotionProductRelationApi) Delete(ctx *gin.Context) {
 // @Accept       json
 // @Produce      json
 // @Param        id   path      string  false  "id"
+// @Security ApiKeyAuth
 // @Success      200  {object}  util.CommonResult
 // @Failure      400  {object}  util.CommonResult
 // @Failure      404  {object}  util.CommonResult
@@ -106,6 +110,7 @@ func (iApi SmsFlashPromotionProductRelationApi) GetItem(ctx *gin.Context) {
 // @Param        flashPromotionSessionId   query      string  false  "flashPromotionSessionId"
 // @Param        pageNum   query      string  false  "页码"
 // @Param        pageSize   query      string  false  "数量"
+// @Security ApiKeyAuth
 // @Success      200  {object}  util.CommonResult
 // @Failure      400  {object}  util.CommonResult
 // @Failure      404  {object}  util.CommonResult

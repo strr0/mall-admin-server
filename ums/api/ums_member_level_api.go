@@ -18,6 +18,7 @@ type UmsMemberLevelApi struct {
 // @Accept       json
 // @Produce      json
 // @Param        defaultStatus   query      string  false  "defaultStatus"
+// @Security ApiKeyAuth
 // @Success      200  {object}  util.CommonResult
 // @Failure      400  {object}  util.CommonResult
 // @Failure      404  {object}  util.CommonResult

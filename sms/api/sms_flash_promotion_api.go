@@ -19,6 +19,7 @@ type SmsFlashPromotionApi struct {
 // @Accept       json
 // @Produce      json
 // @Param        smsFlashPromotion   query      model.SmsFlashPromotion  false  "活动"
+// @Security ApiKeyAuth
 // @Success      200  {object}  util.CommonResult
 // @Failure      400  {object}  util.CommonResult
 // @Failure      404  {object}  util.CommonResult
@@ -42,6 +43,7 @@ func (iApi SmsFlashPromotionApi) Create(ctx *gin.Context) {
 // @Produce      json
 // @Param        id   path      string  false  "id"
 // @Param        smsFlashPromotion   query      model.SmsFlashPromotion  false  "活动"
+// @Security ApiKeyAuth
 // @Success      200  {object}  util.CommonResult
 // @Failure      400  {object}  util.CommonResult
 // @Failure      404  {object}  util.CommonResult
@@ -65,6 +67,7 @@ func (iApi SmsFlashPromotionApi) Update(ctx *gin.Context) {
 // @Accept       json
 // @Produce      json
 // @Param        id   path      string  false  "id"
+// @Security ApiKeyAuth
 // @Success      200  {object}  util.CommonResult
 // @Failure      400  {object}  util.CommonResult
 // @Failure      404  {object}  util.CommonResult
@@ -87,6 +90,7 @@ func (iApi SmsFlashPromotionApi) Delete(ctx *gin.Context) {
 // @Produce      json
 // @Param        id   path      string  false  "id"
 // @Param        status   query      string  false  "status"
+// @Security ApiKeyAuth
 // @Success      200  {object}  util.CommonResult
 // @Failure      400  {object}  util.CommonResult
 // @Failure      404  {object}  util.CommonResult
@@ -109,6 +113,7 @@ func (iApi SmsFlashPromotionApi) UpdateStatus(ctx *gin.Context) {
 // @Accept       json
 // @Produce      json
 // @Param        id   path      string  false  "id"
+// @Security ApiKeyAuth
 // @Success      200  {object}  util.CommonResult
 // @Failure      400  {object}  util.CommonResult
 // @Failure      404  {object}  util.CommonResult
@@ -128,6 +133,7 @@ func (iApi SmsFlashPromotionApi) GetItem(ctx *gin.Context) {
 // @Param        keyword   query      string  false  "名称"
 // @Param        pageNum   query      string  false  "页码"
 // @Param        pageSize   query      string  false  "数量"
+// @Security ApiKeyAuth
 // @Success      200  {object}  util.CommonResult
 // @Failure      400  {object}  util.CommonResult
 // @Failure      404  {object}  util.CommonResult

@@ -15,7 +15,7 @@ func registerSmsFlashPromotionSessionRouter(e *gin.Engine) {
 	db := config.GetDb()
 	iService := service.SmsFlashPromotionSessionService{DB: db}
 	iApi := api.SmsFlashPromotionSessionApi{Service: iService}
-	flashSession := e.Group("/flashSession")
+	flashSession := e.Group("/flashSession").Use(config.AuthCheckRole("flash"))
 	{
 		flashSession.POST("/create", iApi.Create)
 		flashSession.POST("/update/:id", iApi.Update)

@@ -15,7 +15,7 @@ func registerSmsCouponHistoryRouter(e *gin.Engine) {
 	db := config.GetDb()
 	iService := service.SmsCouponHistoryService{DB: db}
 	iApi := api.SmsCouponHistoryApi{Service: iService}
-	couponHistory := e.Group("/couponHistory")
+	couponHistory := e.Group("/couponHistory").Use(config.AuthCheckRole("coupon"))
 	{
 		couponHistory.GET("/list", iApi.List)
 	}

@@ -15,7 +15,7 @@ func registerOmsCompanyAddressRouter(e *gin.Engine) {
 	db := config.GetDb()
 	iService := service.OmsCompanyAddressService{DB: db}
 	iApi := api.OmsCompanyAddressApi{Service: iService}
-	companyAddress := e.Group("/companyAddress")
+	companyAddress := e.Group("/companyAddress").Use(config.AuthCheckRole("order"))
 	{
 		companyAddress.GET("/list", iApi.List)
 	}

@@ -15,7 +15,7 @@ func registerOmsOrderReturnReasonRouter(e *gin.Engine) {
 	db := config.GetDb()
 	iService := service.OmsOrderReturnReasonService{DB: db}
 	iApi := api.OmsOrderReturnReasonApi{Service: iService}
-	returnReason := e.Group("/returnReason")
+	returnReason := e.Group("/returnReason").Use(config.AuthCheckRole("returnReason"))
 	{
 		returnReason.POST("/create", iApi.Create)
 		returnReason.POST("/update/:id", iApi.Update)

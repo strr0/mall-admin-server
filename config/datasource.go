@@ -9,17 +9,20 @@ import (
 
 var db *gorm.DB
 
-type Datasource struct {
+type DataSource struct {
 	Url      string
 	Username string
 	Password string
 }
 
-func init() {
+func InitDataSource() {
 	var err error
-	var datasource Datasource
-	_ = settings.UnmarshalKey("datasource", &datasource)
-	dsn := fmt.Sprintf("%s:%s@%s", datasource.Username, datasource.Password, datasource.Url)
+	var dataSource DataSource
+	err = settings.UnmarshalKey("datasource", &dataSource)
+	if err != nil {
+		log.Fatalf("get config failed: %v", err)
+	}
+	dsn := fmt.Sprintf("%s:%s@%s", dataSource.Username, dataSource.Password, dataSource.Url)
 	db, err = gorm.Open(mysql.Open(dsn), &gorm.Config{})
 	if err != nil {
 		log.Fatalf("connect mysql failed: %v", err)

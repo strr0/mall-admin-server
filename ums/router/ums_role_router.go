@@ -15,7 +15,7 @@ func registerUmsRoleRouter(e *gin.Engine) {
 	db := config.GetDb()
 	iService := service.UmsRoleService{DB: db}
 	iApi := api.UmsRoleApi{Service: iService}
-	role := e.Group("/role")
+	role := e.Group("/role").Use(config.AuthCheckRole("role"))
 	{
 		role.POST("/create", iApi.Create)
 		role.POST("/update/:id", iApi.Update)

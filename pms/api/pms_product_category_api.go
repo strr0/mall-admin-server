@@ -19,6 +19,7 @@ type PmsProductCategoryApi struct {
 // @Accept       json
 // @Produce      json
 // @Param        pmsProductCategoryDto   query      dto.PmsProductCategoryDto  false  "分类"
+// @Security ApiKeyAuth
 // @Success      200  {object}  util.CommonResult
 // @Failure      400  {object}  util.CommonResult
 // @Failure      404  {object}  util.CommonResult
@@ -42,6 +43,7 @@ func (iApi PmsProductCategoryApi) Create(ctx *gin.Context) {
 // @Produce      json
 // @Param        id   path      string  false  "id"
 // @Param        pmsProductCategoryDto   query      dto.PmsProductCategoryDto  false  "分类"
+// @Security ApiKeyAuth
 // @Success      200  {object}  util.CommonResult
 // @Failure      400  {object}  util.CommonResult
 // @Failure      404  {object}  util.CommonResult
@@ -67,6 +69,7 @@ func (iApi PmsProductCategoryApi) Update(ctx *gin.Context) {
 // @Param        parentId   query      string  false  "parentId"
 // @Param        pageNum   query      string  false  "页码"
 // @Param        pageSize   query      string  false  "数量"
+// @Security ApiKeyAuth
 // @Success      200  {object}  util.CommonResult
 // @Failure      400  {object}  util.CommonResult
 // @Failure      404  {object}  util.CommonResult
@@ -86,6 +89,7 @@ func (iApi PmsProductCategoryApi) List(ctx *gin.Context) {
 // @Accept       json
 // @Produce      json
 // @Param        id   path      string  false  "id"
+// @Security ApiKeyAuth
 // @Success      200  {object}  util.CommonResult
 // @Failure      400  {object}  util.CommonResult
 // @Failure      404  {object}  util.CommonResult
@@ -103,6 +107,7 @@ func (iApi PmsProductCategoryApi) GetItem(ctx *gin.Context) {
 // @Accept       json
 // @Produce      json
 // @Param        id   path      string  false  "id"
+// @Security ApiKeyAuth
 // @Success      200  {object}  util.CommonResult
 // @Failure      400  {object}  util.CommonResult
 // @Failure      404  {object}  util.CommonResult
@@ -125,6 +130,7 @@ func (iApi PmsProductCategoryApi) Delete(ctx *gin.Context) {
 // @Produce      json
 // @Param        ids   query      []string  false  "ids"
 // @Param        navStatus   query      string  false  "navStatus"
+// @Security ApiKeyAuth
 // @Success      200  {object}  util.CommonResult
 // @Failure      400  {object}  util.CommonResult
 // @Failure      404  {object}  util.CommonResult
@@ -148,6 +154,7 @@ func (iApi PmsProductCategoryApi) UpdateNavStatus(ctx *gin.Context) {
 // @Produce      json
 // @Param        ids   query      []string  false  "ids"
 // @Param        showStatus   query      string  false  "showStatus"
+// @Security ApiKeyAuth
 // @Success      200  {object}  util.CommonResult
 // @Failure      400  {object}  util.CommonResult
 // @Failure      404  {object}  util.CommonResult
@@ -169,6 +176,7 @@ func (iApi PmsProductCategoryApi) UpdateShowStatus(ctx *gin.Context) {
 // @Tags         商品分类管理
 // @Accept       json
 // @Produce      json
+// @Security ApiKeyAuth
 // @Success      200  {object}  util.CommonResult
 // @Failure      400  {object}  util.CommonResult
 // @Failure      404  {object}  util.CommonResult

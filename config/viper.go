@@ -14,6 +14,6 @@ func init() {
 	settings.AddConfigPath("./")
 	err := settings.ReadInConfig()
 	if err != nil {
-		log.Fatalln(err)
+		log.Fatalf("load config failed: %v", err)
 	}
 }

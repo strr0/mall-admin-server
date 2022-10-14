@@ -22,6 +22,7 @@ type PmsProductAttributeApi struct {
 // @Param        type   query      string  false  "type"
 // @Param        pageNum   query      string  false  "页码"
 // @Param        pageSize   query      string  false  "数量"
+// @Security ApiKeyAuth
 // @Success      200  {object}  util.CommonResult
 // @Failure      400  {object}  util.CommonResult
 // @Failure      404  {object}  util.CommonResult
@@ -42,6 +43,7 @@ func (iApi PmsProductAttributeApi) List(ctx *gin.Context) {
 // @Accept       json
 // @Produce      json
 // @Param        pmsProductAttribute   query      model.PmsProductAttribute  false  "商品属性"
+// @Security ApiKeyAuth
 // @Success      200  {object}  util.CommonResult
 // @Failure      400  {object}  util.CommonResult
 // @Failure      404  {object}  util.CommonResult
@@ -65,6 +67,7 @@ func (iApi PmsProductAttributeApi) Create(ctx *gin.Context) {
 // @Produce      json
 // @Param        id   path      string  false  "id"
 // @Param        pmsProductAttribute   query      model.PmsProductAttribute  false  "商品属性"
+// @Security ApiKeyAuth
 // @Success      200  {object}  util.CommonResult
 // @Failure      400  {object}  util.CommonResult
 // @Failure      404  {object}  util.CommonResult
@@ -88,6 +91,7 @@ func (iApi PmsProductAttributeApi) Update(ctx *gin.Context) {
 // @Accept       json
 // @Produce      json
 // @Param        id   path      string  false  "id"
+// @Security ApiKeyAuth
 // @Success      200  {object}  util.CommonResult
 // @Failure      400  {object}  util.CommonResult
 // @Failure      404  {object}  util.CommonResult
@@ -105,6 +109,7 @@ func (iApi PmsProductAttributeApi) GetItem(ctx *gin.Context) {
 // @Accept       json
 // @Produce      json
 // @Param        ids   query      []string  false  "ids"
+// @Security ApiKeyAuth
 // @Success      200  {object}  util.CommonResult
 // @Failure      400  {object}  util.CommonResult
 // @Failure      404  {object}  util.CommonResult
@@ -126,6 +131,7 @@ func (iApi PmsProductAttributeApi) Delete(ctx *gin.Context) {
 // @Accept       json
 // @Produce      json
 // @Param        productCategoryId   path      string  false  "productCategoryId"
+// @Security ApiKeyAuth
 // @Success      200  {object}  util.CommonResult
 // @Failure      400  {object}  util.CommonResult
 // @Failure      404  {object}  util.CommonResult

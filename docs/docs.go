@@ -27,6 +27,11 @@ const docTemplate = `{
     "paths": {
         "/admin/delete/{id}": {
             "post": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
                 "description": "删除用户",
                 "consumes": [
                     "application/json"
@@ -76,6 +81,11 @@ const docTemplate = `{
         },
         "/admin/info": {
             "get": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
                 "description": "获取用户信息",
                 "consumes": [
                     "application/json"
@@ -117,6 +127,11 @@ const docTemplate = `{
         },
         "/admin/list": {
             "get": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
                 "description": "列表",
                 "consumes": [
                     "application/json"
@@ -274,6 +289,11 @@ const docTemplate = `{
         },
         "/admin/refreshToken": {
             "get": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
                 "description": "刷新token",
                 "consumes": [
                     "application/json"
@@ -415,6 +435,11 @@ const docTemplate = `{
         },
         "/admin/role/update": {
             "post": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
                 "description": "角色分配",
                 "consumes": [
                     "application/json"
@@ -473,6 +498,11 @@ const docTemplate = `{
         },
         "/admin/role/{adminId}": {
             "get": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
                 "description": "获取用户角色",
                 "consumes": [
                     "application/json"
@@ -522,6 +552,11 @@ const docTemplate = `{
         },
         "/admin/update/{id}": {
             "post": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
                 "description": "修改用户信息",
                 "consumes": [
                     "application/json"
@@ -628,6 +663,11 @@ const docTemplate = `{
         },
         "/admin/updateStatus/{id}": {
             "post": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
                 "description": "更新状态",
                 "consumes": [
                     "application/json"
@@ -683,6 +723,11 @@ const docTemplate = `{
         },
         "/admin/{id}": {
             "get": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
                 "description": "根据id获取用户信息",
                 "consumes": [
                     "application/json"
@@ -732,6 +777,11 @@ const docTemplate = `{
         },
         "/brand/create": {
             "post": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
                 "description": "添加品牌",
                 "consumes": [
                     "application/json"
@@ -837,6 +887,11 @@ const docTemplate = `{
         },
         "/brand/delete/batch": {
             "post": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
                 "description": "批量删除品牌",
                 "consumes": [
                     "application/json"
@@ -889,6 +944,11 @@ const docTemplate = `{
         },
         "/brand/delete/{id}": {
             "post": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
                 "description": "删除品牌",
                 "consumes": [
                     "application/json"
@@ -938,6 +998,11 @@ const docTemplate = `{
         },
         "/brand/list": {
             "get": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
                 "description": "根据品牌名称分页获取品牌列表",
                 "consumes": [
                     "application/json"
@@ -999,6 +1064,11 @@ const docTemplate = `{
         },
         "/brand/listAll": {
             "get": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
                 "description": "获取全部品牌列表",
                 "consumes": [
                     "application/json"
@@ -1040,6 +1110,11 @@ const docTemplate = `{
         },
         "/brand/update/factoryStatus": {
             "post": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
                 "description": "批量更新厂家制造商状态",
                 "consumes": [
                     "application/json"
@@ -1098,6 +1173,11 @@ const docTemplate = `{
         },
         "/brand/update/showStatus": {
             "post": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
                 "description": "批量更新显示状态",
                 "consumes": [
                     "application/json"
@@ -1156,6 +1236,11 @@ const docTemplate = `{
         },
         "/brand/update/{id}": {
             "post": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
                 "description": "更新品牌",
                 "consumes": [
                     "application/json"
@@ -1267,6 +1352,11 @@ const docTemplate = `{
         },
         "/brand/{id}": {
             "get": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
                 "description": "根据编号查询品牌信息",
                 "consumes": [
                     "application/json"
@@ -1316,6 +1406,11 @@ const docTemplate = `{
         },
         "/companyAddress/list": {
             "get": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
                 "description": "获取所有收货地址",
                 "consumes": [
                     "application/json"
@@ -1357,6 +1452,11 @@ const docTemplate = `{
         },
         "/coupon/create": {
             "post": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
                 "description": "添加优惠券",
                 "consumes": [
                     "application/json"
@@ -1504,6 +1604,11 @@ const docTemplate = `{
         },
         "/coupon/delete/{id}": {
             "post": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
                 "description": "删除优惠券",
                 "consumes": [
                     "application/json"
@@ -1553,6 +1658,11 @@ const docTemplate = `{
         },
         "/coupon/list": {
             "get": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
                 "description": "根据优惠券名称和类型分页获取优惠券列表",
                 "consumes": [
                     "application/json"
@@ -1620,6 +1730,11 @@ const docTemplate = `{
         },
         "/coupon/update/{id}": {
             "post": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
                 "description": "修改优惠券",
                 "consumes": [
                     "application/json"
@@ -1773,6 +1888,11 @@ const docTemplate = `{
         },
         "/coupon/{id}": {
             "get": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
                 "description": "获取单个优惠券的详细信息",
                 "consumes": [
                     "application/json"
@@ -1822,6 +1942,11 @@ const docTemplate = `{
         },
         "/couponHistory/list": {
             "get": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
                 "description": "根据优惠券id，使用状态，订单编号分页获取领取记录",
                 "consumes": [
                     "application/json"
@@ -1895,6 +2020,11 @@ const docTemplate = `{
         },
         "/flash/create": {
             "post": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
                 "description": "添加活动",
                 "consumes": [
                     "application/json"
@@ -1972,6 +2102,11 @@ const docTemplate = `{
         },
         "/flash/delete/{id}": {
             "post": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
                 "description": "删除活动",
                 "consumes": [
                     "application/json"
@@ -2021,6 +2156,11 @@ const docTemplate = `{
         },
         "/flash/list": {
             "get": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
                 "description": "根据活动名称分页查询",
                 "consumes": [
                     "application/json"
@@ -2082,6 +2222,11 @@ const docTemplate = `{
         },
         "/flash/update/status/{id}": {
             "post": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
                 "description": "修改上下线状态",
                 "consumes": [
                     "application/json"
@@ -2137,6 +2282,11 @@ const docTemplate = `{
         },
         "/flash/update/{id}": {
             "post": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
                 "description": "编辑活动",
                 "consumes": [
                     "application/json"
@@ -2220,6 +2370,11 @@ const docTemplate = `{
         },
         "/flash/{id}": {
             "get": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
                 "description": "获取活动详情",
                 "consumes": [
                     "application/json"
@@ -2269,6 +2424,11 @@ const docTemplate = `{
         },
         "/flashProductRelation/create": {
             "post": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
                 "description": "批量选择商品添加关联",
                 "consumes": [
                     "application/json"
@@ -2358,6 +2518,11 @@ const docTemplate = `{
         },
         "/flashProductRelation/delete/{id}": {
             "post": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
                 "description": "删除关联",
                 "consumes": [
                     "application/json"
@@ -2407,6 +2572,11 @@ const docTemplate = `{
         },
         "/flashProductRelation/list": {
             "get": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
                 "description": "分页查询不同场次关联及商品信息",
                 "consumes": [
                     "application/json"
@@ -2474,6 +2644,11 @@ const docTemplate = `{
         },
         "/flashProductRelation/update/{id}": {
             "post": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
                 "description": "修改关联信息",
                 "consumes": [
                     "application/json"
@@ -2569,6 +2744,11 @@ const docTemplate = `{
         },
         "/flashProductRelation/{id}": {
             "get": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
                 "description": "获取管理商品促销信息",
                 "consumes": [
                     "application/json"
@@ -2618,6 +2798,11 @@ const docTemplate = `{
         },
         "/flashSession/create": {
             "post": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
                 "description": "添加场次",
                 "consumes": [
                     "application/json"
@@ -2697,6 +2882,11 @@ const docTemplate = `{
         },
         "/flashSession/delete/{id}": {
             "post": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
                 "description": "删除场次",
                 "consumes": [
                     "application/json"
@@ -2746,6 +2936,11 @@ const docTemplate = `{
         },
         "/flashSession/listAll": {
             "get": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
                 "description": "获取全部场次",
                 "consumes": [
                     "application/json"
@@ -2787,6 +2982,11 @@ const docTemplate = `{
         },
         "/flashSession/selectList": {
             "get": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
                 "description": "获取全部可选场次及其数量",
                 "consumes": [
                     "application/json"
@@ -2836,6 +3036,11 @@ const docTemplate = `{
         },
         "/flashSession/update/status/{id}": {
             "post": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
                 "description": "修改启用状态",
                 "consumes": [
                     "application/json"
@@ -2891,6 +3096,11 @@ const docTemplate = `{
         },
         "/flashSession/update/{id}": {
             "post": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
                 "description": "修改场次",
                 "consumes": [
                     "application/json"
@@ -2976,6 +3186,11 @@ const docTemplate = `{
         },
         "/flashSession/{id}": {
             "get": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
                 "description": "获取场次详情",
                 "consumes": [
                     "application/json"
@@ -3025,6 +3240,11 @@ const docTemplate = `{
         },
         "/home/advertise/create": {
             "post": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
                 "description": "添加广告",
                 "consumes": [
                     "application/json"
@@ -3135,6 +3355,11 @@ const docTemplate = `{
         },
         "/home/advertise/delete/{id}": {
             "post": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
                 "description": "删除广告",
                 "consumes": [
                     "application/json"
@@ -3184,6 +3409,11 @@ const docTemplate = `{
         },
         "/home/advertise/list": {
             "get": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
                 "description": "分页查询广告",
                 "consumes": [
                     "application/json"
@@ -3257,6 +3487,11 @@ const docTemplate = `{
         },
         "/home/advertise/update/status/{id}": {
             "post": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
                 "description": "修改上下线状态",
                 "consumes": [
                     "application/json"
@@ -3312,6 +3547,11 @@ const docTemplate = `{
         },
         "/home/advertise/update/{id}": {
             "post": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
                 "description": "修改广告",
                 "consumes": [
                     "application/json"
@@ -3428,6 +3668,11 @@ const docTemplate = `{
         },
         "/home/advertise/{id}": {
             "get": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
                 "description": "获取广告详情",
                 "consumes": [
                     "application/json"
@@ -3477,6 +3722,11 @@ const docTemplate = `{
         },
         "/home/brand/create": {
             "post": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
                 "description": "添加首页推荐品牌",
                 "consumes": [
                     "application/json"
@@ -3545,6 +3795,11 @@ const docTemplate = `{
         },
         "/home/brand/delete": {
             "post": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
                 "description": "批量删除推荐品牌",
                 "consumes": [
                     "application/json"
@@ -3597,6 +3852,11 @@ const docTemplate = `{
         },
         "/home/brand/list": {
             "get": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
                 "description": "分页查询推荐品牌",
                 "consumes": [
                     "application/json"
@@ -3664,6 +3924,11 @@ const docTemplate = `{
         },
         "/home/brand/update/recommendStatus": {
             "post": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
                 "description": "批量修改推荐品牌状态",
                 "consumes": [
                     "application/json"
@@ -3722,6 +3987,11 @@ const docTemplate = `{
         },
         "/home/brand/update/sort/{id}": {
             "post": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
                 "description": "修改推荐品牌排序",
                 "consumes": [
                     "application/json"
@@ -3777,6 +4047,11 @@ const docTemplate = `{
         },
         "/home/newProduct/create": {
             "post": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
                 "description": "添加首页新品",
                 "consumes": [
                     "application/json"
@@ -3845,6 +4120,11 @@ const docTemplate = `{
         },
         "/home/newProduct/delete": {
             "post": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
                 "description": "批量删除首页新品",
                 "consumes": [
                     "application/json"
@@ -3897,6 +4177,11 @@ const docTemplate = `{
         },
         "/home/newProduct/list": {
             "get": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
                 "description": "分页查询首页新品",
                 "consumes": [
                     "application/json"
@@ -3964,6 +4249,11 @@ const docTemplate = `{
         },
         "/home/newProduct/update/recommendStatus": {
             "post": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
                 "description": "批量修改首页新品状态",
                 "consumes": [
                     "application/json"
@@ -4022,6 +4312,11 @@ const docTemplate = `{
         },
         "/home/newProduct/update/sort/{id}": {
             "post": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
                 "description": "修改首页新品排序",
                 "consumes": [
                     "application/json"
@@ -4077,6 +4372,11 @@ const docTemplate = `{
         },
         "/home/recommendProduct/create": {
             "post": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
                 "description": "添加首页推荐",
                 "consumes": [
                     "application/json"
@@ -4145,6 +4445,11 @@ const docTemplate = `{
         },
         "/home/recommendProduct/delete": {
             "post": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
                 "description": "批量删除推荐",
                 "consumes": [
                     "application/json"
@@ -4197,6 +4502,11 @@ const docTemplate = `{
         },
         "/home/recommendProduct/list": {
             "get": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
                 "description": "分页查询推荐",
                 "consumes": [
                     "application/json"
@@ -4264,6 +4574,11 @@ const docTemplate = `{
         },
         "/home/recommendProduct/update/recommendStatus": {
             "post": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
                 "description": "批量修改推荐状态",
                 "consumes": [
                     "application/json"
@@ -4322,6 +4637,11 @@ const docTemplate = `{
         },
         "/home/recommendProduct/update/sort/{id}": {
             "post": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
                 "description": "修改推荐排序",
                 "consumes": [
                     "application/json"
@@ -4377,6 +4697,11 @@ const docTemplate = `{
         },
         "/home/recommendSubject/create": {
             "post": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
                 "description": "添加首页推荐专题",
                 "consumes": [
                     "application/json"
@@ -4445,6 +4770,11 @@ const docTemplate = `{
         },
         "/home/recommendSubject/delete": {
             "post": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
                 "description": "批量删除推荐",
                 "consumes": [
                     "application/json"
@@ -4497,6 +4827,11 @@ const docTemplate = `{
         },
         "/home/recommendSubject/list": {
             "get": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
                 "description": "分页查询推荐",
                 "consumes": [
                     "application/json"
@@ -4564,6 +4899,11 @@ const docTemplate = `{
         },
         "/home/recommendSubject/update/recommendStatus": {
             "post": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
                 "description": "批量修改推荐状态",
                 "consumes": [
                     "application/json"
@@ -4622,6 +4962,11 @@ const docTemplate = `{
         },
         "/home/recommendSubject/update/sort/{id}": {
             "post": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
                 "description": "修改推荐排序",
                 "consumes": [
                     "application/json"
@@ -4677,6 +5022,11 @@ const docTemplate = `{
         },
         "/memberLevel/list": {
             "get": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
                 "description": "列表",
                 "consumes": [
                     "application/json"
@@ -4726,6 +5076,11 @@ const docTemplate = `{
         },
         "/menu/create": {
             "post": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
                 "description": "新增菜单",
                 "consumes": [
                     "application/json"
@@ -4822,6 +5177,11 @@ const docTemplate = `{
         },
         "/menu/delete/{id}": {
             "post": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
                 "description": "删除菜单",
                 "consumes": [
                     "application/json"
@@ -4871,6 +5231,11 @@ const docTemplate = `{
         },
         "/menu/list/{parentId}": {
             "get": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
                 "description": "菜单列表",
                 "consumes": [
                     "application/json"
@@ -4932,6 +5297,11 @@ const docTemplate = `{
         },
         "/menu/treeList": {
             "get": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
                 "description": "获取树形菜单",
                 "consumes": [
                     "application/json"
@@ -4973,6 +5343,11 @@ const docTemplate = `{
         },
         "/menu/update/{id}": {
             "post": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
                 "description": "修改菜单",
                 "consumes": [
                     "application/json"
@@ -5075,6 +5450,11 @@ const docTemplate = `{
         },
         "/menu/updateHidden/{id}": {
             "post": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
                 "description": "修改菜单显示状态",
                 "consumes": [
                     "application/json"
@@ -5130,6 +5510,11 @@ const docTemplate = `{
         },
         "/menu/{id}": {
             "get": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
                 "description": "查看菜单",
                 "consumes": [
                     "application/json"
@@ -5179,6 +5564,11 @@ const docTemplate = `{
         },
         "/order/delete": {
             "post": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
                 "description": "批量删除订单",
                 "consumes": [
                     "application/json"
@@ -5231,6 +5621,11 @@ const docTemplate = `{
         },
         "/order/list": {
             "get": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
                 "description": "查询订单",
                 "consumes": [
                     "application/json"
@@ -5286,6 +5681,11 @@ const docTemplate = `{
         },
         "/order/update/close": {
             "post": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
                 "description": "批量关闭订单",
                 "consumes": [
                     "application/json"
@@ -5344,6 +5744,11 @@ const docTemplate = `{
         },
         "/order/update/delivery": {
             "post": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
                 "description": "批量发货",
                 "consumes": [
                     "application/json"
@@ -5398,6 +5803,11 @@ const docTemplate = `{
         },
         "/order/update/moneyInfo": {
             "post": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
                 "description": "修改订单费用信息",
                 "consumes": [
                     "application/json"
@@ -5461,6 +5871,11 @@ const docTemplate = `{
         },
         "/order/update/note": {
             "post": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
                 "description": "修改订单费用信息",
                 "consumes": [
                     "application/json"
@@ -5522,6 +5937,11 @@ const docTemplate = `{
         },
         "/order/update/receiverInfo": {
             "post": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
                 "description": "修改收货人信息",
                 "consumes": [
                     "application/json"
@@ -5610,6 +6030,11 @@ const docTemplate = `{
         },
         "/order/{id}": {
             "get": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
                 "description": "订单详情",
                 "consumes": [
                     "application/json"
@@ -5659,6 +6084,11 @@ const docTemplate = `{
         },
         "/orderSetting/update/{id}": {
             "get": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
                 "description": "修改指定订单设置",
                 "consumes": [
                     "application/json"
@@ -5743,6 +6173,11 @@ const docTemplate = `{
         },
         "/orderSetting/{id}": {
             "get": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
                 "description": "获取指定订单设置",
                 "consumes": [
                     "application/json"
@@ -5792,6 +6227,11 @@ const docTemplate = `{
         },
         "/prefrenceArea/listAll": {
             "get": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
                 "description": "获取所有商品优选",
                 "consumes": [
                     "application/json"
@@ -5833,6 +6273,11 @@ const docTemplate = `{
         },
         "/product/create": {
             "post": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
                 "description": "创建商品",
                 "consumes": [
                     "application/json"
@@ -6121,6 +6566,11 @@ const docTemplate = `{
         },
         "/product/list": {
             "get": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
                 "description": "查询商品",
                 "consumes": [
                     "application/json"
@@ -6194,6 +6644,11 @@ const docTemplate = `{
         },
         "/product/simpleList": {
             "get": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
                 "description": "根据商品名称或货号模糊查询",
                 "consumes": [
                     "application/json"
@@ -6243,6 +6698,11 @@ const docTemplate = `{
         },
         "/product/update/deleteStatus": {
             "post": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
                 "description": "批量修改删除状态",
                 "consumes": [
                     "application/json"
@@ -6301,6 +6761,11 @@ const docTemplate = `{
         },
         "/product/update/newStatus": {
             "post": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
                 "description": "批量设为新品",
                 "consumes": [
                     "application/json"
@@ -6359,6 +6824,11 @@ const docTemplate = `{
         },
         "/product/update/publishStatus": {
             "post": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
                 "description": "批量上下架商品",
                 "consumes": [
                     "application/json"
@@ -6417,6 +6887,11 @@ const docTemplate = `{
         },
         "/product/update/recommendStatus": {
             "post": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
                 "description": "批量推荐商品",
                 "consumes": [
                     "application/json"
@@ -6475,6 +6950,11 @@ const docTemplate = `{
         },
         "/product/update/verifyStatus": {
             "post": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
                 "description": "批量修改审核状态",
                 "consumes": [
                     "application/json"
@@ -6539,6 +7019,11 @@ const docTemplate = `{
         },
         "/product/update/{id}": {
             "post": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
                 "description": "更新商品",
                 "consumes": [
                     "application/json"
@@ -6833,6 +7318,11 @@ const docTemplate = `{
         },
         "/product/updateInfo/{id}": {
             "get": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
                 "description": "根据商品id获取商品编辑信息",
                 "consumes": [
                     "application/json"
@@ -6882,6 +7372,11 @@ const docTemplate = `{
         },
         "/productAttribute/attrInfo/{productCategoryId}": {
             "get": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
                 "description": "根据商品分类的id获取商品属性及属性分类",
                 "consumes": [
                     "application/json"
@@ -6931,6 +7426,11 @@ const docTemplate = `{
         },
         "/productAttribute/category/create": {
             "post": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
                 "description": "添加商品属性分类",
                 "consumes": [
                     "application/json"
@@ -6980,6 +7480,11 @@ const docTemplate = `{
         },
         "/productAttribute/category/delete/{id}": {
             "post": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
                 "description": "删除单个商品属性分类",
                 "consumes": [
                     "application/json"
@@ -7029,6 +7534,11 @@ const docTemplate = `{
         },
         "/productAttribute/category/list": {
             "get": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
                 "description": "分页获取所有商品属性分类",
                 "consumes": [
                     "application/json"
@@ -7084,6 +7594,11 @@ const docTemplate = `{
         },
         "/productAttribute/category/list/withAttr": {
             "get": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
                 "description": "获取所有商品属性分类及其下属性",
                 "consumes": [
                     "application/json"
@@ -7125,6 +7640,11 @@ const docTemplate = `{
         },
         "/productAttribute/category/update/{id}": {
             "post": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
                 "description": "修改商品属性分类",
                 "consumes": [
                     "application/json"
@@ -7180,6 +7700,11 @@ const docTemplate = `{
         },
         "/productAttribute/category/{id}": {
             "get": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
                 "description": "获取单个商品属性分类信息",
                 "consumes": [
                     "application/json"
@@ -7229,6 +7754,11 @@ const docTemplate = `{
         },
         "/productAttribute/create": {
             "post": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
                 "description": "添加商品属性信息",
                 "consumes": [
                     "application/json"
@@ -7341,6 +7871,11 @@ const docTemplate = `{
         },
         "/productAttribute/delete": {
             "post": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
                 "description": "批量删除商品属性",
                 "consumes": [
                     "application/json"
@@ -7393,6 +7928,11 @@ const docTemplate = `{
         },
         "/productAttribute/list/{cid}": {
             "get": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
                 "description": "根据分类查询属性列表或参数列表",
                 "consumes": [
                     "application/json"
@@ -7460,6 +8000,11 @@ const docTemplate = `{
         },
         "/productAttribute/update/{id}": {
             "post": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
                 "description": "修改商品属性信息",
                 "consumes": [
                     "application/json"
@@ -7578,6 +8123,11 @@ const docTemplate = `{
         },
         "/productAttribute/{id}": {
             "get": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
                 "description": "查询单个商品属性",
                 "consumes": [
                     "application/json"
@@ -7627,6 +8177,11 @@ const docTemplate = `{
         },
         "/productCategory/create": {
             "post": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
                 "description": "添加商品分类",
                 "consumes": [
                     "application/json"
@@ -7744,6 +8299,11 @@ const docTemplate = `{
         },
         "/productCategory/delete/{id}": {
             "post": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
                 "description": "删除商品分类",
                 "consumes": [
                     "application/json"
@@ -7793,6 +8353,11 @@ const docTemplate = `{
         },
         "/productCategory/list": {
             "get": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
                 "description": "分页查询商品分类",
                 "consumes": [
                     "application/json"
@@ -7854,6 +8419,11 @@ const docTemplate = `{
         },
         "/productCategory/list/withChildren": {
             "get": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
                 "description": "查询所有一级分类及子分类",
                 "consumes": [
                     "application/json"
@@ -7895,6 +8465,11 @@ const docTemplate = `{
         },
         "/productCategory/update/navStatus": {
             "post": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
                 "description": "修改导航栏显示状态",
                 "consumes": [
                     "application/json"
@@ -7953,6 +8528,11 @@ const docTemplate = `{
         },
         "/productCategory/update/showStatus": {
             "post": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
                 "description": "修改显示状态",
                 "consumes": [
                     "application/json"
@@ -8011,6 +8591,11 @@ const docTemplate = `{
         },
         "/productCategory/update/{id}": {
             "post": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
                 "description": "修改商品分类",
                 "consumes": [
                     "application/json"
@@ -8134,6 +8719,11 @@ const docTemplate = `{
         },
         "/productCategory/{id}": {
             "get": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
                 "description": "根据id获取商品分类",
                 "consumes": [
                     "application/json"
@@ -8183,6 +8773,11 @@ const docTemplate = `{
         },
         "/resource/create": {
             "post": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
                 "description": "创建资源",
                 "consumes": [
                     "application/json"
@@ -8261,6 +8856,11 @@ const docTemplate = `{
         },
         "/resource/delete/{id}": {
             "post": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
                 "description": "删除资源",
                 "consumes": [
                     "application/json"
@@ -8310,6 +8910,11 @@ const docTemplate = `{
         },
         "/resource/list": {
             "get": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
                 "description": "资源列表",
                 "consumes": [
                     "application/json"
@@ -8383,6 +8988,11 @@ const docTemplate = `{
         },
         "/resource/listAll": {
             "get": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
                 "description": "所有资源",
                 "consumes": [
                     "application/json"
@@ -8424,6 +9034,11 @@ const docTemplate = `{
         },
         "/resource/update/{id}": {
             "post": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
                 "description": "修改资源",
                 "consumes": [
                     "application/json"
@@ -8508,6 +9123,11 @@ const docTemplate = `{
         },
         "/resource/{id}": {
             "get": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
                 "description": "资源详情",
                 "consumes": [
                     "application/json"
@@ -8557,6 +9177,11 @@ const docTemplate = `{
         },
         "/resourceCategory/create": {
             "post": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
                 "description": "创建资源分类",
                 "consumes": [
                     "application/json"
@@ -8623,6 +9248,11 @@ const docTemplate = `{
         },
         "/resourceCategory/delete/{id}": {
             "post": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
                 "description": "修改资源分类",
                 "consumes": [
                     "application/json"
@@ -8672,6 +9302,11 @@ const docTemplate = `{
         },
         "/resourceCategory/listAll": {
             "get": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
                 "description": "资源分类列表",
                 "consumes": [
                     "application/json"
@@ -8713,6 +9348,11 @@ const docTemplate = `{
         },
         "/resourceCategory/update/{id}": {
             "post": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
                 "description": "修改资源分类",
                 "consumes": [
                     "application/json"
@@ -8785,6 +9425,11 @@ const docTemplate = `{
         },
         "/returnApply/delete": {
             "post": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
                 "description": "批量删除退货申请",
                 "consumes": [
                     "application/json"
@@ -8837,6 +9482,11 @@ const docTemplate = `{
         },
         "/returnApply/list": {
             "get": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
                 "description": "分页查询退货申请",
                 "consumes": [
                     "application/json"
@@ -8910,6 +9560,11 @@ const docTemplate = `{
         },
         "/returnApply/update/status/{id}": {
             "post": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
                 "description": "修改退货申请状态",
                 "consumes": [
                     "application/json"
@@ -8999,6 +9654,11 @@ const docTemplate = `{
         },
         "/returnApply/{id}": {
             "get": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
                 "description": "获取退货申请详情",
                 "consumes": [
                     "application/json"
@@ -9048,6 +9708,11 @@ const docTemplate = `{
         },
         "/returnReason/create": {
             "post": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
                 "description": "添加退货原因",
                 "consumes": [
                     "application/json"
@@ -9119,6 +9784,11 @@ const docTemplate = `{
         },
         "/returnReason/delete": {
             "post": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
                 "description": "批量删除退货原因",
                 "consumes": [
                     "application/json"
@@ -9199,6 +9869,11 @@ const docTemplate = `{
         },
         "/returnReason/list": {
             "get": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
                 "description": "分页查询退货原因",
                 "consumes": [
                     "application/json"
@@ -9254,6 +9929,11 @@ const docTemplate = `{
         },
         "/returnReason/update/status": {
             "post": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
                 "description": "修改退货原因启用状态",
                 "consumes": [
                     "application/json"
@@ -9312,6 +9992,11 @@ const docTemplate = `{
         },
         "/returnReason/update/{id}": {
             "post": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
                 "description": "修改退货原因",
                 "consumes": [
                     "application/json"
@@ -9389,6 +10074,11 @@ const docTemplate = `{
         },
         "/returnReason/{id}": {
             "get": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
                 "description": "获取单个退货原因详情信息",
                 "consumes": [
                     "application/json"
@@ -9438,6 +10128,11 @@ const docTemplate = `{
         },
         "/role/allocMenu": {
             "post": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
                 "description": "菜单分配",
                 "consumes": [
                     "application/json"
@@ -9496,6 +10191,11 @@ const docTemplate = `{
         },
         "/role/allocResource": {
             "post": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
                 "description": "资源分配",
                 "consumes": [
                     "application/json"
@@ -9554,6 +10254,11 @@ const docTemplate = `{
         },
         "/role/create": {
             "post": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
                 "description": "创建角色",
                 "consumes": [
                     "application/json"
@@ -9637,6 +10342,11 @@ const docTemplate = `{
         },
         "/role/delete/{id}": {
             "post": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
                 "description": "删除角色",
                 "consumes": [
                     "application/json"
@@ -9686,6 +10396,11 @@ const docTemplate = `{
         },
         "/role/list": {
             "get": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
                 "description": "角色列表",
                 "consumes": [
                     "application/json"
@@ -9747,6 +10462,11 @@ const docTemplate = `{
         },
         "/role/listAll": {
             "get": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
                 "description": "获取所有角色",
                 "consumes": [
                     "application/json"
@@ -9788,6 +10508,11 @@ const docTemplate = `{
         },
         "/role/listMenu/{roleId}": {
             "get": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
                 "description": "根据角色id获取菜单",
                 "consumes": [
                     "application/json"
@@ -9837,6 +10562,11 @@ const docTemplate = `{
         },
         "/role/listResource/{roleId}": {
             "get": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
                 "description": "根据角色id获取资源",
                 "consumes": [
                     "application/json"
@@ -9886,6 +10616,11 @@ const docTemplate = `{
         },
         "/role/update/{id}": {
             "post": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
                 "description": "修改角色",
                 "consumes": [
                     "application/json"
@@ -9975,6 +10710,11 @@ const docTemplate = `{
         },
         "/role/updateStatus/{id}": {
             "post": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
                 "description": "修改角色状态",
                 "consumes": [
                     "application/json"
@@ -10030,6 +10770,11 @@ const docTemplate = `{
         },
         "/sku/update": {
             "post": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
                 "description": "批量更新sku库存信息",
                 "consumes": [
                     "application/json"
@@ -10084,6 +10829,11 @@ const docTemplate = `{
         },
         "/sku/{pid}": {
             "get": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
                 "description": "根据商品ID及sku编码模糊搜索sku库存",
                 "consumes": [
                     "application/json"
@@ -10139,6 +10889,11 @@ const docTemplate = `{
         },
         "/subject/list": {
             "get": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
                 "description": "根据专题名称分页获取商品专题",
                 "consumes": [
                     "application/json"
@@ -10200,6 +10955,11 @@ const docTemplate = `{
         },
         "/subject/listAll": {
             "get": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
                 "description": "获取全部商品专题",
                 "consumes": [
                     "application/json"
@@ -10466,8 +11226,10 @@ const docTemplate = `{
         }
     },
     "securityDefinitions": {
-        "BasicAuth": {
-            "type": "basic"
+        "ApiKeyAuth": {
+            "type": "apiKey",
+            "name": "Authorization",
+            "in": "header"
         }
     }
 }`

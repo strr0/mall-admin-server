@@ -15,7 +15,7 @@ func registerUmsMemberLevelRouter(e *gin.Engine) {
 	db := config.GetDb()
 	iService := service.UmsMemberLevelService{DB: db}
 	iApi := api.UmsMemberLevelApi{Service: iService}
-	memberLevel := e.Group("/memberLevel")
+	memberLevel := e.Group("/memberLevel").Use(config.AuthCheckRole("admin"))
 	{
 		memberLevel.GET("/list", iApi.List)
 	}

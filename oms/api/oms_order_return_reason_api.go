@@ -19,6 +19,7 @@ type OmsOrderReturnReasonApi struct {
 // @Accept       json
 // @Produce      json
 // @Param        omsOrderReturnReason   query      model.OmsOrderReturnReason  false  "原因"
+// @Security ApiKeyAuth
 // @Success      200  {object}  util.CommonResult
 // @Failure      400  {object}  util.CommonResult
 // @Failure      404  {object}  util.CommonResult
@@ -42,6 +43,7 @@ func (iApi OmsOrderReturnReasonApi) Create(ctx *gin.Context) {
 // @Produce      json
 // @Param        id   path      string  false  "id"
 // @Param        omsOrderReturnReason   query      model.OmsOrderReturnReason  false  "原因"
+// @Security ApiKeyAuth
 // @Success      200  {object}  util.CommonResult
 // @Failure      400  {object}  util.CommonResult
 // @Failure      404  {object}  util.CommonResult
@@ -66,6 +68,7 @@ func (iApi OmsOrderReturnReasonApi) Update(ctx *gin.Context) {
 // @Produce      json
 // @Param        ids   query      []string  false  "ids"
 // @Param        omsOrderReturnReason   query      model.OmsOrderReturnReason  false  "原因"
+// @Security ApiKeyAuth
 // @Success      200  {object}  util.CommonResult
 // @Failure      400  {object}  util.CommonResult
 // @Failure      404  {object}  util.CommonResult
@@ -88,6 +91,7 @@ func (iApi OmsOrderReturnReasonApi) Delete(ctx *gin.Context) {
 // @Produce      json
 // @Param        pageNum   query      string  false  "页码"
 // @Param        pageSize   query      string  false  "数量"
+// @Security ApiKeyAuth
 // @Success      200  {object}  util.CommonResult
 // @Failure      400  {object}  util.CommonResult
 // @Failure      404  {object}  util.CommonResult
@@ -106,6 +110,7 @@ func (iApi OmsOrderReturnReasonApi) List(ctx *gin.Context) {
 // @Accept       json
 // @Produce      json
 // @Param        id   path      string  false  "id"
+// @Security ApiKeyAuth
 // @Success      200  {object}  util.CommonResult
 // @Failure      400  {object}  util.CommonResult
 // @Failure      404  {object}  util.CommonResult
@@ -124,6 +129,7 @@ func (iApi OmsOrderReturnReasonApi) GetItem(ctx *gin.Context) {
 // @Produce      json
 // @Param        ids   query      []string  false  "ids"
 // @Param        status   query      string  false  "status"
+// @Security ApiKeyAuth
 // @Success      200  {object}  util.CommonResult
 // @Failure      400  {object}  util.CommonResult
 // @Failure      404  {object}  util.CommonResult

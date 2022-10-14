@@ -15,7 +15,7 @@ func registerUmsResourceRouter(e *gin.Engine) {
 	db := config.GetDb()
 	iService := service.UmsResourceService{DB: db}
 	iApi := api.UmsResourceApi{Service: iService}
-	resource := e.Group("/resource")
+	resource := e.Group("/resource").Use(config.AuthCheckRole("resource"))
 	{
 		resource.POST("/create", iApi.Create)
 		resource.POST("/update/:id", iApi.Update)

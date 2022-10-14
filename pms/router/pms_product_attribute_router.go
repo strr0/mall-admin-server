@@ -15,7 +15,7 @@ func registerPmsProductAttributeRouter(e *gin.Engine) {
 	db := config.GetDb()
 	iService := service.PmsProductAttributeService{DB: db}
 	iApi := api.PmsProductAttributeApi{Service: iService}
-	attribute := e.Group("/productAttribute")
+	attribute := e.Group("/productAttribute").Use(config.AuthCheckRole("productAttr"))
 	{
 		attribute.GET("/list/:cid", iApi.List)
 		attribute.POST("/create", iApi.Create)

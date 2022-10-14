@@ -15,7 +15,7 @@ func registerSmsHomeBrandRouter(e *gin.Engine) {
 	db := config.GetDb()
 	iService := service.SmsHomeBrandService{DB: db}
 	iApi := api.SmsHomeBrandApi{Service: iService}
-	homeBrand := e.Group("/home/brand")
+	homeBrand := e.Group("/home/brand").Use(config.AuthCheckRole("homeBrand"))
 	{
 		homeBrand.POST("/create", iApi.Create)
 		homeBrand.POST("/update/sort/:id", iApi.UpdateSort)

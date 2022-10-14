@@ -15,7 +15,7 @@ func registerOmsOrderRouter(e *gin.Engine) {
 	db := config.GetDb()
 	iService := service.OmsOrderService{DB: db}
 	iApi := api.OmsOrderApi{Service: iService}
-	order := e.Group("/order")
+	order := e.Group("/order").Use(config.AuthCheckRole("order"))
 	{
 		order.GET("/list", iApi.List)
 		order.POST("/update/delivery", iApi.Delivery)

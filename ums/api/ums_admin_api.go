@@ -72,6 +72,7 @@ func (iApi UmsAdminApi) Login(ctx *gin.Context) {
 // @Tags         后台用户管理
 // @Accept       json
 // @Produce      json
+// @Security ApiKeyAuth
 // @Success      200  {object}  util.CommonResult
 // @Failure      400  {object}  util.CommonResult
 // @Failure      404  {object}  util.CommonResult
@@ -88,6 +89,7 @@ func (UmsAdminApi) RefreshToken(ctx *gin.Context) {
 // @Tags         后台用户管理
 // @Accept       json
 // @Produce      json
+// @Security ApiKeyAuth
 // @Success      200  {object}  util.CommonResult
 // @Failure      400  {object}  util.CommonResult
 // @Failure      404  {object}  util.CommonResult
@@ -126,6 +128,7 @@ func (UmsAdminApi) Logout(ctx *gin.Context) {
 // @Param        keyword   query      string  false  "名称"
 // @Param        pageNum   query      string  false  "页码"
 // @Param        pageSize   query      string  false  "数量"
+// @Security ApiKeyAuth
 // @Success      200  {object}  util.CommonResult
 // @Failure      400  {object}  util.CommonResult
 // @Failure      404  {object}  util.CommonResult
@@ -145,6 +148,7 @@ func (iApi UmsAdminApi) List(ctx *gin.Context) {
 // @Accept       json
 // @Produce      json
 // @Param        id   path      string  false  "id"
+// @Security ApiKeyAuth
 // @Success      200  {object}  util.CommonResult
 // @Failure      400  {object}  util.CommonResult
 // @Failure      404  {object}  util.CommonResult
@@ -163,6 +167,7 @@ func (iApi UmsAdminApi) GetItem(ctx *gin.Context) {
 // @Produce      json
 // @Param        id   path      string  false  "id"
 // @Param        umsAdmin   query      model.UmsAdmin  false  "id"
+// @Security ApiKeyAuth
 // @Success      200  {object}  util.CommonResult
 // @Failure      400  {object}  util.CommonResult
 // @Failure      404  {object}  util.CommonResult
@@ -186,6 +191,7 @@ func (iApi UmsAdminApi) Update(ctx *gin.Context) {
 // @Accept       json
 // @Produce      json
 // @Param        id   path      string  false  "id"
+// @Security ApiKeyAuth
 // @Success      200  {object}  util.CommonResult
 // @Failure      400  {object}  util.CommonResult
 // @Failure      404  {object}  util.CommonResult
@@ -208,6 +214,7 @@ func (iApi UmsAdminApi) Delete(ctx *gin.Context) {
 // @Produce      json
 // @Param        id   path      string  false  "id"
 // @Param        status   query      string  false  "status"
+// @Security ApiKeyAuth
 // @Success      200  {object}  util.CommonResult
 // @Failure      400  {object}  util.CommonResult
 // @Failure      404  {object}  util.CommonResult
@@ -231,6 +238,7 @@ func (iApi UmsAdminApi) UpdateStatus(ctx *gin.Context) {
 // @Produce      json
 // @Param        adminId   query      string  false  "adminId"
 // @Param        roleIds   query      []string  false  "roleIds"
+// @Security ApiKeyAuth
 // @Success      200  {object}  util.CommonResult
 // @Failure      400  {object}  util.CommonResult
 // @Failure      404  {object}  util.CommonResult
@@ -253,6 +261,7 @@ func (iApi UmsAdminApi) UpdateRole(ctx *gin.Context) {
 // @Accept       json
 // @Produce      json
 // @Param        adminId   path      string  false  "adminId"
+// @Security ApiKeyAuth
 // @Success      200  {object}  util.CommonResult
 // @Failure      400  {object}  util.CommonResult
 // @Failure      404  {object}  util.CommonResult

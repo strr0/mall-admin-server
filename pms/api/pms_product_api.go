@@ -19,6 +19,7 @@ type PmsProductApi struct {
 // @Accept       json
 // @Produce      json
 // @Param        pmsProductDto   query      dto.PmsProductDto  false  "商品"
+// @Security ApiKeyAuth
 // @Success      200  {object}  util.CommonResult
 // @Failure      400  {object}  util.CommonResult
 // @Failure      404  {object}  util.CommonResult
@@ -41,6 +42,7 @@ func (iApi PmsProductApi) Create(ctx *gin.Context) {
 // @Accept       json
 // @Produce      json
 // @Param        id   path      string  false  "id"
+// @Security ApiKeyAuth
 // @Success      200  {object}  util.CommonResult
 // @Failure      400  {object}  util.CommonResult
 // @Failure      404  {object}  util.CommonResult
@@ -59,6 +61,7 @@ func (iApi PmsProductApi) GetUpdateInfo(ctx *gin.Context) {
 // @Produce      json
 // @Param        id   path      string  false  "id"
 // @Param        pmsProductDto   query      dto.PmsProductDto  false  "商品"
+// @Security ApiKeyAuth
 // @Success      200  {object}  util.CommonResult
 // @Failure      400  {object}  util.CommonResult
 // @Failure      404  {object}  util.CommonResult
@@ -82,6 +85,7 @@ func (iApi PmsProductApi) Update(ctx *gin.Context) {
 // @Accept       json
 // @Produce      json
 // @Param        pmsProductQueryDto   query      dto.PmsProductQueryDto  false  "参数"
+// @Security ApiKeyAuth
 // @Success      200  {object}  util.CommonResult
 // @Failure      400  {object}  util.CommonResult
 // @Failure      404  {object}  util.CommonResult
@@ -102,6 +106,7 @@ func (iApi PmsProductApi) List(ctx *gin.Context) {
 // @Accept       json
 // @Produce      json
 // @Param        keyword   query      string  false  "keyword"
+// @Security ApiKeyAuth
 // @Success      200  {object}  util.CommonResult
 // @Failure      400  {object}  util.CommonResult
 // @Failure      404  {object}  util.CommonResult
@@ -121,6 +126,7 @@ func (iApi PmsProductApi) SimpleList(ctx *gin.Context) {
 // @Param        ids   query      []string  false  "ids"
 // @Param        verifyStatus   query      string  false  "verifyStatus"
 // @Param        detail   query      string  false  "detail"
+// @Security ApiKeyAuth
 // @Success      200  {object}  util.CommonResult
 // @Failure      400  {object}  util.CommonResult
 // @Failure      404  {object}  util.CommonResult
@@ -145,6 +151,7 @@ func (iApi PmsProductApi) UpdateVerifyStatus(ctx *gin.Context) {
 // @Produce      json
 // @Param        ids   query      []string  false  "ids"
 // @Param        publishStatus   query      string  false  "publishStatus"
+// @Security ApiKeyAuth
 // @Success      200  {object}  util.CommonResult
 // @Failure      400  {object}  util.CommonResult
 // @Failure      404  {object}  util.CommonResult
@@ -168,6 +175,7 @@ func (iApi PmsProductApi) UpdatePublishStatus(ctx *gin.Context) {
 // @Produce      json
 // @Param        ids   query      []string  false  "ids"
 // @Param        recommendStatus   query      string  false  "recommendStatus"
+// @Security ApiKeyAuth
 // @Success      200  {object}  util.CommonResult
 // @Failure      400  {object}  util.CommonResult
 // @Failure      404  {object}  util.CommonResult
@@ -191,6 +199,7 @@ func (iApi PmsProductApi) UpdateRecommendStatus(ctx *gin.Context) {
 // @Produce      json
 // @Param        ids   query      []string  false  "ids"
 // @Param        newStatus   query      string  false  "newStatus"
+// @Security ApiKeyAuth
 // @Success      200  {object}  util.CommonResult
 // @Failure      400  {object}  util.CommonResult
 // @Failure      404  {object}  util.CommonResult
@@ -214,6 +223,7 @@ func (iApi PmsProductApi) UpdateNewStatus(ctx *gin.Context) {
 // @Produce      json
 // @Param        ids   query      []string  false  "ids"
 // @Param        deleteStatus   query      string  false  "deleteStatus"
+// @Security ApiKeyAuth
 // @Success      200  {object}  util.CommonResult
 // @Failure      400  {object}  util.CommonResult
 // @Failure      404  {object}  util.CommonResult

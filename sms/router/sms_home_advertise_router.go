@@ -15,7 +15,7 @@ func registerSmsHomeAdvertiseRouter(e *gin.Engine) {
 	db := config.GetDb()
 	iService := service.SmsHomeAdvertiseService{DB: db}
 	iApi := api.SmsHomeAdvertiseApi{Service: iService}
-	homeAdvertise := e.Group("/home/advertise")
+	homeAdvertise := e.Group("/home/advertise").Use(config.AuthCheckRole("homeAdvertise"))
 	{
 		homeAdvertise.POST("/create", iApi.Create)
 		homeAdvertise.POST("/delete", iApi.Delete)

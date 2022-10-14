@@ -20,6 +20,7 @@ type PmsSkuStockApi struct {
 // @Produce      json
 // @Param        pid   path      string  false  "pid"
 // @Param        keyword   query      string  false  "keyword"
+// @Security ApiKeyAuth
 // @Success      200  {object}  util.CommonResult
 // @Failure      400  {object}  util.CommonResult
 // @Failure      404  {object}  util.CommonResult
@@ -38,6 +39,7 @@ func (iApi PmsSkuStockApi) GetList(ctx *gin.Context) {
 // @Accept       json
 // @Produce      json
 // @Param        skuStockList   body      []model.PmsSkuStock  false  "skuStockList"
+// @Security ApiKeyAuth
 // @Success      200  {object}  util.CommonResult
 // @Failure      400  {object}  util.CommonResult
 // @Failure      404  {object}  util.CommonResult

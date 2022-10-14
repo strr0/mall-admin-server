@@ -18,6 +18,7 @@ type UmsResourceCategoryApi struct {
 // @Tags         后台资源分类管理
 // @Accept       json
 // @Produce      json
+// @Security ApiKeyAuth
 // @Success      200  {object}  util.CommonResult
 // @Failure      400  {object}  util.CommonResult
 // @Failure      404  {object}  util.CommonResult
@@ -34,6 +35,7 @@ func (iApi UmsResourceCategoryApi) ListAll(ctx *gin.Context) {
 // @Accept       json
 // @Produce      json
 // @Param        umsResourceCategory   query      model.UmsResourceCategory  false  "分类"
+// @Security ApiKeyAuth
 // @Success      200  {object}  util.CommonResult
 // @Failure      400  {object}  util.CommonResult
 // @Failure      404  {object}  util.CommonResult
@@ -57,6 +59,7 @@ func (iApi UmsResourceCategoryApi) Create(ctx *gin.Context) {
 // @Produce      json
 // @Param        id   path      string  false  "id"
 // @Param        umsResourceCategory   query      model.UmsResourceCategory  false  "分类"
+// @Security ApiKeyAuth
 // @Success      200  {object}  util.CommonResult
 // @Failure      400  {object}  util.CommonResult
 // @Failure      404  {object}  util.CommonResult
@@ -80,6 +83,7 @@ func (iApi UmsResourceCategoryApi) Update(ctx *gin.Context) {
 // @Accept       json
 // @Produce      json
 // @Param        id   path      string  false  "id"
+// @Security ApiKeyAuth
 // @Success      200  {object}  util.CommonResult
 // @Failure      400  {object}  util.CommonResult
 // @Failure      404  {object}  util.CommonResult

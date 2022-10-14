@@ -21,7 +21,7 @@ func registerUmsAdminRouter(e *gin.Engine) {
 		UmsMenuService:  umsMenuService,
 		UmsRoleService:  umsRoleService,
 	}
-	admin := e.Group("/admin")
+	admin := e.Group("/admin").Use(config.AuthCheckRole("admin"))
 	{
 		admin.POST("/register", iApi.Register)
 		admin.POST("/login", iApi.Login)

@@ -15,7 +15,7 @@ func registerSmsFlashPromotionProductRelationRouter(e *gin.Engine) {
 	db := config.GetDb()
 	iService := service.SmsFlashPromotionProductRelationService{DB: db}
 	iApi := api.SmsFlashPromotionProductRelationApi{Service: iService}
-	flashProductRelation := e.Group("/flashProductRelation")
+	flashProductRelation := e.Group("/flashProductRelation").Use(config.AuthCheckRole("flash"))
 	{
 		flashProductRelation.POST("/create", iApi.Create)
 		flashProductRelation.POST("/update/:id", iApi.Update)

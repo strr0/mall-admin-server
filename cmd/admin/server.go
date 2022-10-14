@@ -4,6 +4,7 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/spf13/cobra"
 	cms "mall-admin-server/cms/router"
+	"mall-admin-server/config"
 	"mall-admin-server/docs"
 	oms "mall-admin-server/oms/router"
 	pms "mall-admin-server/pms/router"
@@ -20,6 +21,17 @@ var StartCmd = &cobra.Command{
 	},
 }
 
+// 数据源
+func initDataSource() {
+	config.InitDataSource()
+}
+
+// casbin权限配置
+func initPolicy() {
+	config.InitPolicy()
+}
+
+// 路由
 func initRouter() {
 	e := gin.Default()
 	cms.InitRouter(e)
@@ -32,5 +44,7 @@ func initRouter() {
 }
 
 func run() {
+	initDataSource()
+	initPolicy()
 	initRouter()
 }

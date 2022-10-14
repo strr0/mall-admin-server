@@ -19,6 +19,7 @@ type UmsRoleApi struct {
 // @Accept       json
 // @Produce      json
 // @Param        umsRole   query      model.UmsRole  false  "角色"
+// @Security ApiKeyAuth
 // @Success      200  {object}  util.CommonResult
 // @Failure      400  {object}  util.CommonResult
 // @Failure      404  {object}  util.CommonResult
@@ -42,6 +43,7 @@ func (iApi UmsRoleApi) Create(ctx *gin.Context) {
 // @Produce      json
 // @Param        id   path      string  false  "id"
 // @Param        umsRole   query      model.UmsRole  false  "角色"
+// @Security ApiKeyAuth
 // @Success      200  {object}  util.CommonResult
 // @Failure      400  {object}  util.CommonResult
 // @Failure      404  {object}  util.CommonResult
@@ -64,6 +66,7 @@ func (iApi UmsRoleApi) Update(ctx *gin.Context) {
 // @Accept       json
 // @Produce      json
 // @Param        id   path      string  false  "id"
+// @Security ApiKeyAuth
 // @Success      200  {object}  util.CommonResult
 // @Failure      400  {object}  util.CommonResult
 // @Failure      404  {object}  util.CommonResult
@@ -84,6 +87,7 @@ func (iApi UmsRoleApi) Delete(ctx *gin.Context) {
 // @Tags         后台用户角色管理
 // @Accept       json
 // @Produce      json
+// @Security ApiKeyAuth
 // @Success      200  {object}  util.CommonResult
 // @Failure      400  {object}  util.CommonResult
 // @Failure      404  {object}  util.CommonResult
@@ -102,6 +106,7 @@ func (iApi UmsRoleApi) ListAll(ctx *gin.Context) {
 // @Param        keyword   query      string  false  "名称"
 // @Param        pageNum   query      string  false  "页码"
 // @Param        pageSize   query      string  false  "数量"
+// @Security ApiKeyAuth
 // @Success      200  {object}  util.CommonResult
 // @Failure      400  {object}  util.CommonResult
 // @Failure      404  {object}  util.CommonResult
@@ -122,6 +127,7 @@ func (iApi UmsRoleApi) List(ctx *gin.Context) {
 // @Produce      json
 // @Param        id   path      string  false  "id"
 // @Param        status   query      string  false  "status"
+// @Security ApiKeyAuth
 // @Success      200  {object}  util.CommonResult
 // @Failure      400  {object}  util.CommonResult
 // @Failure      404  {object}  util.CommonResult
@@ -144,6 +150,7 @@ func (iApi UmsRoleApi) UpdateStatus(ctx *gin.Context) {
 // @Accept       json
 // @Produce      json
 // @Param        roleId   path      string  false  "roleId"
+// @Security ApiKeyAuth
 // @Success      200  {object}  util.CommonResult
 // @Failure      400  {object}  util.CommonResult
 // @Failure      404  {object}  util.CommonResult
@@ -161,6 +168,7 @@ func (iApi UmsRoleApi) ListMenu(ctx *gin.Context) {
 // @Accept       json
 // @Produce      json
 // @Param        roleId   path      string  false  "roleId"
+// @Security ApiKeyAuth
 // @Success      200  {object}  util.CommonResult
 // @Failure      400  {object}  util.CommonResult
 // @Failure      404  {object}  util.CommonResult
@@ -179,6 +187,7 @@ func (iApi UmsRoleApi) ListResource(ctx *gin.Context) {
 // @Produce      json
 // @Param        roleId   query      string  false  "roleId"
 // @Param        menuIds   query      []string  false  "menuIds"
+// @Security ApiKeyAuth
 // @Success      200  {object}  util.CommonResult
 // @Failure      400  {object}  util.CommonResult
 // @Failure      404  {object}  util.CommonResult
@@ -202,6 +211,7 @@ func (iApi UmsRoleApi) AllocMenu(ctx *gin.Context) {
 // @Produce      json
 // @Param        roleId   query      string  false  "roleId"
 // @Param        resourceIds   query      []string  false  "resourceIds"
+// @Security ApiKeyAuth
 // @Success      200  {object}  util.CommonResult
 // @Failure      400  {object}  util.CommonResult
 // @Failure      404  {object}  util.CommonResult

@@ -19,6 +19,7 @@ type SmsHomeRecommendSubjectApi struct {
 // @Accept       json
 // @Produce      json
 // @Param        smsHomeRecommendSubject   query      model.SmsHomeRecommendSubject  false  "首页推荐"
+// @Security ApiKeyAuth
 // @Success      200  {object}  util.CommonResult
 // @Failure      400  {object}  util.CommonResult
 // @Failure      404  {object}  util.CommonResult
@@ -42,6 +43,7 @@ func (iApi SmsHomeRecommendSubjectApi) Create(ctx *gin.Context) {
 // @Produce      json
 // @Param        id   path      string  false  "id"
 // @Param        sort   query      string  false  "sort"
+// @Security ApiKeyAuth
 // @Success      200  {object}  util.CommonResult
 // @Failure      400  {object}  util.CommonResult
 // @Failure      404  {object}  util.CommonResult
@@ -64,6 +66,7 @@ func (iApi SmsHomeRecommendSubjectApi) UpdateSort(ctx *gin.Context) {
 // @Accept       json
 // @Produce      json
 // @Param        ids   query      []string  false  "ids"
+// @Security ApiKeyAuth
 // @Success      200  {object}  util.CommonResult
 // @Failure      400  {object}  util.CommonResult
 // @Failure      404  {object}  util.CommonResult
@@ -86,6 +89,7 @@ func (iApi SmsHomeRecommendSubjectApi) Delete(ctx *gin.Context) {
 // @Produce      json
 // @Param        ids   query      []string  false  "ids"
 // @Param        recommendStatus   query      string  false  "recommendStatus"
+// @Security ApiKeyAuth
 // @Success      200  {object}  util.CommonResult
 // @Failure      400  {object}  util.CommonResult
 // @Failure      404  {object}  util.CommonResult
@@ -111,6 +115,7 @@ func (iApi SmsHomeRecommendSubjectApi) UpdateRecommendStatus(ctx *gin.Context) {
 // @Param        recommendStatus   query      string  false  "recommendStatus"
 // @Param        pageNum   query      string  false  "页码"
 // @Param        pageSize   query      string  false  "数量"
+// @Security ApiKeyAuth
 // @Success      200  {object}  util.CommonResult
 // @Failure      400  {object}  util.CommonResult
 // @Failure      404  {object}  util.CommonResult
