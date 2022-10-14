@@ -5,6 +5,7 @@ import (
 	"github.com/spf13/cobra"
 	"log"
 	"mall-admin-server/cmd/admin"
+	"mall-admin-server/cmd/common"
 	"mall-admin-server/cmd/generator"
 	"os"
 )
@@ -29,6 +30,7 @@ var rootCmd = &cobra.Command{
 func init() {
 	rootCmd.AddCommand(admin.StartCmd)
 	rootCmd.AddCommand(generator.StartCmd)
+	rootCmd.AddCommand(common.StartCmd)
 }
 
 func tip() {

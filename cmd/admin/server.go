@@ -31,6 +31,10 @@ func initPolicy() {
 	config.InitPolicy()
 }
 
+func initRedis() {
+	config.InitRedis()
+}
+
 // 路由
 func initRouter() {
 	e := gin.Default()
@@ -46,5 +50,6 @@ func initRouter() {
 func run() {
 	initDataSource()
 	initPolicy()
+	//initRedis()
 	initRouter()
 }

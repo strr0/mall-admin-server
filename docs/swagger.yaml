@@ -3336,6 +3336,78 @@ paths:
       summary: 修改推荐排序
       tags:
       - 首页专题推荐管理
+  /member/generateAuthCode:
+    get:
+      consumes:
+      - application/json
+      description: 获取验证码
+      parameters:
+      - description: telephone
+        in: query
+        name: telephone
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/util.CommonResult'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/util.CommonResult'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/util.CommonResult'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/util.CommonResult'
+      security:
+      - ApiKeyAuth: []
+      summary: 获取验证码
+      tags:
+      - 会员登录注册管理
+  /member/verifyAuthCode:
+    get:
+      consumes:
+      - application/json
+      description: 验证码校验
+      parameters:
+      - description: telephone
+        in: query
+        name: telephone
+        type: string
+      - description: authCode
+        in: query
+        name: authCode
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/util.CommonResult'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/util.CommonResult'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/util.CommonResult'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/util.CommonResult'
+      security:
+      - ApiKeyAuth: []
+      summary: 验证码校验
+      tags:
+      - 会员登录注册管理
   /memberLevel/list:
     get:
       consumes:
@@ -5717,6 +5789,74 @@ paths:
       summary: 修改显示状态
       tags:
       - 商品分类管理
+  /redis/get:
+    get:
+      consumes:
+      - application/json
+      description: redis get
+      parameters:
+      - description: key
+        in: query
+        name: key
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/util.CommonResult'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/util.CommonResult'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/util.CommonResult'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/util.CommonResult'
+      summary: redis get
+      tags:
+      - Redis
+  /redis/set:
+    get:
+      consumes:
+      - application/json
+      description: redis set
+      parameters:
+      - description: key
+        in: query
+        name: key
+        type: string
+      - description: value
+        in: query
+        name: value
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/util.CommonResult'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/util.CommonResult'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/util.CommonResult'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/util.CommonResult'
+      summary: redis set
+      tags:
+      - Redis
   /resource/{id}:
     get:
       consumes:
