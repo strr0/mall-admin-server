@@ -5188,6 +5188,200 @@ const docTemplate = `{
                 }
             }
         },
+        "/memberReadHistory/create": {
+            "post": {
+                "description": "创建历史记录",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "历史记录"
+                ],
+                "summary": "创建历史记录",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "name": "createDate",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "name": "id",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "name": "memberIcon",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "name": "memberId",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "name": "memberNickName",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "name": "productId",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "name": "productName",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "name": "productPic",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "name": "productPrice",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "name": "productSubTitle",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/util.CommonResult"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/util.CommonResult"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/util.CommonResult"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/util.CommonResult"
+                        }
+                    }
+                }
+            }
+        },
+        "/memberReadHistory/delete": {
+            "post": {
+                "description": "删除历史记录",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "历史记录"
+                ],
+                "summary": "删除历史记录",
+                "parameters": [
+                    {
+                        "type": "array",
+                        "items": {
+                            "type": "string"
+                        },
+                        "description": "ids",
+                        "name": "ids",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/util.CommonResult"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/util.CommonResult"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/util.CommonResult"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/util.CommonResult"
+                        }
+                    }
+                }
+            }
+        },
+        "/memberReadHistory/list": {
+            "get": {
+                "description": "获取历史记录",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "历史记录"
+                ],
+                "summary": "获取历史记录",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "memberId",
+                        "name": "memberId",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/util.CommonResult"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/util.CommonResult"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/util.CommonResult"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/util.CommonResult"
+                        }
+                    }
+                }
+            }
+        },
         "/menu/create": {
             "post": {
                 "security": [

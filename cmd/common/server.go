@@ -17,10 +17,6 @@ var StartCmd = &cobra.Command{
 	},
 }
 
-func initRedis() {
-	config.InitRedis()
-}
-
 // 路由
 func initRouter() {
 	e := gin.Default()
@@ -30,6 +26,9 @@ func initRouter() {
 }
 
 func run() {
-	initRedis()
+	//config.InitRedis()
+	//defer config.CloseRedis()
+	config.InitMongo()
+	defer config.CLoseMongo()
 	initRouter()
 }

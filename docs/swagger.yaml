@@ -3442,6 +3442,130 @@ paths:
       summary: 列表
       tags:
       - 会员等级管理
+  /memberReadHistory/create:
+    post:
+      consumes:
+      - application/json
+      description: 创建历史记录
+      parameters:
+      - in: query
+        name: createDate
+        type: string
+      - in: query
+        name: id
+        type: string
+      - in: query
+        name: memberIcon
+        type: string
+      - in: query
+        name: memberId
+        type: string
+      - in: query
+        name: memberNickName
+        type: string
+      - in: query
+        name: productId
+        type: string
+      - in: query
+        name: productName
+        type: string
+      - in: query
+        name: productPic
+        type: string
+      - in: query
+        name: productPrice
+        type: string
+      - in: query
+        name: productSubTitle
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/util.CommonResult'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/util.CommonResult'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/util.CommonResult'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/util.CommonResult'
+      summary: 创建历史记录
+      tags:
+      - 历史记录
+  /memberReadHistory/delete:
+    post:
+      consumes:
+      - application/json
+      description: 删除历史记录
+      parameters:
+      - description: ids
+        in: query
+        items:
+          type: string
+        name: ids
+        type: array
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/util.CommonResult'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/util.CommonResult'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/util.CommonResult'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/util.CommonResult'
+      summary: 删除历史记录
+      tags:
+      - 历史记录
+  /memberReadHistory/list:
+    get:
+      consumes:
+      - application/json
+      description: 获取历史记录
+      parameters:
+      - description: memberId
+        in: query
+        name: memberId
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/util.CommonResult'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/util.CommonResult'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/util.CommonResult'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/util.CommonResult'
+      summary: 获取历史记录
+      tags:
+      - 历史记录
   /menu/{id}:
     get:
       consumes:
