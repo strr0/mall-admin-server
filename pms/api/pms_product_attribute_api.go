@@ -116,7 +116,7 @@ func (iApi PmsProductAttributeApi) GetItem(ctx *gin.Context) {
 // @Failure      500  {object}  util.CommonResult
 // @Router       /productAttribute/delete [post]
 func (iApi PmsProductAttributeApi) Delete(ctx *gin.Context) {
-	ids := ctx.PostFormArray("ids")
+	ids := ctx.QueryArray("ids")
 	err := iApi.Service.Delete(ids)
 	if err != nil {
 		ctx.JSON(http.StatusOK, util.Failed("修改失败"))

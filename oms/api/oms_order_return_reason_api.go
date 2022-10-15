@@ -75,7 +75,7 @@ func (iApi OmsOrderReturnReasonApi) Update(ctx *gin.Context) {
 // @Failure      500  {object}  util.CommonResult
 // @Router       /returnReason/delete [post]
 func (iApi OmsOrderReturnReasonApi) Delete(ctx *gin.Context) {
-	ids := ctx.PostFormArray("ids")
+	ids := ctx.QueryArray("ids")
 	err := iApi.Service.Delete(ids)
 	if err != nil {
 		ctx.JSON(http.StatusOK, util.Failed("删除成功"))

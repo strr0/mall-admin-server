@@ -152,7 +152,7 @@ func (iApi PmsBrandApi) GetItem(ctx *gin.Context) {
 // @Failure      500  {object}  util.CommonResult
 // @Router       /brand/delete/batch [post]
 func (iApi PmsBrandApi) DeleteBrand(ctx *gin.Context) {
-	ids := ctx.PostFormArray("ids")
+	ids := ctx.QueryArray("ids")
 	err := iApi.Service.DeleteBrand(ids)
 	if err != nil {
 		ctx.JSON(http.StatusOK, util.Failed("删除失败"))

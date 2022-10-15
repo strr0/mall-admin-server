@@ -73,7 +73,7 @@ func (iApi SmsHomeBrandApi) UpdateSort(ctx *gin.Context) {
 // @Failure      500  {object}  util.CommonResult
 // @Router       /home/brand/delete [post]
 func (iApi SmsHomeBrandApi) Delete(ctx *gin.Context) {
-	ids := ctx.PostFormArray("ids")
+	ids := ctx.QueryArray("ids")
 	err := iApi.Service.Delete(ids)
 	if err != nil {
 		ctx.JSON(http.StatusOK, util.Failed("删除失败"))
