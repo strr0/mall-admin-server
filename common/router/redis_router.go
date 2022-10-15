@@ -7,7 +7,11 @@ import (
 	"mall-admin-server/config"
 )
 
-func InitRouter(e *gin.Engine) {
+func init() {
+	routers = append(routers, registerRedisRouter)
+}
+
+func registerRedisRouter(e *gin.Engine) {
 	redisdb := config.GetRedis()
 	iService := service.RedisService{RedisDB: redisdb}
 	iApi := api.RedisApi{Service: iService}

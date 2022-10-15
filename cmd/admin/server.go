@@ -21,20 +21,6 @@ var StartCmd = &cobra.Command{
 	},
 }
 
-// 数据源
-func initDataSource() {
-	config.InitDataSource()
-}
-
-// casbin权限配置
-func initPolicy() {
-	config.InitPolicy()
-}
-
-func initRedis() {
-	config.InitRedis()
-}
-
 // 路由
 func initRouter() {
 	e := gin.Default()
@@ -48,8 +34,9 @@ func initRouter() {
 }
 
 func run() {
-	initDataSource()
-	initPolicy()
-	//initRedis()
+	config.InitDataSource()
+	config.InitPolicy()
+	//config.InitRedis()
+	//defer config.CloseRedis()
 	initRouter()
 }

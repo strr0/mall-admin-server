@@ -29,6 +29,10 @@ func InitRedis() {
 	}
 }
 
+func CloseRedis() {
+	_ = redisdb.Close()
+}
+
 func GetRedis() *redis.Client {
 	return redisdb
 }
