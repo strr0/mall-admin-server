@@ -66,7 +66,7 @@ func run() {
 		defer df()
 	}
 	e := gin.Default()
-	//initRouter(e)
+	initRouter(e)
 	srv := http.Server{
 		Addr:    ":8080",
 		Handler: e,
