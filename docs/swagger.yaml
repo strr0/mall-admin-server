@@ -5913,6 +5913,92 @@ paths:
       summary: 修改显示状态
       tags:
       - 商品分类管理
+  /rabbit/initQueue:
+    get:
+      consumes:
+      - application/json
+      description: rabbit 初始化队列
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/util.CommonResult'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/util.CommonResult'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/util.CommonResult'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/util.CommonResult'
+      summary: rabbit 初始化队列
+      tags:
+      - rabbit
+  /rabbit/recv:
+    get:
+      consumes:
+      - application/json
+      description: rabbit 接收消息
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/util.CommonResult'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/util.CommonResult'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/util.CommonResult'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/util.CommonResult'
+      summary: rabbit 接收消息
+      tags:
+      - rabbit
+  /rabbit/send:
+    post:
+      consumes:
+      - application/json
+      description: rabbit 发送消息
+      parameters:
+      - description: 消息
+        in: query
+        name: msg
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/util.CommonResult'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/util.CommonResult'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/util.CommonResult'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/util.CommonResult'
+      summary: rabbit 发送消息
+      tags:
+      - rabbit
   /redis/get:
     get:
       consumes:
